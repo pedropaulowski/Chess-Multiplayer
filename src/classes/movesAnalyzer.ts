@@ -62,8 +62,6 @@ export class MovesAnalyzer {
                 }
             }
 
-        } else {
-
         }
     }
 
@@ -72,7 +70,6 @@ export class MovesAnalyzer {
         let board = game.board
 
         if(pieceName != "King") {
-
             // Verificar as 8 linhas tanto acima quanto a abaixo na mesma coluna
             for(let j = position.line+1; j < 8; j++) {    
                 if(board[j][position.column].constructor.name == "Void") {
@@ -98,8 +95,6 @@ export class MovesAnalyzer {
                     break;
                 }
             }
-
-        } else {
 
         }
     }
@@ -210,13 +205,99 @@ export class MovesAnalyzer {
 
 
 
-        } else {
-
-        }
+        } 
     }
 
     twoOneMoves(position: Position, piece: Piece, game: Game) {
+        /**
+         * O Cavalo ele os seguintes movimentos
+         *      soma ou subtrai 2 a sua coluna atual e soma ou subtrai 1 a sua linha atual = 4 movimentos
+         *      soma ou subtrai 2 a sua linha atual e soma ou subtrai 1 a sua coluna atual  = 4 movimentos
+         * 
+         *  
+         */
+        let board = game.board
 
+        let aux = -1
+        for(let i = 0; i < 8; i++) {
+
+            if(i > 1 && i < 4) {
+                let analyzedLine = position.line+(2*aux)
+                let analyzedColumn = position.column+aux
+                if(board[analyzedLine][analyzedColumn].constructor.name == "Void") {
+                    let analyzedPosition = new Position(analyzedLine, analyzedColumn)
+                    this.possibleMoves.push(analyzedPosition)
+
+                } else if(board[analyzedLine][analyzedColumn].color != piece.color) {
+                    let analyzedPosition = new Position(analyzedLine, analyzedColumn)
+                    this.possibleMoves.push(analyzedPosition)
+                    break;
+
+                } else if(board[analyzedLine][analyzedColumn].color == piece.color) {
+                    break;
+                }
+
+            } else if (i <= 1) {
+                // let analyzedPosition = new Position(position.line+(-2*aux), position.column+aux)
+
+                let analyzedLine = position.line+(-2*aux)
+                let analyzedColumn = position.column+aux
+                if(board[analyzedLine][analyzedColumn].constructor.name == "Void") {
+                    let analyzedPosition = new Position(analyzedLine, analyzedColumn)
+                    this.possibleMoves.push(analyzedPosition)
+
+                } else if(board[analyzedLine][analyzedColumn].color != piece.color) {
+                    let analyzedPosition = new Position(analyzedLine, analyzedColumn)
+                    this.possibleMoves.push(analyzedPosition)
+                    break;
+
+                } else if(board[analyzedLine][analyzedColumn].color == piece.color) {
+                    break;
+                }
+
+
+            } else if (i > 3 && i <= 5) {
+                // let analyzedPosition = new Position(position.line+aux, position.column+(-2*aux))
+
+                let analyzedLine = position.line+aux
+                let analyzedColumn = position.column+(-2*aux)
+
+                if(board[analyzedLine][analyzedColumn].constructor.name == "Void") {
+                    let analyzedPosition = new Position(analyzedLine, analyzedColumn)
+                    this.possibleMoves.push(analyzedPosition)
+
+                } else if(board[analyzedLine][analyzedColumn].color != piece.color) {
+                    let analyzedPosition = new Position(analyzedLine, analyzedColumn)
+                    this.possibleMoves.push(analyzedPosition)
+                    break;
+
+                } else if(board[analyzedLine][analyzedColumn].color == piece.color) {
+                    break;
+                }
+            } else  {
+                // let analyzedPosition = new Position(position.line+aux, position.column+(2*aux))
+
+                let analyzedLine = position.line+aux
+                let analyzedColumn = position.column+(2*aux)
+                
+                if(board[analyzedLine][analyzedColumn].constructor.name == "Void") {
+                    let analyzedPosition = new Position(analyzedLine, analyzedColumn)
+                    this.possibleMoves.push(analyzedPosition)
+
+                } else if(board[analyzedLine][analyzedColumn].color != piece.color) {
+                    let analyzedPosition = new Position(analyzedLine, analyzedColumn)
+                    this.possibleMoves.push(analyzedPosition)
+                    break;
+
+                } else if(board[analyzedLine][analyzedColumn].color == piece.color) {
+                    break;
+                }
+            }
+
+            aux *=-1
+                           
+        }
     }
+
 
 }
