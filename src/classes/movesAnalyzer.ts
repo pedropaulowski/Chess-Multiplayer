@@ -45,6 +45,8 @@ export class MovesAnalyzer {
                     let analyzedPosition = new Position(position.line, j)
                     this.possibleMoves.push(analyzedPosition)
                     break;
+                } else if(board[position.line][j].color == piece.color) {
+                    break;
                 }
             }
             for(let j = position.column+1; j >= 0; j--) {
@@ -54,6 +56,8 @@ export class MovesAnalyzer {
                 } else if(board[position.line][j].color != piece.color){
                     let analyzedPosition = new Position(position.line, j)
                     this.possibleMoves.push(analyzedPosition)
+                    break;
+                } else if(board[position.line][j].color == piece.color) {
                     break;
                 }
             }
@@ -78,6 +82,8 @@ export class MovesAnalyzer {
                     let analyzedPosition = new Position(position.line, j)
                     this.possibleMoves.push(analyzedPosition)
                     break;
+                } else if(board[position.line][j].color == piece.color) {
+                    break;
                 }
             }
             for(let j = position.line+1; j >= 0; j--) {
@@ -87,6 +93,8 @@ export class MovesAnalyzer {
                 } else if(board[position.line][j].color != piece.color) {
                     let analyzedPosition = new Position(position.line, j)
                     this.possibleMoves.push(analyzedPosition)
+                    break;
+                } else if(board[position.line][j].color == piece.color) {
                     break;
                 }
             }
@@ -125,6 +133,8 @@ export class MovesAnalyzer {
                     let analyzedPosition = new Position(i, j+aux)
                     this.possibleMoves.push(analyzedPosition)
                     break;
+                } else if(board[position.line][j].color == piece.color) {
+                    break;
                 }
 
                 if(i < 0 || j < 0 || i > 7 || j > 7)
@@ -148,6 +158,8 @@ export class MovesAnalyzer {
                     let analyzedPosition = new Position(i, j+aux)
                     this.possibleMoves.push(analyzedPosition)
                     break;
+                } else if(board[position.line][j].color == piece.color) {
+                    break;
                 }
 
                 // console.log(i, j+aux) 
@@ -166,6 +178,8 @@ export class MovesAnalyzer {
                 } else if(board[position.line][j].color != piece.color) {
                     let analyzedPosition = new Position(i, j+aux)
                     this.possibleMoves.push(analyzedPosition)
+                    break;
+                } else if(board[position.line][j].color == piece.color) {
                     break;
                 }
 
@@ -187,6 +201,8 @@ export class MovesAnalyzer {
                     let analyzedPosition = new Position(i, j+aux)
                     this.possibleMoves.push(analyzedPosition)
                     break;
+                } else if(board[position.line][j].color == piece.color) {
+                    break;
                 }
                 // console.log(i, j+aux) 
                 aux++
@@ -202,4 +218,5 @@ export class MovesAnalyzer {
     twoOneMoves(position: Position, piece: Piece, game: Game) {
 
     }
+
 }
