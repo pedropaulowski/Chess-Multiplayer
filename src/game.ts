@@ -1,5 +1,12 @@
-import { Rook, Queen, Bishop, Knight, King, Void, Position, Pawn, Piece, color } from "./pieces"
-
+import { Bishop } from "./classes/bishop"
+import { King } from "./classes/king"
+import { Knight } from "./classes/knight"
+import { Pawn } from "./classes/pawn"
+import { Position } from "./classes/position"
+import { Queen } from "./classes/queen"
+import { Rook } from "./classes/rook"
+import { Void } from "./classes/void"
+import { Piece } from "./interfaces/piece"
 
 export class Game {
     board : Piece[][]
@@ -10,9 +17,7 @@ export class Game {
         this.board = this.createBoard()
         this.players = players
         this.whosPlaying = whosPlaying
-
-
-
+        
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
@@ -21,7 +26,7 @@ export class Game {
             if(this.players[0] == clientPlayer) {
                 for (let i = 0; i < 8; i++) {
                     for(let j = 0; j< 8; j++){
-                        let block : HTMLDivElement = document.createElement('div')
+                        let block = document.createElement('div')
                         block.setAttribute("id", `i${i}j${j}`)
                         block.setAttribute("class", "block")
                         block.setAttribute("i", `${i}`)
@@ -60,7 +65,7 @@ export class Game {
             } else {
                 for (let i = 7; i >= 0; i--) {
                     for(let j = 7; j >= 0; j--){
-                        let block : HTMLDivElement = document.createElement('div')
+                        let block = document.createElement('div')
                         block.setAttribute("id", `i${i}j${j}`)
                         block.setAttribute("class", "block")
                         block.setAttribute("i", `${i}`)
