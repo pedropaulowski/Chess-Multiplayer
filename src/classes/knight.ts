@@ -1,6 +1,7 @@
 import { Game } from "../game";
 import { Piece } from "../interfaces/piece";
 import { color } from "../types/types";
+import { MovesAnalyzer } from "./movesAnalyzer";
 import { Pawn } from "./pawn";
 import { Position } from "./position";
 import { Void } from "./void";
@@ -16,7 +17,8 @@ export class Knight implements Piece {
     }
     
     setPossibleMoves(position: Position, game: Game): Position[] {
-        throw new Error("Method not implemented.");
+        let movesAnalyzer = new MovesAnalyzer() 
+        return movesAnalyzer.twoOneMoves(position, this, game)
     }
 
     move(currentPosition: Position, finalPosition: Position, game: Game): void {

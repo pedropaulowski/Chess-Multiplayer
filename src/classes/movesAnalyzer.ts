@@ -63,6 +63,7 @@ export class MovesAnalyzer {
             }
 
         }
+        return this.possibleMoves
     }
 
     verticalMoves(position: Position, piece: Piece, game: Game) {
@@ -97,6 +98,9 @@ export class MovesAnalyzer {
             }
 
         }
+
+        return this.possibleMoves
+
     }
 
     diagonalMoves(position: Position, piece: Piece, game: Game) {
@@ -206,6 +210,9 @@ export class MovesAnalyzer {
 
 
         } 
+
+        return this.possibleMoves
+
     }
 
     twoOneMoves(position: Position, piece: Piece, game: Game) {
@@ -297,6 +304,9 @@ export class MovesAnalyzer {
             aux *=-1
                            
         }
+
+        return this.possibleMoves
+
     }
 
 
