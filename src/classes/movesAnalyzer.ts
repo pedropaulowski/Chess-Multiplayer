@@ -195,11 +195,11 @@ export class MovesAnalyzer {
                     if(board[i][j+aux].constructor.name == "Void") {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
-                    } else if(board[position.line][j+aux].color != piece.color) {
+                    } else if(board[i][j+aux].color != piece.color) {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
                         break;
-                    } else if(board[position.line][j+aux].color == piece.color) {
+                    } else if(board[i][j+aux].color == piece.color) {
                         break;
                     }
                 }
@@ -218,12 +218,12 @@ export class MovesAnalyzer {
                     if(board[i][j+aux].constructor.name == "Void") {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
-                    } else if(board[position.line][j+aux].color != piece.color) {
+                    } else if(board[i][j+aux].color != piece.color) {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
                         console.log(analyzedPosition)
                         break;
-                    } else if(board[position.line][j+aux].color == piece.color) {
+                    } else if(board[i][j+aux].color == piece.color) {
                         break;
                     }
                 }
@@ -299,7 +299,6 @@ export class MovesAnalyzer {
             // this.possibleMoves.push(new Position(analyzedLine, analyzedColumn))
         }
 
-        console.log(this.possibleMoves)
         return this.possibleMoves
 
     }

@@ -23,13 +23,11 @@ export class Pawn implements Piece {
        
         let i : number;
         switch(this.color) {
-            case "white": 
-
+            case "white":
                 // let lastBlock : Piece
                 // lastBlock = game.board[position.line][position.column]
                 // let auxBlock : Piece
                 // auxBlock = new Void()
-
                 if(position.line == 6) {
                     
                     // verifying Pawn's vertical move
@@ -38,7 +36,6 @@ export class Pawn implements Piece {
                         let blockAnalyzed : Piece = game.board[i][position.column]
                         if(blockAnalyzed.color == "void" ) {
                             possibleMoves.push(blockAnalyzed.position)
-
                         } else {
                             break;
                         }
@@ -46,10 +43,9 @@ export class Pawn implements Piece {
 
                     i = -1;
                     // verifying Pawn's diagonal move
-                    
                     do{
                         if(i != 0) {
-                            let blockAnalyzed : Piece = game.board[5][position.column+i]
+                            let blockAnalyzed : Piece = game.board[position.line+1][position.column+i]
                             
                             if(blockAnalyzed != undefined)
                                 if(blockAnalyzed.color == "black" ) {
@@ -59,13 +55,32 @@ export class Pawn implements Piece {
                         i++
                     }while(i < 2)
 
+                } else {
+                    if(position.line-1 >= 0) {
+                        let blockAnalyzed : Piece = game.board[position.line-1][position.column]
+                        if(blockAnalyzed.color == "void" ) {
+                            possibleMoves.push(blockAnalyzed.position)
+                        }
+
+                        i = -1;
+                        // verifying Pawn's diagonal move
+                        do{
+                            if(i != 0) {
+                                let blockAnalyzed : Piece = game.board[position.line-1][position.column+i]
+                                if(blockAnalyzed != undefined)
+                                    if(blockAnalyzed.color == "black" ) {
+                                        possibleMoves.push(blockAnalyzed.position)
+                                    }
+                            }
+                            i++
+                        }while(i < 2)
+                    }
                     
 
-                } else {
 
                 }
             break;
-
+                
             case "black":
                 
                 // let lastBlock : Piece
@@ -73,7 +88,6 @@ export class Pawn implements Piece {
                 // let auxBlock : Piece
                 // auxBlock = new Void()
                 if(position.line == 1) {
-                    
                     // verifying Pawn's vertical move
                     for(i = 2; i < 4; i++) {
                         let blockAnalyzed : Piece = game.board[i][position.column]
@@ -89,20 +103,36 @@ export class Pawn implements Piece {
                     
                     do{
                         if(i != 0) {
-                            let blockAnalyzed : Piece = game.board[2][position.column+i]
+                            let blockAnalyzed : Piece = game.board[position.line+1][position.column+i]
                             
                             if(blockAnalyzed != undefined)
-                                if(blockAnalyzed.color == "black" ) {
+                                if(blockAnalyzed.color == "white") {
                                     possibleMoves.push(blockAnalyzed.position)
                                 }
                         }
                         i++
-                    }while(i < 2)
-
-                    
+                    }while(i < 2)                     
 
                 } else {
+                    if(position.line+1 < 8) {
+                        let blockAnalyzed : Piece = game.board[position.line+1][position.column]
+                        if(blockAnalyzed.color == "void" ) {
+                            possibleMoves.push(blockAnalyzed.position)
+                        }
 
+                        i = -1;
+                        // verifying Pawn's diagonal move
+                        do{
+                            if(i != 0) {
+                                let blockAnalyzed : Piece = game.board[position.line+1][position.column+i]
+                                if(blockAnalyzed != undefined)
+                                    if(blockAnalyzed.color == "white" ) {
+                                        possibleMoves.push(blockAnalyzed.position)
+                                    }
+                            }
+                            i++
+                        }while(i < 2)
+                    }
                 }
             break;
         }
