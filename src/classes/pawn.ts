@@ -3,6 +3,8 @@ import { Piece } from "../interfaces/piece";
 import { color } from "../types/types";
 import { Position } from "./position";
 import { Void } from "./void";
+import isEqual from 'lodash.isequal';
+
 
 export class Pawn implements Piece {
     position: Position;
@@ -26,13 +28,16 @@ export class Pawn implements Piece {
                 // lastBlock = game.board[position.line][position.column]
                 // let auxBlock : Piece
                 // auxBlock = new Void()
+
                 if(position.line == 6) {
                     
                     // verifying Pawn's vertical move
                     for(i = 5; i > 3; i--) {
+
                         let blockAnalyzed : Piece = game.board[i][position.column]
                         if(blockAnalyzed.color == "void" ) {
                             possibleMoves.push(blockAnalyzed.position)
+
                         } else {
                             break;
                         }
@@ -61,19 +66,58 @@ export class Pawn implements Piece {
             break;
 
             case "black":
+                
+                // let lastBlock : Piece
+                // lastBlock = game.board[position.line][position.column]
+                // let auxBlock : Piece
+                // auxBlock = new Void()
+                if(position.line == 1) {
+                    
+                    // verifying Pawn's vertical move
+                    for(i = 2; i < 4; i++) {
+                        let blockAnalyzed : Piece = game.board[i][position.column]
+                        if(blockAnalyzed.color == "void" ) {
+                            possibleMoves.push(blockAnalyzed.position)
+                        } else {
+                            break;
+                        }
+                    }
+
+                    i = -1;
+                    // verifying Pawn's diagonal move
+                    
+                    do{
+                        if(i != 0) {
+                            let blockAnalyzed : Piece = game.board[2][position.column+i]
+                            
+                            if(blockAnalyzed != undefined)
+                                if(blockAnalyzed.color == "black" ) {
+                                    possibleMoves.push(blockAnalyzed.position)
+                                }
+                        }
+                        i++
+                    }while(i < 2)
+
+                    
+
+                } else {
+
+                }
             break;
         }
 
         return possibleMoves;
     }
 
-    move(currentPosition: Position, finalPosition: Position, game: Game): void {
+    move(currentPosition: Position, finalPosition: Position, game: Game): Piece[][] {
         let possibleMoves = this.setPossibleMoves(currentPosition, game)
-      
-        if(possibleMoves.includes(finalPosition)) {
+        
+        if(possibleMoves.some(position => isEqual(position,finalPosition))) {
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPosition.line][finalPosition.column] = new Pawn(finalPosition, this.color)
         }
+
+        return game.board
     }
 
 }

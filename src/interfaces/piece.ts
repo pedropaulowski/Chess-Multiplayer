@@ -6,5 +6,5 @@ export interface Piece {
     position : Position;
     color: color;
     setPossibleMoves(position: Position, game: Game):Array<Position>;
-    move(currentPosition: Position, finalPosition: Position, game: Game):void;
+    move(currentPosition: Position, finalPosition: Position, game: Game): Piece[][];
 }

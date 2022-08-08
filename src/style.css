@@ -18,8 +18,13 @@
 
 .block {
   display: inline-grid;
-  width: 100px;
-  height: 100px;
+  width: 99px;
+  height: 99px;
   word-wrap: break-word;
   color: black;
+  border: 1px solid black;
+}
+
+.possibleBlock {
+  background-color: yellow;
 }

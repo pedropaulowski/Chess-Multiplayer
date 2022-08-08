@@ -1,8 +1,8 @@
+import isEqual from "lodash.isequal";
 import { Game } from "../game";
 import { Piece } from "../interfaces/piece";
 import { color } from "../types/types";
 import { MovesAnalyzer } from "./movesAnalyzer";
-import { Pawn } from "./pawn";
 import { Position } from "./position";
 import { Void } from "./void";
 
@@ -21,12 +21,15 @@ export class Knight implements Piece {
         return movesAnalyzer.twoOneMoves(position, this, game)
     }
 
-    move(currentPosition: Position, finalPosition: Position, game: Game): void {
+    move(currentPosition: Position, finalPosition: Position, game: Game): Piece[][] {
         let possibleMoves = this.setPossibleMoves(currentPosition, game)
       
-        if(possibleMoves.includes(finalPosition)) {
+        if(possibleMoves.some(position => isEqual(position,finalPosition))) {
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
-            game.board[finalPosition.line][finalPosition.column] = new Pawn(finalPosition, this.color)
+            game.board[finalPosition.line][finalPosition.column] = new Knight(finalPosition, this.color)
+            console.log(`aqui`)
         }
+
+        return game.board
     }
 }
