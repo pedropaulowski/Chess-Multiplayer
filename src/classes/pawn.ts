@@ -4,6 +4,7 @@ import { color } from "../types/types";
 import { Position } from "./position";
 import { Void } from "./void";
 import isEqual from 'lodash.isequal';
+import { MovesAnalyzer } from "./movesAnalyzer";
 
 
 export class Pawn implements Piece {
@@ -17,10 +18,10 @@ export class Pawn implements Piece {
     }
 
     setPossibleMoves(position: Position, game: Game): Position[] {
-        let possibleMoves : Array<Position>
-        possibleMoves = []
-        let i : number;
+        let possibleMoves :any = []
 
+       
+        let i : number;
         switch(this.color) {
             case "white": 
 
@@ -106,7 +107,14 @@ export class Pawn implements Piece {
             break;
         }
 
-        return possibleMoves;
+        let movesAnalyzer = new MovesAnalyzer() 
+
+        return possibleMoves.concat(
+            // movesAnalyzer.diagonalMoves(position, this, game), 
+            movesAnalyzer.verticalMoves(position, this, game),
+            // movesAnalyzer.horizontalMoves(position, this, game)
+        )
+        
     }
 
     move(currentPosition: Position, finalPosition: Position, game: Game): Piece[][] {

@@ -79,10 +79,8 @@ export class MovesAnalyzer {
         let pieceName = piece.constructor.name
         let board = game.board
 
-        if(pieceName != "King") {
+        if(pieceName != "Pawn") {
             // Verificar as 8 linhas tanto acima quanto a abaixo na mesma coluna
-            
-            
             for(let j = position.line+1; j < 8; j++) {
                                 
                 if(board[j][position.column] != undefined) {
@@ -115,7 +113,7 @@ export class MovesAnalyzer {
                 }
             }
 
-        }
+        } 
 
         return this.possibleMoves
 
@@ -138,6 +136,7 @@ export class MovesAnalyzer {
             // diagonal 1 ACIMA DIREITA
             let j = position.column
             let aux = 1
+            
             for(let i = position.line+1 ; i < 8 && j < 8; i++) {
                 
                 if(i < 0 || j < 0 || i > 7 || j > 7)
@@ -147,13 +146,13 @@ export class MovesAnalyzer {
                     if(board[i][j+aux].constructor.name == "Void") {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
-                    } else if(board[position.line][j+aux].color != piece.color) {
+                    } else if(board[i][j+aux].color != piece.color) {
                         let analyzedPosition = new Position(i, j+aux)
                         console.log(
                         this.possibleMoves.push(analyzedPosition)
                         )
                         break;
-                    } else if(board[position.line][j].color == piece.color) {
+                    } else if(board[i][j+aux].color == piece.color) {
                         break;
                     }
                 }
@@ -161,7 +160,7 @@ export class MovesAnalyzer {
                 // console.log(i, j+aux)
                 aux ++
             }
-
+            
             // diagonal ACIMA ESQUERDA
             aux = -1
             for(let i = position.line+1; i < 8 && j >= 0; i++) {
@@ -172,11 +171,11 @@ export class MovesAnalyzer {
                     if(board[i][j+aux].constructor.name == "Void") {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
-                    } else if(board[position.line][j+aux].color != piece.color) {
+                    } else if(board[i][j+aux].color != piece.color) {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
                         break;
-                    } else if(board[position.line][j].color == piece.color) {
+                    } else if(board[i][j+aux].color == piece.color) {
                         break;
                     }
                 }
@@ -187,6 +186,7 @@ export class MovesAnalyzer {
 
             // diagonal 3 ABAIXO ESQUERDA
             aux = -1
+            
             for(let i = position.line-1; i >= 0 && j >= 0; i+=-1) {
                 if(i < 0 || j < 0 || i > 7 || j > 7)
                     break;
@@ -199,17 +199,17 @@ export class MovesAnalyzer {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
                         break;
-                    } else if(board[position.line][j].color == piece.color) {
+                    } else if(board[position.line][j+aux].color == piece.color) {
                         break;
                     }
                 }
                 // console.log(i, j+aux) 
                 aux--
             }
-
+            
             // diagonal 4 ABAIXO DIREITA
             aux = 1
-
+            
             for(let i = position.line-1; i >= 0 && j < 8; i--) {
                 if(i < 0 || j < 0 || i > 7 || j > 7)
                     break;
@@ -223,7 +223,7 @@ export class MovesAnalyzer {
                         this.possibleMoves.push(analyzedPosition)
                         console.log(analyzedPosition)
                         break;
-                    } else if(board[position.line][j].color == piece.color) {
+                    } else if(board[position.line][j+aux].color == piece.color) {
                         break;
                     }
                 }
@@ -231,7 +231,7 @@ export class MovesAnalyzer {
                 // console.log(i, j+aux) 
                 aux++
             }
-
+            
 
 
         } 
