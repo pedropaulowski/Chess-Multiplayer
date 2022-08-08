@@ -226,7 +226,7 @@ export class Game {
                         possibleBlock.addEventListener(`click`, (e) => {
 
                             let currentPosition = pieceObj.position
-                            let target = e.target
+                            let target : any = e.target
 
                             if(target != null) {
 
