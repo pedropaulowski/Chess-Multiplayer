@@ -252,100 +252,54 @@ export class MovesAnalyzer {
 
         let aux = -1
         for(let i = 0; i < 8; i++) {
+            let analyzedLine = position.line+(-2*aux)
+            let analyzedColumn = position.column+aux
 
-            if(i > 1 && i < 4) {
-                let analyzedLine = position.line+(2*aux)
-                let analyzedColumn = position.column+aux
-                
-                if(analyzedLine < 8 && analyzedColumn < 8 && analyzedLine >= 0 && analyzedColumn >= 0) {
-                    if(board[analyzedLine][analyzedColumn].constructor.name == "Void") {
-                        let analyzedPosition = new Position(analyzedLine, analyzedColumn)
-                        this.possibleMoves.push(analyzedPosition)
-    
-                    } else if(board[analyzedLine][analyzedColumn].color != piece.color) {
-                        let analyzedPosition = new Position(analyzedLine, analyzedColumn)
-                        this.possibleMoves.push(analyzedPosition)
-                        break;
-
-                    } else if(board[analyzedLine][analyzedColumn].color == piece.color) {
-                        break;
-                    }
-                }
-
-
-            } else if (i <= 1) {
+            if (i <= 1) {
                 // let analyzedPosition = new Position(position.line+(-2*aux), position.column+aux)
+                analyzedLine = position.line+(-2*aux)
+                analyzedColumn = position.column+aux
 
-                let analyzedLine = position.line+(-2*aux)
-                let analyzedColumn = position.column+aux
-
-                if(analyzedLine < 8 && analyzedColumn < 8 && analyzedLine >= 0 && analyzedColumn >= 0) {
-
-                    if(board[analyzedLine][analyzedColumn].constructor.name == "Void") {
-                        let analyzedPosition = new Position(analyzedLine, analyzedColumn)
-                        this.possibleMoves.push(analyzedPosition)
-
-                    } else if(board[analyzedLine][analyzedColumn].color != piece.color) {
-                        let analyzedPosition = new Position(analyzedLine, analyzedColumn)
-                        this.possibleMoves.push(analyzedPosition)
-                        break;
-
-                    } else if(board[analyzedLine][analyzedColumn].color == piece.color) {
-                        break;
-                    }
-                }
-
+            }else if(i > 1 && i < 4) {
+                analyzedLine = position.line+(2*aux)
+                analyzedColumn = position.column+aux                
 
             } else if (i > 3 && i <= 5) {
-                // let analyzedPosition = new Position(position.line+aux, position.column+(-2*aux))
+                // analyzedPosition = new Position(position.line+aux, position.column+(-2*aux))
+                analyzedLine = position.line+aux
+                analyzedColumn = position.column+(-2*aux)
 
-                let analyzedLine = position.line+aux
-                let analyzedColumn = position.column+(-2*aux)
-
-                if(analyzedLine < 8 && analyzedColumn < 8 && analyzedLine >= 0 && analyzedColumn >= 0) {
-
-                    if(board[analyzedLine][analyzedColumn].constructor.name == "Void") {
-                        let analyzedPosition = new Position(analyzedLine, analyzedColumn)
-                        this.possibleMoves.push(analyzedPosition)
-
-                    } else if(board[analyzedLine][analyzedColumn].color != piece.color) {
-                        let analyzedPosition = new Position(analyzedLine, analyzedColumn)
-                        this.possibleMoves.push(analyzedPosition)
-                        break;
-
-                    } else if(board[analyzedLine][analyzedColumn].color == piece.color) {
-                        break;
-                    }
-                }
 
             } else  {
-                // let analyzedPosition = new Position(position.line+aux, position.column+(2*aux))
+                // analyzedPosition = new Position(position.line+aux, position.column+(2*aux))
+                analyzedLine = position.line+aux
+                analyzedColumn = position.column+(2*aux)
+            }
+
+            aux *=-1
+            
 
 
-                    let analyzedLine = position.line+aux
-                    let analyzedColumn = position.column+(2*aux)
-
-                if(analyzedLine < 8 && analyzedColumn < 8 && analyzedLine >= 0 && analyzedColumn >= 0) {
-                
+            if(analyzedLine >= 0 && analyzedLine < 8 && analyzedColumn >= 0 && analyzedColumn < 8) {
+                if(board[analyzedLine][analyzedColumn] != undefined) {
                     if(board[analyzedLine][analyzedColumn].constructor.name == "Void") {
                         let analyzedPosition = new Position(analyzedLine, analyzedColumn)
                         this.possibleMoves.push(analyzedPosition)
-
-                    } else if(board[analyzedLine][analyzedColumn].color != piece.color) {
+                    } else if(board[analyzedLine][analyzedColumn].color != piece.color){
                         let analyzedPosition = new Position(analyzedLine, analyzedColumn)
                         this.possibleMoves.push(analyzedPosition)
-                        break;
-
+                        continue;
                     } else if(board[analyzedLine][analyzedColumn].color == piece.color) {
-                        break;
+                        continue;
                     }
                 }
             }
 
-            aux *=-1
-                           
+
+            // this.possibleMoves.push(new Position(analyzedLine, analyzedColumn))
         }
 
+        console.log(this.possibleMoves)
         return this.possibleMoves
 
     }
