@@ -6,6 +6,7 @@ import { Pawn } from "./pawn";
 import { Position } from "./position";
 
 export class Void implements Piece {
+    unicode = `U+2654`;
     position: Position;
     color: color;
 

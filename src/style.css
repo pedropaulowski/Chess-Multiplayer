@@ -1,11 +1,15 @@
-:root {
-  font-family: 'Courier New', Courier, monospace;
-}
+:root { /* width and color */
+  font-family: sans; color: yellow;}
 * {
   padding: 0;
   margin: 0;
 }
-
+.fontBorderBlack {
+  -webkit-text-stroke: 1px black;
+}
+.fontBorderWhite {
+  -webkit-text-stroke: 1px white;
+}
 #app {
   display: grid;
   grid-template-columns: auto auto auto auto auto auto auto auto;
@@ -13,18 +17,31 @@
   width: 100%;
   margin: auto;
   margin-top: 3%;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .block {
   display: inline-grid;
-  width: 99px;
-  height: 99px;
+  width: 100px;
+  height: 100px;
   word-wrap: break-word;
-  color: black;
-  border: 1px solid black;
+  color: red;
+  border: 1px solid transparent;
+  font-size: 90px;
+  line-height: 110px;
+  text-align: center;
 }
 
 .possibleBlock {
-  background-color: yellow;
+  border: 1px solid black;
+}
+
+.white {
+  background-color: #B4BEC9;
+}
+.black {
+  background-color: #159A9C;
+}
+.clickable {
+  cursor: pointer;
 }

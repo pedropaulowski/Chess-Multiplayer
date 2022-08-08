@@ -8,6 +8,7 @@ import { Void } from "./void";
 
 
 export class Rook implements Piece {
+    unicode = `♜`;
     position: Position;
     color: color;
 

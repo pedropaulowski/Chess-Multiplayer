@@ -7,6 +7,7 @@ import { Position } from "./position";
 import { Void } from "./void";
 
 export class Queen implements Piece {
+    unicode = `♛`;
     position: Position;
     color: color;
 

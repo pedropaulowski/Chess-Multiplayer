@@ -8,6 +8,7 @@ import { MovesAnalyzer } from "./movesAnalyzer";
 
 
 export class Pawn implements Piece {
+    unicode = `♟`;
     position: Position;
     color: color;
 
@@ -19,7 +20,6 @@ export class Pawn implements Piece {
 
     setPossibleMoves(position: Position, game: Game): Position[] {
         let possibleMoves :any = []
-
        
         let i : number;
         switch(this.color) {

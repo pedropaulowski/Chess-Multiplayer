@@ -7,6 +7,7 @@ import { Void } from "./void";
 
 
 export class King implements Piece {
+    unicode = `♚`;
     position: Position;
     color: color;
 

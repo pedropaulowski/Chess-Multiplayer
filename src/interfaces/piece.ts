@@ -3,6 +3,7 @@ import { Game } from "../game";
 import { color } from "../types/types";
 
 export interface Piece {
+    unicode : string
     position : Position;
     color: color;
     setPossibleMoves(position: Position, game: Game):Array<Position>;

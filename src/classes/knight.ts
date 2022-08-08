@@ -7,6 +7,7 @@ import { Position } from "./position";
 import { Void } from "./void";
 
 export class Knight implements Piece {
+    unicode = `♞`;
     position: Position;
     color: color;
 
@@ -22,9 +23,8 @@ export class Knight implements Piece {
     }
 
     move(currentPosition: Position, finalPosition: Position, game: Game): Piece[][] {
-        let possibleMoves = this.setPossibleMoves(currentPosition, game)
-        
-        possibleMoves.some(position => console.log(position.line, position.column))
+        let possibleMoves = this.setPossibleMoves(currentPosition, game)        
+        // possibleMoves.some(position => console.log(position.line, position.column))
         
         if(possibleMoves.some(position => isEqual(position,finalPosition))) {
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")

@@ -148,9 +148,9 @@ export class MovesAnalyzer {
                         this.possibleMoves.push(analyzedPosition)
                     } else if(board[i][j+aux].color != piece.color) {
                         let analyzedPosition = new Position(i, j+aux)
-                        console.log(
+                        
                         this.possibleMoves.push(analyzedPosition)
-                        )
+                        
                         break;
                     } else if(board[i][j+aux].color == piece.color) {
                         break;
@@ -221,7 +221,7 @@ export class MovesAnalyzer {
                     } else if(board[i][j+aux].color != piece.color) {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
-                        console.log(analyzedPosition)
+                        // console.log(analyzedPosition)
                         break;
                     } else if(board[i][j+aux].color == piece.color) {
                         break;

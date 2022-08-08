@@ -7,6 +7,7 @@ import { Queen } from "./classes/queen"
 import { Rook } from "./classes/rook"
 import { Void } from "./classes/void"
 import { Piece } from "./interfaces/piece"
+import { players } from "./main"
 import { color } from "./types/types"
 
 export class Game {
@@ -22,13 +23,14 @@ export class Game {
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
+        console.log(this.whosPlaying)
         if(divBoard != null) {
             divBoard.innerHTML = ``
             if(this.players[0] == clientPlayer) {
                 for (let i = 0; i < 8; i++) {
                     for(let j = 0; j< 8; j++){
                         let block = document.createElement('div')
-                        block. innerHTML = `i${i}j${j}`
+                        // block.innerHTML = `i${i}j${j}`
                         block.setAttribute("id", `i${i}j${j}`)
                         block.setAttribute("class", "block")
                         block.setAttribute("i", `${i}`)
@@ -38,28 +40,21 @@ export class Game {
                         this.setOnClickFunctions(i, j, block)
                         // console.log(block)
                         divBoard.appendChild(block)
-                        if(i%2 == 0) {
-                            if(j%2 == 0) {
-                                // block.style.backgroundColor = 'white'
-                                
-                            } else {
-                                // block.style.backgroundColor = '#22abc3'
-                                
-                            } 
-                            
-                        } else {
-                            if(j%2 == 0) {
-                                // block.style.backgroundColor = '#22abc3'
-                                      
-                            } else {
-                                // block.style.backgroundColor = 'white'
-                                            
-                            }
-                        }
 
-                        
-                        if(this.board[i][j].color != "void")
-                            block.innerHTML = `${this.board[i][j].constructor.name} <br/> ${this.board[i][j].color}`
+                
+                        if(this.board[i][j].color != "void") {
+                            block.classList.add(`clickable`)
+                            block.innerHTML = `${this.board[i][j].unicode}`
+                            block.style.color = this.board[i][j].color 
+
+                            if(block.style.color == `white`) {
+                                block.classList.add(`fontBorderBlack`)
+                            } else {
+                                block.classList.add(`fontBorderWhite`)
+                            }
+                            // block.firstChild.setAttribute(`draggable`, `true`)
+
+                        }
                        
                        
                     }
@@ -76,33 +71,23 @@ export class Game {
 
                         this.setOnClickFunctions(i, j, block)
                         divBoard.appendChild(block)
-                        if(i%2 == 0) {
-                            if(j%2 == 0) {
-                                // block.style.backgroundColor = 'white'
-                                
+
+                        if(this.board[i][j].color != "void") {
+                            block.innerHTML = `${this.board[i][j].unicode}`
+                            block.style.color = this.board[i][j].color
+                            block.classList.add(`clickable`)
+
+                            if(block.style.color == `white`) {
+                                block.classList.add(`fontBorderBlack`)
                             } else {
-                                // block.style.backgroundColor = '#22abc3'
-                                
-                            } 
-                            
-                        } else {
-                            if(j%2 == 0) {
-                                // block.style.backgroundColor = '#22abc3'
-                            
-                            } else {
-                                // block.style.backgroundColor = 'white'
-                                
-            
+                                block.classList.add(`fontBorderWhite`)
                             }
                         }
-
-                        if(this.board[i][j].color != "void")
-                            block.innerHTML = `${this.board[i][j].constructor.name} <br/> ${this.board[i][j].color}`
                     }
                 }
             }
         }
-        
+        this.paintBoard()
     }
 
     createBoard() {
@@ -203,52 +188,92 @@ export class Game {
         let possibleMoves = pieceObj.setPossibleMoves(pieceObj.position, this)
         
         if(pieceType != `Void`) {
-
-
-            block.addEventListener("click", ()=> {
+            block.addEventListener("click", (e)=> {
+                e.preventDefault()
                 document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
                     e.classList.remove(`possibleBlock`)
                 })
 
+                this.move(possibleMoves, pieceObj)
 
-                for(let i = 0; i < possibleMoves.length; i++) {
-                    let line = possibleMoves[i].line
-                    let column = possibleMoves[i].column
-                    let possibleBlock = document.querySelector(`#i${line}j${column}`)
-                    
-                    if(possibleBlock != undefined) {
-                        /*if(pieceType == "Queen") {
-                            console.log(possibleBlock)
-                            possibleBlock.setAttribute(`class`, `possibleBlock`)
+            })
+        }
 
-                        }*/
-                        possibleBlock.setAttribute(`class`, `block possibleBlock`)
-                        possibleBlock.addEventListener(`click`, (e) => {
 
-                            let currentPosition = pieceObj.position
-                            let target : any = e.target
+    }
 
-                            if(target != null) {
+    paintBoard() {
+        // console.log(`atualizou`)
+        for (let i = 0; i < 8; i++) {
+            for(let j = 0; j< 8; j++){
+                let block = document.getElementById(`i${i}j${j}`)
+                if(i%2!=0 && j%2==0 && block != undefined){                    
+                    block.classList.add(`black`);
+                    continue;
+                } else if(i%2==0 && j%2!=0 && block != undefined) {
+                    block.classList.add(`black`);
+                    continue;
+                } else if(block != undefined){
+                    block.classList.add(`white`);
+                }
+            }
+        }
+    }
+    
+    move(possibleMoves: Position[], pieceObj : Piece) {
+        
+        if(this.whosPlaying != players[0]) {
+            return
+        }
+        for(let i = 0; i < possibleMoves.length; i++) {
+            let line = possibleMoves[i].line
+            let column = possibleMoves[i].column
+            let possibleBlock = document.querySelector(`#i${line}j${column}`)
+            
+            if(possibleBlock != undefined) {
+                /*if(pieceType == "Queen") {
+                    console.log(possibleBlock)
+                    possibleBlock.setAttribute(`class`, `possibleBlock`)
 
-                                let finalLine = parseInt(target.getAttribute(`i`))
-                                let finalColumn = parseInt(target.getAttribute(`j`))
-                                let finalPosition = new Position(finalLine, finalColumn)
+                }*/
+                possibleBlock.classList.add(`possibleBlock`)
+                
+                possibleBlock.addEventListener(`click`, (e) => {
 
+                    let currentPosition = pieceObj.position
+                    let target : any = e.target
+
+                    if(target != null) {
+
+                        let finalLine = parseInt(target.getAttribute(`i`))
+                        let finalColumn = parseInt(target.getAttribute(`j`))
+                        let finalPosition = new Position(finalLine, finalColumn)
+
+                        let finalBlock = document.querySelector(`#i${finalLine}j${finalColumn}`)
+
+                        if(finalBlock != undefined) {
+                            if(finalBlock.classList.contains(`possibleBlock`)) {
                                 pieceObj.move(currentPosition, finalPosition, this)
                                 let appBoard = document.querySelector<HTMLDivElement>("#app")
                                 
                                 if(appBoard != null)
                                     this.drawBoard(appBoard, this.players[0])
                             }
-                            
-                        })
-                    }
 
-                }
-            })
+                        }
+
+                           
+                    }
+                    
+                })
+            }
+
         }
 
-
+        this.changeWhosPlaying()
     }
- 
+
+    changeWhosPlaying() {
+        this.whosPlaying = (this.whosPlaying == this.players[0]) ? this.players[1] : this.players[1]
+    }
 }
