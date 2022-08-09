@@ -25,11 +25,13 @@ export class Bishop implements Piece {
     move(currentPosition: Position, finalPosition: Position, game: Game) : Piece[][]{
         let possibleMoves = this.setPossibleMoves(currentPosition, game)
       
-        if(possibleMoves.some(position => isEqual(position,finalPosition))) {
+        let finalPositionObj = new Position(finalPosition.line, finalPosition.column)
+       
+        if(possibleMoves.some(position => isEqual(position, finalPositionObj))) {
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
-            game.board[finalPosition.line][finalPosition.column] = new Bishop(finalPosition, this.color)
-            console.log(`aqui`)
+            game.board[finalPositionObj.line][finalPositionObj.column] = new Bishop(finalPositionObj, this.color)
         }
+
         return game.board
     }
 }

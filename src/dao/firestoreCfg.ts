@@ -1,4 +1,4 @@
-import {addDoc, arrayUnion, collection, doc, getDoc, getFirestore, setDoc, updateDoc } from "firebase/firestore";
+import {addDoc, arrayUnion, collection, doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -8,12 +8,10 @@ import { Bishop } from "../classes/bishop";
 import { King } from "../classes/king";
 import { Knight } from "../classes/knight";
 import { Pawn } from "../classes/pawn";
-import { Position } from "../classes/position";
 import { Queen } from "../classes/queen";
 import { Rook } from "../classes/rook";
 import { Void } from "../classes/void";
 import { color } from "../types/types"
-import { onSnapshot } from "firebase/firestore";
 import { firebaseConfig } from "../../CFGfirebase"
 
 
@@ -27,8 +25,8 @@ import { firebaseConfig } from "../../CFGfirebase"
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+analytics;
 export const db = getFirestore(app)
-
 
 export class DBgame {
 
@@ -62,7 +60,7 @@ export class DBgame {
             console.log(v)
 
         })
-        .finally(function() { console.log(`finally`) });
+        .finally(function() { });
 
         return idStored;
 
@@ -78,8 +76,9 @@ export class DBgame {
             return docSnap.data()
         } else {
         // doc.data() will be undefined in this case
+        console.log("No such document!");
+
             return false
-            console.log("No such document!");
         }
 
     }
@@ -160,6 +159,19 @@ export class DBgame {
         });
     }
 
+    convertDataStored = (id: string, gameStored : any) => {
+        
+        let gameId = id
+        let board = this.transformBoard(gameStored.board)
+        
+        let players = gameStored.players
+        let whosPlaying = gameStored.whosPlaying
+
+        let game = new Game(players, whosPlaying, gameId)
+        game.board = board
+
+        return game
+    }   
     
 
     

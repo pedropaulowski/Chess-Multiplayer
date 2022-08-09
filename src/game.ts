@@ -74,7 +74,9 @@ export class Game {
                         block.setAttribute("j", `${j}`)
                         //block.setAttribute("onclick", `escolher(${i},${j})`)
 
+         
                         this.setOnClickFunctions(i, j, block)
+
                         divBoard.appendChild(block)
 
                         if(this.board[i][j].color != "void") {
@@ -88,6 +90,7 @@ export class Game {
                                 block.classList.add(`fontBorderWhite`)
                             }
                         }
+
                     }
                 }
             }
@@ -200,6 +203,10 @@ export class Game {
                     // e.classList.remove(`possibleBlock`)
                 })
 
+                if(this.whosPlaying == this.players[0] && pieceObj.color != `white`)
+                    return
+                else if (this.whosPlaying == this.players[1] && pieceObj.color != `black`)
+                    return
                 let clientToken = storedHash
                 if(clientToken != null) {
 
@@ -273,7 +280,7 @@ export class Game {
                                 this.changeWhosPlaying()
                                 // console.log(this)
                                 dbGame.updateGame(this.id, this)
-                                console.log(this.whosPlaying)
+                            
                                 let appBoard = document.querySelector<HTMLDivElement>("#app")
                                 
                                 if(appBoard != null) {

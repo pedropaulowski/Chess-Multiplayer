@@ -25,10 +25,12 @@ export class Knight implements Piece {
     move(currentPosition: Position, finalPosition: Position, game: Game): Piece[][] {
         let possibleMoves = this.setPossibleMoves(currentPosition, game)        
         // possibleMoves.some(position => console.log(position.line, position.column))
+        let finalPositionObj = new Position(finalPosition.line, finalPosition.column)
+       
         
-        if(possibleMoves.some(position => isEqual(position,finalPosition))) {
+        if(possibleMoves.some(position => isEqual(position, finalPositionObj))) {
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
-            game.board[finalPosition.line][finalPosition.column] = new Knight(finalPosition, this.color)
+            game.board[finalPositionObj.line][finalPositionObj.column] = new Knight(finalPositionObj, this.color)
         }
 
         return game.board
