@@ -8,6 +8,15 @@
   </head>
   <body>
     <div id="app"></div>
+    <script src="node_modules/object-hash/dist/object_hash.js" type="text/javascript"></script>
+    <script>
+      let clientHash = localStorage.getItem(`hash`)
+      if(clientHash == null) {
+        let random = Date.now().toString()
+        localStorage.setItem(`hash`,`${objectHash.sha1(random)}`)
+      } 
+
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

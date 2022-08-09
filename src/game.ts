@@ -6,24 +6,29 @@ import { Position } from "./classes/position"
 import { Queen } from "./classes/queen"
 import { Rook } from "./classes/rook"
 import { Void } from "./classes/void"
+import { DBgame } from "./dao/firestoreCfg"
 import { Piece } from "./interfaces/piece"
-import { players } from "./main"
+import { storedHash } from "./main"
+// import { players } from "./main"
 import { color } from "./types/types"
 
-export class Game {
-    board : Piece[][]
-    players : Array<string>
-    whosPlaying : string
 
-    constructor( players: Array<string>, whosPlaying: string) {
+const dbGame = new DBgame()
+
+export class Game {
+    id: string;
+    board : Piece[][];
+    players : Array<string>;
+    whosPlaying : string;
+
+    constructor( players: Array<string>, whosPlaying: string, id : string) {
         this.board = this.createBoard()
         this.players = players
         this.whosPlaying = whosPlaying
-
+        this.id = id
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
-        console.log(this.whosPlaying)
         if(divBoard != null) {
             divBoard.innerHTML = ``
             if(this.players[0] == clientPlayer) {
@@ -186,15 +191,22 @@ export class Game {
         }
 
         let possibleMoves = pieceObj.setPossibleMoves(pieceObj.position, this)
+        // console.log(possibleMoves)
         
         if(pieceType != `Void`) {
             block.addEventListener("click", (e)=> {
                 e.preventDefault()
                 document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
-                    e.classList.remove(`possibleBlock`)
+                    // e.classList.remove(`possibleBlock`)
                 })
 
-                this.move(possibleMoves, pieceObj)
+                let clientToken = storedHash
+                if(clientToken != null) {
+
+                    this.move(possibleMoves, pieceObj, clientToken)
+                    // console.log(this)
+
+                }
 
             })
         }
@@ -220,11 +232,12 @@ export class Game {
         }
     }
     
-    move(possibleMoves: Position[], pieceObj : Piece) {
+    move(possibleMoves: Position[], pieceObj : Piece, clientToken: string) {
         
-        if(this.whosPlaying != players[0]) {
+        if(this.whosPlaying != clientToken) {
             return
         }
+
         for(let i = 0; i < possibleMoves.length; i++) {
             let line = possibleMoves[i].line
             let column = possibleMoves[i].column
@@ -237,6 +250,7 @@ export class Game {
 
                 }*/
                 possibleBlock.classList.add(`possibleBlock`)
+
                 
                 possibleBlock.addEventListener(`click`, (e) => {
 
@@ -247,17 +261,31 @@ export class Game {
 
                         let finalLine = parseInt(target.getAttribute(`i`))
                         let finalColumn = parseInt(target.getAttribute(`j`))
-                        let finalPosition = new Position(finalLine, finalColumn)
+                        let finalPosition = {line: finalLine, column: finalColumn}
 
                         let finalBlock = document.querySelector(`#i${finalLine}j${finalColumn}`)
 
                         if(finalBlock != undefined) {
+
                             if(finalBlock.classList.contains(`possibleBlock`)) {
+                                
                                 pieceObj.move(currentPosition, finalPosition, this)
+                                this.changeWhosPlaying()
+                                // console.log(this)
+                                dbGame.updateGame(this.id, this)
+                                console.log(this.whosPlaying)
                                 let appBoard = document.querySelector<HTMLDivElement>("#app")
                                 
-                                if(appBoard != null)
-                                    this.drawBoard(appBoard, this.players[0])
+                                if(appBoard != null) {
+
+                                    let clientToken = storedHash
+                                    if(clientToken != null){
+
+                                        this.drawBoard(appBoard, clientToken)
+
+                                    }
+                        
+                                }
                             }
 
                         }
@@ -270,10 +298,16 @@ export class Game {
 
         }
 
-        this.changeWhosPlaying()
     }
 
     changeWhosPlaying() {
-        this.whosPlaying = (this.whosPlaying == this.players[0]) ? this.players[1] : this.players[1]
+        let clientToken = storedHash
+        if(clientToken != null) {
+            if(clientToken == this.players[0])
+                this.whosPlaying = this.players[1]
+            else 
+                this.whosPlaying = this.players[0]
+
+        }
     }
 }

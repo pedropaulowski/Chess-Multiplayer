@@ -150,7 +150,9 @@ export class Pawn implements Piece {
     move(currentPosition: Position, finalPosition: Position, game: Game): Piece[][] {
         let possibleMoves = this.setPossibleMoves(currentPosition, game)
         
-        if(possibleMoves.some(position => isEqual(position,finalPosition))) {
+        if(possibleMoves.some(position => isEqual(position, finalPosition))) {
+            
+            
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPosition.line][finalPosition.column] = new Pawn(finalPosition, this.color)
         }
