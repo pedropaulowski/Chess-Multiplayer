@@ -14,7 +14,7 @@ import { Rook } from "../classes/rook";
 import { Void } from "../classes/void";
 import { color } from "../types/types"
 import { onSnapshot } from "firebase/firestore";
-
+import { firebaseConfig } from "../../CFGfirebase"
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -22,24 +22,12 @@ import { onSnapshot } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-    apiKey: "AIzaSyDQEMiU-i_us5wzeuNmL2s3LJAyzCCSNxk",
-    authDomain: "chess-a8e96.firebaseapp.com",
-    projectId: "chess-a8e96",
-    storageBucket: "chess-a8e96.appspot.com",
-    messagingSenderId: "1012281825487",
-    appId: "1:1012281825487:web:24f838fd39e55da2d33fba",
-    measurementId: "G-F9JE7RXWM4"
-};
 
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const db = getFirestore(app)
-
-
-
 
 
 export class DBgame {
