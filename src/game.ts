@@ -239,7 +239,7 @@ export class Game {
                     for(let i = 0; i < possibleMoves.length; i++) {
                         let line = possibleMoves[i].line
                         let column = possibleMoves[i].column
-                        let possibleBlock = document.querySelector(`#i${line}j${column}`)
+                        let possibleBlock:any = document.querySelector(`#i${line}j${column}`)
                         
                         if(possibleBlock != undefined) {
                             /*if(pieceType == "Queen") {
