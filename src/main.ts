@@ -27,8 +27,9 @@ joinMatchBtn?.addEventListener(`click`, () => {
 	if(btnSearchGame != null) {
 
 		btnSearchGame.addEventListener(`click`, async() => {
-			let gameId = document.querySelector(`#gameId`)
 
+			let gameId:any = document.querySelector(`#gameId`)
+			
 			if(gameId != null) {
 				
 				const gameStored = new DBgame()

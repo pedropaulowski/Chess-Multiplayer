@@ -15,6 +15,9 @@ import { color } from "./types/types"
 
 const dbGame = new DBgame()
 
+
+
+
 export class Game {
     id: string;
     board : Piece[][];
@@ -41,10 +44,10 @@ export class Game {
                         block.setAttribute("i", `${i}`)
                         block.setAttribute("j", `${j}`)
                         //block.setAttribute("onclick", `escolher(${i},${j})`)
- 
-                        this.setOnClickFunctions(i, j, block)
+
                         // console.log(block)
                         divBoard.appendChild(block)
+                        // this.setOnClickFunctions(i, j, block)
 
                 
                         if(this.board[i][j].color != "void") {
@@ -58,6 +61,11 @@ export class Game {
                                 block.classList.add(`fontBorderWhite`)
                             }
                             // block.firstChild.setAttribute(`draggable`, `true`)
+
+                            if(storedHash == this.players[0] && this.board[i][j].color == `white` && this.whosPlaying == storedHash)
+                                this.setOnClickFunctions(i, j, block)
+                            else if (storedHash == this.players[1] && this.board[i][j].color == `black` && this.whosPlaying == storedHash)
+                                this.setOnClickFunctions(i, j, block)
 
                         }
                        
@@ -75,7 +83,7 @@ export class Game {
                         //block.setAttribute("onclick", `escolher(${i},${j})`)
 
          
-                        this.setOnClickFunctions(i, j, block)
+                        // this.setOnClickFunctions(i, j, block)
 
                         divBoard.appendChild(block)
 
@@ -89,6 +97,12 @@ export class Game {
                             } else {
                                 block.classList.add(`fontBorderWhite`)
                             }
+
+                            if(storedHash == this.players[0] && this.board[i][j].color == `white` && this.whosPlaying == storedHash)
+                                this.setOnClickFunctions(i, j, block)
+                            else if (storedHash == this.players[1] && this.board[i][j].color == `black` && this.whosPlaying == storedHash)
+                                this.setOnClickFunctions(i, j, block)
+
                         }
 
                     }
@@ -163,6 +177,8 @@ export class Game {
         let position = new Position(i, j)
         let color = this.board[i][j].color
         pieceObj = new Void(position, color)
+
+
         
         switch(pieceType) {
             case "Pawn":
@@ -193,25 +209,73 @@ export class Game {
                 break;
         }
 
+
         let possibleMoves = pieceObj.setPossibleMoves(pieceObj.position, this)
         // console.log(possibleMoves)
         
         if(pieceType != `Void`) {
             block.addEventListener("click", (e)=> {
                 e.preventDefault()
-                document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
+                // document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
                     // e.classList.remove(`possibleBlock`)
-                })
-
-                if(this.whosPlaying == this.players[0] && pieceObj.color != `white`)
-                    return
-                else if (this.whosPlaying == this.players[1] && pieceObj.color != `black`)
-                    return
+                // })
+        
                 let clientToken = storedHash
                 if(clientToken != null) {
 
-                    this.move(possibleMoves, pieceObj, clientToken)
-                    // console.log(this)
+                    let appBoard = document.querySelector<HTMLDivElement>("#app")
+                    
+                    if(appBoard != null) {
+
+                        let clientToken = storedHash
+                        if(clientToken != null){
+
+                            this.drawBoard(appBoard, clientToken)
+
+                        }
+            
+                    }
+                    
+                    for(let i = 0; i < possibleMoves.length; i++) {
+                        let line = possibleMoves[i].line
+                        let column = possibleMoves[i].column
+                        let possibleBlock = document.querySelector(`#i${line}j${column}`)
+                        
+                        if(possibleBlock != undefined) {
+                            /*if(pieceType == "Queen") {
+                                console.log(possibleBlock)
+                                possibleBlock.setAttribute(`class`, `possibleBlock`)
+            
+                            }*/
+    
+                            this.paintPossibleBlock(possibleBlock)
+                            
+                            possibleBlock.onclick = () => {
+                                e.preventDefault()
+                                console.log(this.whosPlaying, storedHash)
+                                let finalPosition = new Position(line, column)
+                                this.changeWhosPlaying()
+
+                                pieceObj.move(pieceObj.position, finalPosition, this)
+
+                                let appBoard = document.querySelector<HTMLDivElement>("#app")
+                                if(appBoard != null) {
+
+                                    let clientToken = storedHash
+                                    if(clientToken != null){
+                                        dbGame.updateGame(this.id, this)
+                                    }
+                                }
+                            }
+
+                                
+                            
+                            
+                        }
+            
+                    }
+
+                    
 
                 }
 
@@ -238,75 +302,58 @@ export class Game {
             }
         }
     }
-    
+    /*
     move(possibleMoves: Position[], pieceObj : Piece, clientToken: string) {
         
         if(this.whosPlaying != clientToken) {
             return
         }
 
-        for(let i = 0; i < possibleMoves.length; i++) {
-            let line = possibleMoves[i].line
-            let column = possibleMoves[i].column
-            let possibleBlock = document.querySelector(`#i${line}j${column}`)
-            
-            if(possibleBlock != undefined) {
-                /*if(pieceType == "Queen") {
-                    console.log(possibleBlock)
-                    possibleBlock.setAttribute(`class`, `possibleBlock`)
 
-                }*/
-                possibleBlock.classList.add(`possibleBlock`)
+        let currentPosition = pieceObj.position
+        let target : any = e.target
 
+        if(target != null) {
+
+            let finalLine = parseInt(target.getAttribute(`i`))
+            let finalColumn = parseInt(target.getAttribute(`j`))
+            let finalPosition = {line: finalLine, column: finalColumn}
+
+            let finalBlock = document.querySelector(`#i${finalLine}j${finalColumn}`)
+
+            if(finalBlock != undefined) {
+
+                if(finalBlock.classList.contains(`possibleBlock`)) {
+                    console.log(pieceObj.constructor.name)
+
+
+                    pieceObj.move(currentPosition, finalPosition, this)
+                    this.changeWhosPlaying()
+                    // console.log(this)
+                    dbGame.updateGame(this.id, this)
                 
-                possibleBlock.addEventListener(`click`, (e) => {
+                    let appBoard = document.querySelector<HTMLDivElement>("#app")
+                    
+                    if(appBoard != null) {
 
-                    let currentPosition = pieceObj.position
-                    let target : any = e.target
+                        let clientToken = storedHash
+                        if(clientToken != null){
 
-                    if(target != null) {
-
-                        let finalLine = parseInt(target.getAttribute(`i`))
-                        let finalColumn = parseInt(target.getAttribute(`j`))
-                        let finalPosition = {line: finalLine, column: finalColumn}
-
-                        let finalBlock = document.querySelector(`#i${finalLine}j${finalColumn}`)
-
-                        if(finalBlock != undefined) {
-
-                            if(finalBlock.classList.contains(`possibleBlock`)) {
-                                
-                                pieceObj.move(currentPosition, finalPosition, this)
-                                this.changeWhosPlaying()
-                                // console.log(this)
-                                dbGame.updateGame(this.id, this)
-                            
-                                let appBoard = document.querySelector<HTMLDivElement>("#app")
-                                
-                                if(appBoard != null) {
-
-                                    let clientToken = storedHash
-                                    if(clientToken != null){
-
-                                        this.drawBoard(appBoard, clientToken)
-
-                                    }
-                        
-                                }
-                            }
+                            this.drawBoard(appBoard, clientToken)
 
                         }
-
-                           
+            
                     }
-                    
-                })
+                }
+
             }
 
+               
         }
+        
 
     }
-
+    */
     changeWhosPlaying() {
         let clientToken = storedHash
         if(clientToken != null) {
@@ -316,5 +363,11 @@ export class Game {
                 this.whosPlaying = this.players[0]
 
         }
+    }
+
+    paintPossibleBlock(possibleBlock:Element) {
+        possibleBlock.classList.remove(`white`)  
+        possibleBlock.classList.remove(`black`)  
+        possibleBlock.classList.add(`possibleBlock`) 
     }
 }
