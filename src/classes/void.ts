@@ -28,6 +28,7 @@ export class Void implements Piece {
         let possibleMoves = this.setPossibleMoves(currentPosition, game)
       
         if(possibleMoves.includes(finalPosition)) {
+
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPosition.line][finalPosition.column] = new Pawn(finalPosition, this.color)
         }

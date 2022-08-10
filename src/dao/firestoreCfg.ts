@@ -49,7 +49,8 @@ export class DBgame {
         await addDoc( collection (db, `games`) , {
             board: JSON.stringify(gameBoard),
             players: game.players,
-            whosPlaying: game.whosPlaying
+            whosPlaying: game.whosPlaying,
+            history: game.history
           }
         ).then( (v : any) => {
             idStored = v._key.path.segments[1]
@@ -148,7 +149,8 @@ export class DBgame {
         await updateDoc( gameRef, {
             board: JSON.stringify(gameBoard),
             players: game.players,
-            whosPlaying: game.whosPlaying
+            whosPlaying: game.whosPlaying,
+            history: game.history
         });
     }
 
@@ -166,10 +168,11 @@ export class DBgame {
         
         let players = gameStored.players
         let whosPlaying = gameStored.whosPlaying
+        let history = gameStored.history
 
         let game = new Game(players, whosPlaying, gameId)
         game.board = board
-
+        game.history = history
         return game
     }   
     

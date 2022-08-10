@@ -11,11 +11,22 @@ import { Piece } from "./interfaces/piece"
 import { storedHash } from "./main"
 // import { players } from "./main"
 import { color } from "./types/types"
+import { MovesAnalyzer } from "../src/classes/movesAnalyzer";
 
 
 const dbGame = new DBgame()
 
-
+/**
+ * Nessa classe que é feita toda lógica da interação do usuário com o tabuleiro
+ *  Essa classe busca nas Classes das peças quais são os movimentos que uma determinada peça pode fazer e mostra isso pro usuario
+ *  quando o usuario escolhe qual movimento fazer, então ela detecta o movimento e envia para a classe da peça terminar o movimento
+ *  
+ *  Os unicos movimentos que são feitos nessa classe são 
+ *      - Promoção do Peão
+ *      - Roque (movimento de defesa do rei)
+ *  
+ * 
+ */
 
 
 export class Game {
@@ -23,6 +34,7 @@ export class Game {
     board : Piece[][];
     players : Array<string>;
     whosPlaying : string;
+    history : Array<string> | undefined;
 
     constructor( players: Array<string>, whosPlaying: string, id : string) {
         this.board = this.createBoard()
@@ -216,72 +228,8 @@ export class Game {
         if(pieceType != `Void`) {
             block.addEventListener("click", (e)=> {
                 e.preventDefault()
-                // document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
-                    // e.classList.remove(`possibleBlock`)
-                // })
-        
-                let clientToken = storedHash
-                if(clientToken != null) {
-
-                    let appBoard = document.querySelector<HTMLDivElement>("#app")
-                    
-                    if(appBoard != null) {
-
-                        let clientToken = storedHash
-                        if(clientToken != null){
-
-                            this.drawBoard(appBoard, clientToken)
-
-                        }
-            
-                    }
-                    
-                    for(let i = 0; i < possibleMoves.length; i++) {
-                        let line = possibleMoves[i].line
-                        let column = possibleMoves[i].column
-                        let possibleBlock:any = document.querySelector(`#i${line}j${column}`)
-                        
-                        if(possibleBlock != undefined) {
-                            /*if(pieceType == "Queen") {
-                                console.log(possibleBlock)
-                                possibleBlock.setAttribute(`class`, `possibleBlock`)
-            
-                            }*/
-    
-                            this.paintPossibleBlock(possibleBlock)
-                            
-                            possibleBlock.onclick = () => {
-                                e.preventDefault()
-                                // console.log(this.whosPlaying, storedHash)
-                                let finalPosition = new Position(line, column)
-                                this.changeWhosPlaying()
-
-                                pieceObj.move(pieceObj.position, finalPosition, this)
-                                if(pieceType == `Pawn` && (finalPosition.line == 0 || finalPosition.line == 7)) {
-                                    this.pawnPromotion(finalPosition)
-                                    return;
-                                }
-                                let appBoard = document.querySelector<HTMLDivElement>("#app")
-                                if(appBoard != null) {
-
-                                    let clientToken = storedHash
-                                    if(clientToken != null){
-                                        dbGame.updateGame(this.id, this)
-                                    }
-                                }
-                            }
-
-                                
-                            
-                            
-                        }
-            
-                    }
-
-                    
-
-                }
-
+                this.setMoves(possibleMoves, pieceObj, pieceType)
+                
             })
         }
 
@@ -417,5 +365,146 @@ export class Game {
 
     }
 
- 
+    setMoves(possibleMoves: Position[], pieceObj: Piece, pieceType: string) {
+                // document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
+                    // e.classList.remove(`possibleBlock`)
+                // })
+
+
+
+
+
+
+                let clientToken = storedHash
+                if(clientToken != null) {
+
+                    let appBoard = document.querySelector<HTMLDivElement>("#app")
+                    
+                    if(appBoard != null) {
+
+                        let clientToken = storedHash
+                        if(clientToken != null){
+
+                            this.drawBoard(appBoard, clientToken)
+
+                        }
+            
+                    }
+
+                    let movesAnalyzer = new MovesAnalyzer()
+                    let castling_Q:any = movesAnalyzer.castling_Q(this)
+                    let castlingMoves = []
+
+                    if(castling_Q != null) 
+                        castlingMoves.push(castling_Q)
+      
+                    let castling_K:any = movesAnalyzer.castling_K(this)
+                        
+                    if(castling_K != null)  
+                        castlingMoves.push(castling_K)
+                    
+                    if(pieceType == `King` && (castling_K != null || castling_Q != null)) {
+
+                        for(let i = 0; i < castlingMoves.length; i++) {
+                            let line = castlingMoves[i].line
+                            let column = castlingMoves[i].column
+                            let possibleBlock:any = document.querySelector(`#i${line}j${column}`)
+                            
+                            if(possibleBlock != undefined) {
+                                /*if(pieceType == "Queen") {
+                                    console.log(possibleBlock)
+                                    possibleBlock.setAttribute(`class`, `possibleBlock`)
+                
+                                }*/
+                            
+                                this.paintPossibleBlock(possibleBlock)
+                                
+                                possibleBlock.onclick = () => {
+                                    if(column == 6) {
+                                        castling_K = true
+                                        castling_Q = false
+                                    } else {
+                                        castling_K = false
+                                        castling_Q = true
+                                    }
+                                    console.log(`Aq`)
+                                    this.callMove(line, column, pieceObj, pieceType, castling_K, castling_Q)
+                                }
+                                    
+                                
+                            }
+                        }
+                    }
+
+
+                    for(let i = 0; i < possibleMoves.length; i++) {
+
+                        let line = possibleMoves[i].line
+                        let column = possibleMoves[i].column
+                        let possibleBlock:any = document.querySelector(`#i${line}j${column}`)
+                        
+                        if(possibleBlock != undefined) {
+                            /*if(pieceType == "Queen") {
+                                console.log(possibleBlock)
+                                possibleBlock.setAttribute(`class`, `possibleBlock`)
+            
+                            }*/
+    
+                            this.paintPossibleBlock(possibleBlock)
+                            
+                            possibleBlock.onclick = () => {
+                                this.callMove(line, column, pieceObj, pieceType)
+                            }
+
+                                
+                            
+                            
+                        }
+            
+                    }
+                }
+    }
+
+    callMove(line:number, column:number, pieceObj: Piece, pieceType: string, castling_K?:boolean, castling_Q?:boolean) {
+        let finalPosition = new Position(line, column)
+        
+
+        if(pieceType == `King`) {
+            localStorage.setItem(`King`, `moved`)
+            console.log(localStorage)
+        } else if(pieceType == `Rook`) {
+            if( (pieceObj.position.line == 0 || pieceObj.position.line == 7 )&& pieceObj.position.column == 7)
+                localStorage.setItem(`Rook_K`, `moved`)
+            else if((pieceObj.position.line == 0 || pieceObj.position.line == 7 )&& pieceObj.position.column == 0)
+                localStorage.setItem(`Rook_Q`, `moved`)
+        }
+
+        if(pieceType == `King` && 
+        (castling_K == true || castling_Q == true)) {
+            pieceObj.move(pieceObj.position, finalPosition, this, castling_K, castling_Q)
+        } else {
+            pieceObj.move(pieceObj.position, finalPosition, this)
+        }
+
+
+
+
+
+        this.changeWhosPlaying()
+
+
+        if(pieceType == `Pawn` && (finalPosition.line == 0 || finalPosition.line == 7)) {
+            this.pawnPromotion(finalPosition)
+            return;
+        }
+        let appBoard = document.querySelector<HTMLDivElement>("#app")
+        if(appBoard != null) {
+
+            let clientToken = storedHash
+            if(clientToken != null){
+                dbGame.updateGame(this.id, this)
+            }
+        }
+    }
+    
 }

@@ -7,6 +7,8 @@ import {db} from "./dao/firestoreCfg"
 import { joinMatch } from "./components/joinMatch";
 import { createMatch } from "./components/createMatch";
 
+
+
 let appBoard = document.querySelector<HTMLDivElement>("#app")
 
 
@@ -16,6 +18,7 @@ const joinMatchBtn = document.querySelector(`#joinMatch`)
 const createMatchBtn = document.querySelector(`#createMatch`)
 
 joinMatchBtn?.addEventListener(`click`, () => {
+	localStorage.clear()
 	let aside = document.querySelector(`aside`)
 	if(aside != null)
 		aside.innerHTML = joinMatch()
@@ -74,6 +77,7 @@ joinMatchBtn?.addEventListener(`click`, () => {
 })
 
 createMatchBtn?.addEventListener(`click`, async() => {
+	localStorage.clear()
 	let aside = document.querySelector(`aside`)
 	if(aside != null)
 		aside.innerHTML = createMatch()
@@ -86,6 +90,7 @@ createMatchBtn?.addEventListener(`click`, async() => {
 		if(storedHash != null) {
 			let players = [storedHash]
 			let game = new Game(players, storedHash, ``)
+			game.history = []
 			let gameId = await gameStored.setGameStored(game)
 	
 			game.id = gameId

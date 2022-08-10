@@ -164,6 +164,17 @@ export class Pawn implements Piece {
         
         
         if(possibleMoves.some(position => isEqual(position, finalPositionObj))) {
+
+
+            let movesAnalyzer = new MovesAnalyzer() 
+            if(game.board[finalPositionObj.line][finalPositionObj.column].constructor.name == `Void`) {
+                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false)
+            } else {
+                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, true)
+            }
+
+
+
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new Pawn(finalPositionObj, this.color)
         }

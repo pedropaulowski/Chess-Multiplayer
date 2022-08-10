@@ -303,5 +303,147 @@ export class MovesAnalyzer {
 
     }
 
+    addMoveToHistory(inicialPosition: Position, 
+        finalPosition: Position, 
+        piece: Piece, 
+        game: Game, 
+        isCapturing: boolean,
+        check?: boolean,
+        checkMate?:boolean,
+        castling_Q?:boolean,
+        castling_K?:boolean
+        ) {
+
+        enum pos {a, b, c, d, e, f, g, h}
+        let firstLetter = piece.constructor.name.charAt(0)
+
+        if(piece.constructor.name == `Knight`)
+            firstLetter = `N`
+        else if(firstLetter == `P`)
+            firstLetter = ``
+
+        let moveNotation : string 
+        moveNotation = ``
+        let inicialColumn = pos[inicialPosition.column]
+        // let inicialLine = inicialPosition.line
+
+        let finalColumn = pos[finalPosition.column]
+        let finalLine = finalPosition.line
+
+
+        if(isCapturing == false) {
+            moveNotation = `${firstLetter}${finalColumn}${finalLine}`
+        // console.log(1)
+
+        } else if(isCapturing == true && firstLetter != ``) {
+            moveNotation = `${firstLetter}x${finalColumn}${finalLine}`
+        // console.log(2)
+
+        } else if(isCapturing == true && firstLetter == ``) {
+            // console.log(3)
+
+            moveNotation = `${inicialColumn.toString().toUpperCase()}x${finalColumn}${finalLine}`
+        }
+
+
+        if(check == true && checkMate == false)
+            moveNotation += `+`
+        else if(checkMate == true)
+            moveNotation += `#`
+
+
+
+        if(castling_K == true) {
+            moveNotation = `0-0`
+        } else if (castling_Q == true)
+            moveNotation = `0-0-0`
+
+        if(game.history != undefined)
+            game.history.push(moveNotation)
+        else {
+            game.history = []
+            game.history.push(moveNotation)
+        }
+
+    }
+
+    castling_Q(game: Game) {
+
+            let movesRook_Q = localStorage.getItem(`Rook_Q`)
+            let movesKing = localStorage.getItem(`King`)
+        
+            if(movesRook_Q == null && movesKing == null) {
+                if(game.whosPlaying == game.players[0]) {
+                    if(game.board[7][1].constructor.name == `Void`
+                    && game.board[7][2].constructor.name == `Void`
+                    && game.board[7][3].constructor.name == `Void`) {
+                        let finalLine = 7
+                        let finalColumn = 2
+    
+                        let kingCastling_Q_Position = new Position(finalLine, finalColumn)
+                        console.log(kingCastling_Q_Position)
+                        return kingCastling_Q_Position
+                    }
+                } else if(game.whosPlaying == game.players[1]) {
+                    if(game.board[0][1].constructor.name == `Void`
+                    && game.board[0][2].constructor.name == `Void`
+                    && game.board[0][3].constructor.name == `Void`) {
+                        let finalLine = 0
+                        let finalColumn = 2
+    
+                        let kingCastling_Q_Position = new Position(finalLine, finalColumn)
+                        console.log(kingCastling_Q_Position)
+                        return kingCastling_Q_Position
+                    }
+                }
+    
+                
+            } else {
+                return null
+            }
+
+        return null
+
+    }
+
+    castling_K(game: Game) {
+
+        let movesRook_Q = localStorage.getItem(`Rook_K`)
+        let movesKing = localStorage.getItem(`King`)
+    
+        if(movesRook_Q == null && movesKing == null) {
+            if(game.whosPlaying == game.players[0]) {
+                if(game.board[7][5].constructor.name == `Void`
+                && game.board[7][6].constructor.name == `Void`
+                ) {
+                    let finalLine = 7
+                    let finalColumn = 6
+
+                    let kingCastling_Q_Position = new Position(finalLine, finalColumn)
+                    
+                    return kingCastling_Q_Position
+                }
+            } else if(game.whosPlaying == game.players[1]) {
+                if(game.board[0][5].constructor.name == `Void`
+                && game.board[0][6].constructor.name == `Void`
+                ) {
+                    let finalLine = 0
+                    let finalColumn = 6
+
+                    let kingCastling_Q_Position = new Position(finalLine, finalColumn)
+                    
+                    return kingCastling_Q_Position
+                }
+            }
+
+            
+        } else {
+            return null
+        }
+
+    return null
+
+}
+
 
 }

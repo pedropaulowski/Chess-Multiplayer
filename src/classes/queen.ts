@@ -36,6 +36,16 @@ export class Queen implements Piece {
         let finalPositionObj = new Position(finalPosition.line, finalPosition.column)
        
         if(possibleMoves.some(position => isEqual(position, finalPositionObj))) {
+
+
+            let movesAnalyzer = new MovesAnalyzer() 
+            if(game.board[finalPositionObj.line][finalPositionObj.column].constructor.name == `Void`) {
+                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false)
+            } else {
+                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, true)
+            }
+
+
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new Queen(finalPositionObj, this.color)
         }
