@@ -252,12 +252,15 @@ export class Game {
                             
                             possibleBlock.onclick = () => {
                                 e.preventDefault()
-                                console.log(this.whosPlaying, storedHash)
+                                // console.log(this.whosPlaying, storedHash)
                                 let finalPosition = new Position(line, column)
                                 this.changeWhosPlaying()
 
                                 pieceObj.move(pieceObj.position, finalPosition, this)
-
+                                if(pieceType == `Pawn` && (finalPosition.line == 0 || finalPosition.line == 7)) {
+                                    this.pawnPromotion(finalPosition)
+                                    return;
+                                }
                                 let appBoard = document.querySelector<HTMLDivElement>("#app")
                                 if(appBoard != null) {
 
@@ -370,4 +373,49 @@ export class Game {
         possibleBlock.classList.remove(`black`)  
         possibleBlock.classList.add(`possibleBlock`) 
     }
+
+
+ 
+    pawnPromotion(finalPosition: Position) {
+        let divPromotion = document.querySelector(`#promotion`)
+        
+        if(divPromotion != null) {
+            divPromotion.classList.add(`promotion`)
+            divPromotion.removeAttribute(`style`)
+
+            for(let i = 0; i < 4; i++) {
+                let optionPromotion: any = divPromotion.children[i]
+                optionPromotion.onclick = () => {
+                    let id = optionPromotion.getAttribute(`id`)
+                    let piece : Piece
+                    let color : color = (this.whosPlaying != this.players[0])? `white` : `black`
+                    piece = new Void(finalPosition, `void`)
+
+                    if(id == `Knight`) {
+                        piece = new Knight(finalPosition, color)
+                    } else if (id == `Queen`) {
+                        piece = new Queen(finalPosition, color)
+
+                    } else if (id == `Rook`) {
+                        piece = new Rook(finalPosition, color)
+                        
+                    } else if (id == `Bishop`) {
+                        piece = new Bishop(finalPosition, color)
+
+                    }
+
+                    this.board[finalPosition.line][finalPosition.column] = piece 
+                    divPromotion?.classList.remove(`promotion`)
+                    divPromotion?.setAttribute(`style`, `display: none`)
+                    dbGame.updateGame(this.id, this)
+
+                }
+            }
+
+    
+        }
+
+    }
+
+ 
 }
