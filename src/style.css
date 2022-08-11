@@ -10,6 +10,10 @@
   --brownSoft: #a68c69 ;
   --brownDark:  #594433 ;
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+}
 * {
   padding: 0;
   margin: 0;
@@ -51,6 +55,7 @@
 
 .possibleBlock {
   background-color: var(--green);
+  border: 1px solid black;
 }
 
 .white {
@@ -63,19 +68,7 @@
   cursor: pointer;
 }
 
-.aside {
-  width: 20%;
-  height: 20vh;
-  background-color: var(--brownSoft);
-  border-radius: 5px;
-  box-shadow: 10px 10px 0px 0px var(--brownDark);
-  min-width: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  flex-direction: column;
-}
+
 
 .label {
   width: 90%;
@@ -119,11 +112,47 @@
   color: var(--white);
   margin: 10px;
 }
+.containerCard {
+  height: 100%;
+  /* width: 100%; */
+  border-radius: 5px;
+  box-shadow: 10px 10px 0px 0px var(--brownDark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  background-color: var(--brownSoft);
+  flex-direction: column;  
+}
 
+.aside {
+  height: 100%;
+  width: 20%;
+
+  border-radius: 5px;
+  /* box-shadow: 10px 10px 0px 0px var(--brownDark); */
+  min-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-direction: column;
+  background-color: var(--brownSoft);
+}
 .history {
   width: 300px;
   height: 300px;
-  background-color: red;
+  background-color: var(--brownSoft);
+  border: 2px solid black;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+.historyText {
+  width: 49.3%;
+  text-align: left;
+  border: 0.5px solid black;
+  height: 1.4rem;
 }
 .promotion {
   position: fixed;
@@ -145,38 +174,14 @@
   color: var(--white);
 }
 
-@media (min-width: 1035px)
-{
-  .container
-   {
-    margin-top: 5%;
-   }
-  .aside {
-    margin-top: 10px;
-    height: 70vh;
-  }
-}
 
-@media (max-width: 1105px)
+@media (max-width: 1120px)
 {
-  .container
-   {
-    margin-top: 5%;
-   }
-  .aside {
-    /* display: flex; */
-    /* flex-direction: row; */
-    height: 20vh;
-    /* width: 100%; */
+  .containerCard {
+    flex-direction: row;
   }
-
   .history {
-    width: 70%;
+    height: 200px;
+    overflow-y: scroll;
   }
-
-  .promotion {
-    transform: translate(-50%, -50%);
-  }
-
-
 }

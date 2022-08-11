@@ -34,9 +34,21 @@ export class Rook implements Piece {
         if(castling_K == true) {
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new Rook(finalPositionObj, this.color)
+
+            let movesAnalyzer = new MovesAnalyzer() 
+            movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false, false, false, false, true)
+
+
+            return game.board
+
         } else if (castling_Q == true) {
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new Rook(finalPositionObj, this.color)
+
+            let movesAnalyzer = new MovesAnalyzer() 
+            movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false, false, false, true, false)
+
+            return game.board
         }
 
 

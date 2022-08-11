@@ -427,7 +427,7 @@ export class Game {
                                         castling_K = false
                                         castling_Q = true
                                     }
-                                    console.log(`Aq`)
+                                    // console.log(`A
                                     this.callMove(line, column, pieceObj, pieceType, castling_K, castling_Q)
                                 }
                                     
@@ -471,7 +471,7 @@ export class Game {
 
         if(pieceType == `King`) {
             localStorage.setItem(`King`, `moved`)
-            console.log(localStorage)
+            // console.log(localStorage)
         } else if(pieceType == `Rook`) {
             if( (pieceObj.position.line == 0 || pieceObj.position.line == 7 )&& pieceObj.position.column == 7)
                 localStorage.setItem(`Rook_K`, `moved`)
@@ -504,6 +504,20 @@ export class Game {
             if(clientToken != null){
                 dbGame.updateGame(this.id, this)
             }
+        }
+
+    }
+
+    addToHistory() {
+        let historyDOM = document.querySelector(`.history`)
+
+        if(historyDOM != null && this.history != null) {
+            if(this.history.slice(-1)[0] != undefined) {
+                let movementDOM = `<p class="historyText">${this.history.slice(-1)[0]}</p>`
+                historyDOM.innerHTML += movementDOM
+
+            }
+
         }
     }
     

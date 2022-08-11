@@ -6,6 +6,7 @@ export const storedHash = localStorage.getItem(`hash`)
 import {db} from "./dao/firestoreCfg"
 import { joinMatch } from "./components/joinMatch";
 import { createMatch } from "./components/createMatch";
+import { history } from "./components/history";
 
 
 
@@ -19,10 +20,14 @@ const createMatchBtn = document.querySelector(`#createMatch`)
 
 joinMatchBtn?.addEventListener(`click`, () => {
 	localStorage.clear()
-	let aside = document.querySelector(`aside`)
-	if(aside != null)
+	let aside = document.querySelector(`.aside`)
+	if(aside != null) {	
 		aside.innerHTML = joinMatch()
+		aside.insertAdjacentHTML("afterend", history())
+
+	}
 	
+
 	let btnSearchGame = document.querySelector(`#searchGame`)
 
 
@@ -53,6 +58,7 @@ joinMatchBtn?.addEventListener(`click`, () => {
 							game.drawBoard(appBoard, storedHash)
 							
 						game.paintBoard()
+						
 					}
 				}
 
@@ -67,6 +73,10 @@ joinMatchBtn?.addEventListener(`click`, () => {
 						if(storedHash != null) 
 							game.drawBoard(appBoard, storedHash)
 
+					
+					game.addToHistory()
+
+
 				});
 					
 				
@@ -78,9 +88,11 @@ joinMatchBtn?.addEventListener(`click`, () => {
 
 createMatchBtn?.addEventListener(`click`, async() => {
 	localStorage.clear()
-	let aside = document.querySelector(`aside`)
-	if(aside != null)
+	let aside = document.querySelector(`.aside`)
+	if(aside != null) {
 		aside.innerHTML = createMatch()
+		aside.insertAdjacentHTML("afterend", history())
+	}
 
 	let pGameId = document.querySelector(`#gameId`)
 	let urlGame = pGameId?.innerHTML
@@ -100,6 +112,8 @@ createMatchBtn?.addEventListener(`click`, async() => {
 			if(appBoard != null) {
 				game.drawBoard(appBoard, storedHash)
 					game.paintBoard()
+
+				
 			}
 	
 			const unsub = onSnapshot(doc(db, "games", game.id), (doc) => {
@@ -110,6 +124,8 @@ createMatchBtn?.addEventListener(`click`, async() => {
 
 				if(appBoard != null)
 					game.drawBoard(appBoard, storedHash)
+					
+				game.addToHistory()
 
 				
 			});

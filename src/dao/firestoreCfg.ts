@@ -132,7 +132,6 @@ export class DBgame {
 
     updateGame = async (gameId: string , game : Game) => {
         let gameBoard : any = []
-        
         game.board.map( v => {
             v.map( e => {
                 let pieceName = e.constructor.name
