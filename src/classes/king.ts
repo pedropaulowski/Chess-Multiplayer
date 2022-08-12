@@ -49,6 +49,8 @@ export class King implements Piece {
             let line = analyzedMoves[i].line
             let column = analyzedMoves[i].column
 
+
+
             if(line != 9) {
                 if(game.board[line][column].color != this.color)
                     possibleMoves.push(new Position(line, column))

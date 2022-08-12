@@ -464,7 +464,6 @@ export class Game {
 
     callMove(line:number, column:number, pieceObj: Piece, pieceType: string, castling_K?:boolean, castling_Q?:boolean) {
         let finalPosition = new Position(line, column)
-        
 
         if(pieceType == `King`) {
             localStorage.setItem(`King`, `moved`)
@@ -483,7 +482,13 @@ export class Game {
             pieceObj.move(pieceObj.position, finalPosition, this)
         }
 
+        // let movesAnalyzer = new MovesAnalyzer()
         this.changeWhosPlaying()
+
+        // console.log(movesAnalyzer.verifyAllMovesFromOponent(this))
+
+
+    
 
         if(pieceType == `Pawn` && (finalPosition.line == 0 || finalPosition.line == 7)) {
             this.pawnPromotion(finalPosition)

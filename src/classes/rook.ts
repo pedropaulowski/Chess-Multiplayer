@@ -56,7 +56,6 @@ export class Rook implements Piece {
 
             let movesAnalyzer = new MovesAnalyzer()    
             let possibleMoves = this.setPossibleMoves(finalPosition, game)
-            movesAnalyzer = new MovesAnalyzer()
             let checkBoolean = movesAnalyzer.isCheck(possibleMoves, game)
 
 

@@ -150,6 +150,8 @@ export class Pawn implements Piece {
             // movesAnalyzer.diagonalMoves(position, this, game), 
             movesAnalyzer.verticalMoves(position, this, game),
             // movesAnalyzer.horizontalMoves(position, this, game)
+            // let possibleMoves = this.virtualMove(this.possibleMoves, game, piece)
+            // return possibleMoves
         )
         
     }
@@ -170,7 +172,7 @@ export class Pawn implements Piece {
 
             let movesAnalyzer = new MovesAnalyzer()    
             let possibleMoves = this.setPossibleMoves(finalPosition, game)
-            movesAnalyzer = new MovesAnalyzer()
+            
             let checkBoolean = movesAnalyzer.isCheck(possibleMoves, game)
 
 

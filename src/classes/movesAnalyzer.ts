@@ -73,7 +73,10 @@ export class MovesAnalyzer {
             }
 
         }
+
+        // let possibleMoves = this.virtualMove(this.possibleMoves, game, piece)
         return this.possibleMoves
+
     }
 
     verticalMoves(position: Position, piece: Piece, game: Game) {
@@ -117,6 +120,7 @@ export class MovesAnalyzer {
         } 
 
         return this.possibleMoves
+
 
     }
 
@@ -237,7 +241,9 @@ export class MovesAnalyzer {
 
         } 
 
+  
         return this.possibleMoves
+
 
     }
 
@@ -301,6 +307,7 @@ export class MovesAnalyzer {
         }
 
         return this.possibleMoves
+
 
     }
 
@@ -452,13 +459,9 @@ export class MovesAnalyzer {
         possibleMoves.map( (position) => {
             let piece = game.board[position.line][position.column].constructor.name
             if(piece == `King`){
-                
                 aux++
-                if(kingMoving == true)
-                    possibleMoves.filter(data => data.line == position.line && data.column == position.column)
             }
    
-            
         })
 
         if(aux > 0) {
@@ -468,4 +471,58 @@ export class MovesAnalyzer {
 
     }
 
+
+    
+    /*
+    
+    verifyAllMovesFromOponent(game: Game) {
+        let possibleMoves : Position[][]
+        possibleMoves = []
+        if(game.whosPlaying == game.players[0]) {
+            game.board.map( line => {
+                line.map( (piece) => {
+                    if(piece.color == `black`) {
+                        possibleMoves.push(piece.setPossibleMoves(piece.position, game))
+                    }
+                })
+            })
+        } else {
+            game.board.map( line => {
+                line.map( (piece) => {
+                    if(piece.color == `white`) {
+                        possibleMoves.push(piece.setPossibleMoves(piece.position, game))
+                    }
+                })
+            })
+        }
+
+     
+        possibleMoves.map((line) => {
+                let isCheck = this.isCheck(line, game)
+
+                if(isCheck == true)
+                    return true
+
+        })
+
+        return false
+        
+
+    }
+
+    virtualMove(possibleMoves: Position[], game: Game, piece: Piece) {
+
+        possibleMoves.map( (finalPosition) => {
+            let virtualGame = game
+            piece.move(piece.position, finalPosition, virtualGame)
+            if(this.verifyAllMovesFromOponent(virtualGame) == true) {
+                possibleMoves.splice(possibleMoves.indexOf(finalPosition), 1)
+                return
+            }
+        })
+
+        return possibleMoves
+
+    }
+    */
 }
