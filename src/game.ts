@@ -352,6 +352,10 @@ export class Game {
 
                     }
 
+                    let possibleMoves = piece.setPossibleMoves(finalPosition, this)
+                    let movesAnalyzer = new MovesAnalyzer()
+                    movesAnalyzer.isCheck(possibleMoves, this)
+
                     this.board[finalPosition.line][finalPosition.column] = piece 
                     divPromotion?.classList.remove(`promotion`)
                     divPromotion?.setAttribute(`style`, `display: none`)
@@ -369,12 +373,6 @@ export class Game {
                 // document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
                     // e.classList.remove(`possibleBlock`)
                 // })
-
-
-
-
-
-
                 let clientToken = storedHash
                 if(clientToken != null) {
 
@@ -436,7 +434,6 @@ export class Game {
                         }
                     }
 
-
                     for(let i = 0; i < possibleMoves.length; i++) {
 
                         let line = possibleMoves[i].line
@@ -486,12 +483,7 @@ export class Game {
             pieceObj.move(pieceObj.position, finalPosition, this)
         }
 
-
-
-
-
         this.changeWhosPlaying()
-
 
         if(pieceType == `Pawn` && (finalPosition.line == 0 || finalPosition.line == 7)) {
             this.pawnPromotion(finalPosition)
@@ -505,6 +497,7 @@ export class Game {
                 dbGame.updateGame(this.id, this)
             }
         }
+
 
     }
 

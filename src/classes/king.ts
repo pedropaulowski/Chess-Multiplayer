@@ -63,6 +63,9 @@ export class King implements Piece {
         
         
         let finalPositionObj = new Position(finalPosition.line, finalPosition.column)
+        let movesAnalyzer = new MovesAnalyzer()
+
+        movesAnalyzer.isCheck(possibleMoves, game, true)
 
 
         if(castling_K == true) {

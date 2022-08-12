@@ -54,12 +54,16 @@ export class Rook implements Piece {
 
         if(possibleMoves.some(position => isEqual(position, finalPositionObj))) {
 
+            let movesAnalyzer = new MovesAnalyzer()    
+            let possibleMoves = this.setPossibleMoves(finalPosition, game)
+            movesAnalyzer = new MovesAnalyzer()
+            let checkBoolean = movesAnalyzer.isCheck(possibleMoves, game)
 
-            let movesAnalyzer = new MovesAnalyzer() 
+
             if(game.board[finalPositionObj.line][finalPositionObj.column].constructor.name == `Void`) {
-                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false)
+                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false, checkBoolean)
             } else {
-                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, true)
+                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, true, checkBoolean)
             }
 
 

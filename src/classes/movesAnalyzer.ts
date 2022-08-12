@@ -1,5 +1,6 @@
 import { Game } from "../game";
 import { Piece } from "../interfaces/piece";
+import { color } from "../types/types";
 import { Position } from "./position";
 
 export class MovesAnalyzer {
@@ -346,9 +347,10 @@ export class MovesAnalyzer {
         }
 
 
-        if(check == true && checkMate == false)
+        if(check == true && checkMate != false) {
             moveNotation += `+`
-        else if(checkMate == true)
+            console.log(check)
+        }else if(checkMate == true)
             moveNotation += `#`
 
 
@@ -443,7 +445,27 @@ export class MovesAnalyzer {
 
     return null
 
-}
+    }
 
+    isCheck(possibleMoves: Position[], game: Game, kingMoving?: boolean){
+        let aux = 0
+        possibleMoves.map( (position) => {
+            let piece = game.board[position.line][position.column].constructor.name
+            if(piece == `King`){
+                
+                aux++
+                if(kingMoving == true)
+                    possibleMoves.filter(data => data.line == position.line && data.column == position.column)
+            }
+   
+            
+        })
+
+        if(aux > 0) {
+            return true
+        }else 
+            return false
+
+    }
 
 }
