@@ -656,7 +656,7 @@ export class MovesAnalyzer {
 
     }
 
-    isCheck(possibleMoves: Position[], game: Game, kingMoving?: boolean){
+    isCheck(possibleMoves: Position[], game: Game){
         let aux = 0
         possibleMoves.map( (position) => {
             let piece = game.board[position.line][position.column].constructor.name
@@ -665,9 +665,6 @@ export class MovesAnalyzer {
             }
    
         })
-
-
-
 
         if(aux > 0) {
 
@@ -683,13 +680,8 @@ export class MovesAnalyzer {
             return true
         }else {
 
-            if(game.whosPlaying == game.players[0]) {
-                game.isWhiteInCheck = true
-                game.isBlackInCheck = false
-            } else {
-                game.isBlackInCheck = true
-                game.isWhiteInCheck = false
-            }
+            game.isWhiteInCheck = false
+            game.isBlackInCheck = false
 
             return false
 

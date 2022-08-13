@@ -51,8 +51,8 @@ export class DBgame {
             players: game.players,
             whosPlaying: game.whosPlaying,
             history: game.history,
-            isBlackInCheck: false,
-            isWhiteinCheck: false,
+            isBlackInCheck: game.isBlackInCheck,
+            isWhiteInCheck: game.isWhiteInCheck,
         }).then( (v : any) => {
             idStored = v._key.path.segments[1]
             return idStored;

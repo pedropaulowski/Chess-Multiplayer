@@ -559,6 +559,8 @@ export class Game {
 
             }
 
+            historyDOM.scroll(0, 200)
+
         }
     }
     

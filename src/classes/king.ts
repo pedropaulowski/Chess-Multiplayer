@@ -67,11 +67,13 @@ export class King implements Piece {
         let finalPositionObj = new Position(finalPosition.line, finalPosition.column)
         let movesAnalyzer = new MovesAnalyzer()
 
-        movesAnalyzer.isCheck(possibleMoves, game, true)
+        movesAnalyzer.isCheck(possibleMoves, game)
 
+        
         if((game.whosPlaying == game.players[0] && game.isWhiteInCheck == false) ||
         (game.whosPlaying == game.players[1] && game.isBlackInCheck == false)
         ) {
+            console.log(game.isWhiteInCheck, game.isBlackInCheck)
             if(castling_K == true) {
                 let rookFinalPosition = new Position(finalPosition.line, 5)
                 let rookInicialPosition = new Position(finalPosition.line, 7)

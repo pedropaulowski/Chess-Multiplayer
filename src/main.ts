@@ -79,6 +79,8 @@ joinMatchBtn?.addEventListener(`click`, () => {
 
 
 				});
+
+				unsub
 					
 				
 			}
@@ -130,6 +132,8 @@ createMatchBtn?.addEventListener(`click`, async() => {
 
 				
 			});
+
+			unsub
 			
 		}
 	}
