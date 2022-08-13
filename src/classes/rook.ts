@@ -24,14 +24,11 @@ export class Rook implements Piece {
                             movesAnalyzer.verticalMoves(position, this, game))
 
         if(possibleMoves != true && possibleMoves != false) {
-            // possibleMoves = movesAnalyzer.removeInvalidMoves(this, possibleMoves, game)
+       
             return possibleMoves
         } else 
             return []
-        // return (
-            // movesAnalyzer.horizontalMoves(position, this, game), 
-            // movesAnalyzer.verticalMoves(position, this, game)
-        // )
+
     }
 
     move(currentPosition: Position, finalPosition: Position, game: Game, castling_K?:boolean, castling_Q?:boolean): Piece[][] {

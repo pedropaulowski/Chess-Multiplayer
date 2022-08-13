@@ -35,14 +35,16 @@ export class Game {
     players : Array<string>;
     whosPlaying : string;
     history : Array<string> | undefined;
-   
+    isBlackInCheck : boolean;
+    isWhiteInCheck : boolean;
 
     constructor( players: Array<string>, whosPlaying: string, id : string) {
         this.board = this.createBoard()
         this.players = players
         this.whosPlaying = whosPlaying
         this.id = id
-  
+        this.isWhiteInCheck = false
+        this.isBlackInCheck = false
 
     }
 
@@ -506,6 +508,10 @@ export class Game {
         
                 game.board = gameStored.transformBoard(gameInfo.board)
                 let appBoard = document.querySelector<HTMLDivElement>("#app")
+                game.history = this.history
+                game.isBlackInCheck = this.isBlackInCheck
+                game.isWhiteInCheck = this.isWhiteInCheck
+
 
                 if(appBoard != null) {
                     if(storedHash != null) 
@@ -535,6 +541,7 @@ export class Game {
 
             let clientToken = storedHash
             if(clientToken != null){
+
                 dbGame.updateGame(this.id, this)
             }
         }

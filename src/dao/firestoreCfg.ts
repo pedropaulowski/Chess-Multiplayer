@@ -50,9 +50,10 @@ export class DBgame {
             board: JSON.stringify(gameBoard),
             players: game.players,
             whosPlaying: game.whosPlaying,
-            history: game.history
-          }
-        ).then( (v : any) => {
+            history: game.history,
+            isBlackInCheck: false,
+            isWhiteinCheck: false,
+        }).then( (v : any) => {
             idStored = v._key.path.segments[1]
             return idStored;
 
@@ -138,7 +139,8 @@ export class DBgame {
                     unicode : e.unicode,
                     position : e.position,
                     color : e.color,
-                    pieceName : pieceName
+                    pieceName : pieceName,
+
                 })
                 // console.log(pieceName)
             })
@@ -148,7 +150,9 @@ export class DBgame {
             board: JSON.stringify(gameBoard),
             players: game.players,
             whosPlaying: game.whosPlaying,
-            history: game.history
+            history: game.history,
+            isBlackInCheck : game.isBlackInCheck,
+            isWhiteInCheck : game.isWhiteInCheck
         });
     }
 
@@ -167,10 +171,14 @@ export class DBgame {
         let players = gameStored.players
         let whosPlaying = gameStored.whosPlaying
         let history = gameStored.history
+        let isBlackInCheck = gameStored.isBlackInCheck
+        let isWhiteInCheck = gameStored.isWhiteInCheck
 
         let game = new Game(players, whosPlaying, gameId)
         game.board = board
         game.history = history
+        game.isBlackInCheck = isBlackInCheck
+        game.isWhiteInCheck = isWhiteInCheck
         return game
     }   
     

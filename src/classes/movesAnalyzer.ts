@@ -666,10 +666,34 @@ export class MovesAnalyzer {
    
         })
 
+
+
+
         if(aux > 0) {
+
+            if(game.whosPlaying == game.players[0]) {
+                game.isBlackInCheck = true
+                game.isWhiteInCheck = false
+            } else {
+                game.isWhiteInCheck = true
+                game.isBlackInCheck = false
+
+            }
+
             return true
-        }else 
+        }else {
+
+            if(game.whosPlaying == game.players[0]) {
+                game.isWhiteInCheck = true
+                game.isBlackInCheck = false
+            } else {
+                game.isBlackInCheck = true
+                game.isWhiteInCheck = false
+            }
+
             return false
+
+        }
 
     }
 

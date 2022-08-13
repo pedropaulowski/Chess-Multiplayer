@@ -51,8 +51,9 @@ joinMatchBtn?.addEventListener(`click`, () => {
 					}
 					let whosPlaying = gameInfo.whosPlaying
 					let game = new Game(players, whosPlaying, gameIdValue)
-			
+					
 					game.board = gameStored.transformBoard(gameInfo.board)
+					
 					if(appBoard != null) {
 						if(storedHash != null) 
 							game.drawBoard(appBoard, storedHash)
