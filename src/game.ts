@@ -35,15 +35,19 @@ export class Game {
     players : Array<string>;
     whosPlaying : string;
     history : Array<string> | undefined;
+   
 
     constructor( players: Array<string>, whosPlaying: string, id : string) {
         this.board = this.createBoard()
         this.players = players
         this.whosPlaying = whosPlaying
         this.id = id
+  
+
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
+
         if(divBoard != null) {
             divBoard.innerHTML = ``
             if(this.players[0] == clientPlayer) {
@@ -61,7 +65,8 @@ export class Game {
                         divBoard.appendChild(block)
                         // this.setOnClickFunctions(i, j, block)
 
-                
+                        // console.log(this.board)
+
                         if(this.board[i][j].color != "void") {
                             block.classList.add(`clickable`)
                             block.innerHTML = `${this.board[i][j].unicode}`
@@ -462,9 +467,9 @@ export class Game {
                 }
     }
 
-    callMove(line:number, column:number, pieceObj: Piece, pieceType: string, castling_K?:boolean, castling_Q?:boolean) {
+    async callMove(line:number, column:number, pieceObj: Piece, pieceType: string, castling_K?:boolean, castling_Q?:boolean) {
         let finalPosition = new Position(line, column)
-
+        
         if(pieceType == `King`) {
             localStorage.setItem(`King`, `moved`)
             // console.log(localStorage)
@@ -481,8 +486,39 @@ export class Game {
         } else {
             pieceObj.move(pieceObj.position, finalPosition, this)
         }
+        
+        let movesAnalyzer = new MovesAnalyzer()
 
-        // let movesAnalyzer = new MovesAnalyzer()
+        if(movesAnalyzer.isValidMove(this) == false) {
+            if(pieceType == `King` && (castling_K == true || castling_Q == true)) {
+                localStorage.removeItem(`King`)
+            }
+            let gameStored = new DBgame()
+            const gameInfo = await gameStored.getGameStored(this.id)
+            if(gameInfo != null && gameInfo != false ) {
+                
+                let players = gameInfo.players
+                if(players.length < 2 && storedHash != null) {
+                    gameStored.addPlayer2(this.id, storedHash)
+                }
+                let whosPlaying = gameInfo.whosPlaying
+                let game = new Game(players, whosPlaying, this.id)
+        
+                game.board = gameStored.transformBoard(gameInfo.board)
+                let appBoard = document.querySelector<HTMLDivElement>("#app")
+
+                if(appBoard != null) {
+                    if(storedHash != null) 
+                        game.drawBoard(appBoard, storedHash)
+                        
+                    game.paintBoard()
+                    
+                }
+            }
+
+            return
+        } 
+
         this.changeWhosPlaying()
 
         // console.log(movesAnalyzer.verifyAllMovesFromOponent(this))

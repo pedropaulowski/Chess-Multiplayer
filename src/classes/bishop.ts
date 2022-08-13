@@ -19,7 +19,15 @@ export class Bishop implements Piece {
     
     setPossibleMoves(position: Position, game: Game): Position[] {
         let movesAnalyzer = new MovesAnalyzer() 
-        return movesAnalyzer.diagonalMoves(position, this, game)
+        let possibleMoves = movesAnalyzer.diagonalMoves(position, this, game)
+
+
+        if(possibleMoves != true && possibleMoves != false) {
+            // possibleMoves = movesAnalyzer.removeInvalidMoves(this, possibleMoves, game)
+            return possibleMoves
+        } else 
+            return []
+        // return movesAnalyzer.diagonalMoves(position, this, game)
     }
 
     move(currentPosition: Position, finalPosition: Position, game: Game) : Piece[][]{
@@ -32,7 +40,7 @@ export class Bishop implements Piece {
             let possibleMoves = this.setPossibleMoves(finalPosition, game)
             let checkBoolean = movesAnalyzer.isCheck(possibleMoves, game)
 
-
+            
             if(game.board[finalPositionObj.line][finalPositionObj.column].constructor.name == `Void`) {
                 movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false, checkBoolean)
             } else {
@@ -44,6 +52,7 @@ export class Bishop implements Piece {
 
         }
 
+    
         return game.board
     }
 }

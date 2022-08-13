@@ -20,10 +20,18 @@ export class Rook implements Piece {
     
     setPossibleMoves(position: Position, game: Game): Position[] {
         let movesAnalyzer = new MovesAnalyzer() 
-        return (
-            movesAnalyzer.horizontalMoves(position, this, game), 
-            movesAnalyzer.verticalMoves(position, this, game)
-        )
+        let possibleMoves = (movesAnalyzer.horizontalMoves(position, this, game), 
+                            movesAnalyzer.verticalMoves(position, this, game))
+
+        if(possibleMoves != true && possibleMoves != false) {
+            // possibleMoves = movesAnalyzer.removeInvalidMoves(this, possibleMoves, game)
+            return possibleMoves
+        } else 
+            return []
+        // return (
+            // movesAnalyzer.horizontalMoves(position, this, game), 
+            // movesAnalyzer.verticalMoves(position, this, game)
+        // )
     }
 
     move(currentPosition: Position, finalPosition: Position, game: Game, castling_K?:boolean, castling_Q?:boolean): Piece[][] {
@@ -38,6 +46,7 @@ export class Rook implements Piece {
             let movesAnalyzer = new MovesAnalyzer() 
             movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false, false, false, false, true)
 
+            movesAnalyzer.isValidMove(game)
 
             return game.board
 
@@ -47,6 +56,8 @@ export class Rook implements Piece {
 
             let movesAnalyzer = new MovesAnalyzer() 
             movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false, false, false, true, false)
+
+            movesAnalyzer.isValidMove(game)
 
             return game.board
         }
@@ -68,6 +79,9 @@ export class Rook implements Piece {
 
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new Rook(finalPositionObj, this.color)
+
+            movesAnalyzer.isValidMove(game)
+
         }
 
 

@@ -19,7 +19,14 @@ export class Knight implements Piece {
     
     setPossibleMoves(position: Position, game: Game): Position[] {
         let movesAnalyzer = new MovesAnalyzer() 
-        return movesAnalyzer.twoOneMoves(position, this, game)
+        let possibleMoves = movesAnalyzer.twoOneMoves(position, this, game)
+        
+        if(possibleMoves != true && possibleMoves != false) {
+            // possibleMoves = movesAnalyzer.removeInvalidMoves(this, possibleMoves, game)
+            return possibleMoves
+        } else 
+            return []
+        // return movesAnalyzer.twoOneMoves(position, this, game)
     }
 
     move(currentPosition: Position, finalPosition: Position, game: Game): Piece[][] {
@@ -29,19 +36,24 @@ export class Knight implements Piece {
        
         
 
-
-
         if(possibleMoves.some(position => isEqual(position, finalPositionObj))) {
 
-            let movesAnalyzer = new MovesAnalyzer() 
+            let movesAnalyzer = new MovesAnalyzer()    
+            let possibleMoves = this.setPossibleMoves(finalPosition, game)
+            let checkBoolean = movesAnalyzer.isCheck(possibleMoves, game)
+
+            
             if(game.board[finalPositionObj.line][finalPositionObj.column].constructor.name == `Void`) {
-                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false)
+                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false, checkBoolean)
             } else {
-                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, true)
+                movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, true, checkBoolean)
             }
 
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new Knight(finalPositionObj, this.color)
+
+            movesAnalyzer.isValidMove(game)
+
         }
 
         return game.board

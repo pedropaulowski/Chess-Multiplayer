@@ -105,6 +105,9 @@ export class King implements Piece {
 
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new King(finalPositionObj, this.color)
+
+            movesAnalyzer.isValidMove(game)
+
             
         }
 

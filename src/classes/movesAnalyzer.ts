@@ -1,6 +1,7 @@
 import { Game } from "../game";
 import { Piece } from "../interfaces/piece";
 import { color } from "../types/types";
+import { King } from "./king";
 import { Position } from "./position";
 
 export class MovesAnalyzer {
@@ -31,9 +32,53 @@ export class MovesAnalyzer {
      * que um cavalo pode se mover
      */
 
-    horizontalMoves(position: Position, piece: Piece, game: Game) {
+    horizontalMoves(position: Position, piece: Piece, game: Game, verifyingCheck?: boolean) {
         let pieceName = piece.constructor.name
         let board = game.board
+
+
+        if(verifyingCheck == true) {
+
+            // Verificar as 8 colunas tanto a esquerda quanto a direita na mesma linha
+            for(let j = position.column+1; j < 8; j++) {
+                
+                if(board[position.line][j] != undefined) {
+                    if((board[position.line][j].constructor.name == "Rook" ||
+                        board[position.line][j].constructor.name == "Queen") &&
+                        board[position.line][j].color != piece.color
+                    ) {
+                        return true
+                    } else if(board[position.line][j].color == piece.color) {
+
+                        break;
+                    }
+                }
+
+            }
+
+            for(let j = position.column-1; j >= 0; j--) {
+                
+                if(board[position.line][j] != undefined) {
+                    if((board[position.line][j].constructor.name == "Rook" ||
+                        board[position.line][j].constructor.name == "Queen") &&
+                        board[position.line][j].color != piece.color
+                    ) {
+
+                        return true
+                    } else if(board[position.line][j].color == piece.color) {
+  
+                        break;
+                    }
+                }
+
+            }
+
+            return false
+
+        }
+
+
+
 
         if(pieceName != "King") {
 
@@ -79,9 +124,46 @@ export class MovesAnalyzer {
 
     }
 
-    verticalMoves(position: Position, piece: Piece, game: Game) {
+    verticalMoves(position: Position, piece: Piece, game: Game, verifyingCheck?: boolean) {
         let pieceName = piece.constructor.name
         let board = game.board
+
+
+        if(verifyingCheck == true) {
+            // Verificar as 8 linhas tanto acima quanto a abaixo na mesma coluna
+            for(let j = position.line+1; j < 8; j++) {
+                                
+                if(board[j][position.column] != undefined) {
+                    if(board[j][position.column].constructor.name == "Rook" ||
+                        board[j][position.column].constructor.name == "Queen" && 
+                        board[j][position.column].color != piece.color
+                        ) {
+                            return true
+                    } else if(board[j][position.column].color == piece.color) {
+                        break;
+                    }
+                }
+            }
+
+            for(let j = position.line-1; j >= 0; j--) {
+            
+                if(board[j][position.column] != undefined) {
+                    if(board[j][position.column].constructor.name == "Rook" ||
+                        board[j][position.column].constructor.name == "Queen" &&
+                        board[j][position.column].color != piece.color
+                        ) {
+                        return true
+                    } else if(board[j][position.column].color == piece.color) {
+                        break;
+                    }
+        
+                }
+            }
+
+            return false
+
+        }
+
 
         if(pieceName != "Pawn") {
             // Verificar as 8 linhas tanto acima quanto a abaixo na mesma coluna
@@ -124,9 +206,115 @@ export class MovesAnalyzer {
 
     }
 
-    diagonalMoves(position: Position, piece: Piece, game: Game) {
+    diagonalMoves(position: Position, piece: Piece, game: Game, verifyingCheck?: boolean) {
         let pieceName = piece.constructor.name
         let board = game.board
+
+
+        if(verifyingCheck == true) {
+            
+            /***
+            ** Diagonal
+            *      Acima direita
+            *      Acima esquerda
+            *      Abaixo direita
+            *      Abaixo esquerda
+            */
+
+            // diagonal 1 ACIMA DIREITA
+            let j = position.column
+            let aux = 1
+            
+            for(let i = position.line+1 ; i < 8 && j < 8; i++) {
+                
+                if(i < 0 || j < 0 || i > 7 || j > 7)
+                    break;
+
+                if(board[i][j+aux] != undefined) {
+                    if((board[i][j+aux].constructor.name == "Bishop" ||
+                    board[i][j+aux].constructor.name == "Queen") &&
+                    board[i][j+aux].color != piece.color
+                    ) {
+                        return true
+                    } else if(board[i][j+aux].color == piece.color) {
+                        break;
+                    }
+                }
+
+                // console.log(i, j+aux)
+                aux ++
+            }
+            
+            // diagonal ACIMA ESQUERDA
+            aux = -1
+            for(let i = position.line+1; i < 8 && j >= 0; i++) {
+                if(i < 0 || j < 0 || i > 7 || j > 7)
+                    break;
+
+                if(board[i][j+aux] != undefined) {
+                    if((board[i][j+aux].constructor.name == "Bishop" ||
+                        board[i][j+aux].constructor.name == "Queen") &&
+                        board[i][j+aux].color != piece.color
+                        ) {
+                        return true
+                    } else if(board[i][j+aux].color == piece.color) {
+                        break;
+                    }
+                }
+
+                // console.log(i, j+aux) 
+                aux--
+            }
+
+            // diagonal 3 ABAIXO ESQUERDA
+            aux = -1
+            
+            for(let i = position.line-1; i >= 0 && j >= 0; i+=-1) {
+                if(i < 0 || j < 0 || i > 7 || j > 7)
+                    break;
+
+                if(board[i][j+aux] != undefined) {
+                    if((board[i][j+aux].constructor.name == "Bishop" ||
+                        board[i][j+aux].constructor.name == "Queen") &&
+                        board[i][j+aux].color != piece.color
+                        ) {
+                        return true
+                    } else if(board[i][j+aux].color == piece.color) {
+                        break;
+                    }
+                }
+                // console.log(i, j+aux) 
+                aux--
+            }
+            
+            // diagonal 4 ABAIXO DIREITA
+            aux = 1
+            
+            for(let i = position.line-1; i >= 0 && j < 8; i--) {
+                if(i < 0 || j < 0 || i > 7 || j > 7)
+                    break;
+
+                if(board[i][j+aux] != undefined) {
+                    if((board[i][j+aux].constructor.name == "Bishop" ||
+                    board[i][j+aux].constructor.name == "Queen") &&
+                    board[i][j+aux].color != piece.color 
+                    ) {
+                        return true
+                    } else if(board[i][j+aux].color == piece.color) {
+                        break;
+                    }
+                }
+
+                // console.log(i, j+aux) 
+                aux++
+            }
+            
+
+            return false
+        }
+
+
+
 
         if(pieceName != "King") {
 
@@ -247,7 +435,7 @@ export class MovesAnalyzer {
 
     }
 
-    twoOneMoves(position: Position, piece: Piece, game: Game) {
+    twoOneMoves(position: Position, piece: Piece, game: Game, verifyingCheck?: boolean) {
         /**
          * O Cavalo ele os seguintes movimentos
          *      soma ou subtrai 2 a sua coluna atual e soma ou subtrai 1 a sua linha atual = 4 movimentos
@@ -286,6 +474,20 @@ export class MovesAnalyzer {
             aux *=-1
             
 
+
+            if(verifyingCheck == true) {
+                if(analyzedLine >= 0 && analyzedLine < 8 && analyzedColumn >= 0 && analyzedColumn < 8) {
+                    if(board[analyzedLine][analyzedColumn] != undefined) {
+                        if(board[analyzedLine][analyzedColumn].constructor.name == "Knight" &&
+                        board[analyzedLine][analyzedColumn].color != piece.color
+                        ){
+                            return true
+                        } 
+                    }
+                }
+
+                return false
+            }
 
             if(analyzedLine >= 0 && analyzedLine < 8 && analyzedColumn >= 0 && analyzedColumn < 8) {
                 if(board[analyzedLine][analyzedColumn] != undefined) {
@@ -471,7 +673,46 @@ export class MovesAnalyzer {
 
     }
 
+    isValidMove(virtualGame: Game) {
+        let colorWhosPlaying : color = (virtualGame.whosPlaying == virtualGame.players[0])? `white` : `black`
+        let king : Piece
+        king = new King(new Position(1,1), colorWhosPlaying)
 
+         
+        virtualGame.board.map( (line) => {
+            line.map((piece) => {
+                if(piece.constructor.name == `King` && piece.color == colorWhosPlaying)
+                    king = piece
+            })
+        })
+    
+        
+        if( this.diagonalMoves(king.position, king, virtualGame, true) == true||
+            this.verticalMoves(king.position, king, virtualGame, true) == true ||
+            this.horizontalMoves(king.position, king, virtualGame, true) == true||
+            this.twoOneMoves(king.position, king, virtualGame, true) == true
+        ) {
+            console.log(`Movimento Invalido`)
+            return false
+        } else {
+            return true
+        }
+    }
+
+    removeInvalidMoves(piece: Piece, possibleMoves: Position[], game: Game) {
+
+        possibleMoves.map((finalPosition) => {
+            let virtualGame = game
+            piece.move(piece.position, finalPosition, virtualGame)
+            
+            if(this.isValidMove(virtualGame) == false) {
+                let index = possibleMoves.indexOf(finalPosition)
+                possibleMoves.splice(index, 1)
+            }
+        })
+
+        return possibleMoves
+    }
     
     /*
     

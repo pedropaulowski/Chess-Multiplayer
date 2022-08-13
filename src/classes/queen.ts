@@ -20,13 +20,15 @@ export class Queen implements Piece {
     setPossibleMoves(position: Position, game: Game): Position[] {
         let movesAnalyzer = new MovesAnalyzer() 
         let possibleMoves :any = []
-        return possibleMoves.concat(
-            movesAnalyzer.diagonalMoves(position, this, game), 
-            movesAnalyzer.verticalMoves(position, this, game),
-            movesAnalyzer.horizontalMoves(position, this, game)
-        )
-            
+
+           
         
+            // possibleMoves = movesAnalyzer.removeInvalidMoves(this, possibleMoves, game)
+            return possibleMoves.concat(
+                movesAnalyzer.diagonalMoves(position, this, game), 
+                movesAnalyzer.verticalMoves(position, this, game),
+                movesAnalyzer.horizontalMoves(position, this, game)
+            )
         
     }
 
@@ -50,6 +52,9 @@ export class Queen implements Piece {
 
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new Queen(finalPositionObj, this.color)
+
+            movesAnalyzer.isValidMove(game)
+
         }
 
 

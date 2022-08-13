@@ -160,12 +160,12 @@ export class Pawn implements Piece {
         let possibleMoves = this.setPossibleMoves(currentPosition, game)
 
         
+
         let finalPositionObj = {
             line : finalPosition.line,
             column : finalPosition.column
         }
-        
-        
+
         if(possibleMoves.some(position => isEqual(position, finalPositionObj))) {
 
 
@@ -186,6 +186,9 @@ export class Pawn implements Piece {
 
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new Pawn(finalPositionObj, this.color)
+
+            movesAnalyzer.isValidMove(game)
+
         }
 
         return game.board

@@ -18,10 +18,11 @@ export class Void implements Piece {
     
     setPossibleMoves(position: Position, game: Game): Position[] {
         let movesAnalyzer = new MovesAnalyzer() 
-        return (
-            movesAnalyzer.horizontalMoves(position, this, game), 
-            movesAnalyzer.verticalMoves(position, this, game)
-        )
+        return []
+        // return (
+            // movesAnalyzer.horizontalMoves(position, this, game), 
+            // movesAnalyzer.verticalMoves(position, this, game)
+        // )
     }
 
     move(currentPosition: Position, finalPosition: Position, game: Game): Piece[][] {
