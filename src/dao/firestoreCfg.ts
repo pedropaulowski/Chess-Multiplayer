@@ -11,8 +11,8 @@ import { Pawn } from "../classes/pawn";
 import { Queen } from "../classes/queen";
 import { Rook } from "../classes/rook";
 import { Void } from "../classes/void";
-import { color } from "../types/types"
-import { firebaseConfig } from "../../CFGfirebase"
+import { color } from "../types/types";
+import { firebaseConfig } from "./firebaseCONF"
 
 
 // TODO: Add SDKs for Firebase products that you want to use
