@@ -484,6 +484,17 @@ export class Game {
 
         if(pieceType == `King` && 
         (castling_K == true || castling_Q == true)) {
+            if(pieceObj.color == `white` && this.isWhiteInCheck == true) {
+                localStorage.removeItem(`King`)
+                return
+            }
+
+            if(pieceObj.color == `black` && this.isBlackInCheck == true) {
+                localStorage.removeItem(`King`)
+                return
+
+            }
+        
             pieceObj.move(pieceObj.position, finalPosition, this, castling_K, castling_Q)
         } else {
             pieceObj.move(pieceObj.position, finalPosition, this)

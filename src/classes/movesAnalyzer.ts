@@ -558,7 +558,7 @@ export class MovesAnalyzer {
 
         if(check == true && checkMate != false) {
             moveNotation += `+`
-            console.log(check)
+            console.log(`Check: ${check}`)
         }else if(checkMate == true)
             moveNotation += `#`
 

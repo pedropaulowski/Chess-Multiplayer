@@ -12,7 +12,7 @@ import { Queen } from "../classes/queen";
 import { Rook } from "../classes/rook";
 import { Void } from "../classes/void";
 import { color } from "../types/types";
-import { firebaseConfig } from "./firebaseCONF"
+import { firebaseConfig } from "../firebaseCONF"
 
 
 // TODO: Add SDKs for Firebase products that you want to use

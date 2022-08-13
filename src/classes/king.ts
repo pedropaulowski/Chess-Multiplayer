@@ -70,32 +70,29 @@ export class King implements Piece {
         movesAnalyzer.isCheck(possibleMoves, game)
 
         
-        if((game.whosPlaying == game.players[0] && game.isWhiteInCheck == false) ||
-        (game.whosPlaying == game.players[1] && game.isBlackInCheck == false)
-        ) {
-            console.log(game.isWhiteInCheck, game.isBlackInCheck)
-            if(castling_K == true) {
-                let rookFinalPosition = new Position(finalPosition.line, 5)
-                let rookInicialPosition = new Position(finalPosition.line, 7)
 
-                let rook = new Rook(rookInicialPosition, this.color)
+        if(castling_K == true) {
+            let rookFinalPosition = new Position(finalPosition.line, 5)
+            let rookInicialPosition = new Position(finalPosition.line, 7)
 
-                rook.move(rookInicialPosition, rookFinalPosition, game, castling_K, castling_Q)
+            let rook = new Rook(rookInicialPosition, this.color)
 
-                game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
-                game.board[finalPositionObj.line][finalPositionObj.column] = new King(finalPositionObj, this.color)
+            rook.move(rookInicialPosition, rookFinalPosition, game, castling_K, castling_Q)
 
-            } else if(castling_Q == true) {
-                let rookFinalPosition = new Position(finalPosition.line, 3)
-                let rookInicialPosition = new Position(finalPosition.line, 0)
+            game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
+            game.board[finalPositionObj.line][finalPositionObj.column] = new King(finalPositionObj, this.color)
 
-                let rook = new Rook(rookInicialPosition, this.color)
-                rook.move(rookInicialPosition, rookFinalPosition, game, castling_K, castling_Q)
+        } else if(castling_Q == true) {
+            let rookFinalPosition = new Position(finalPosition.line, 3)
+            let rookInicialPosition = new Position(finalPosition.line, 0)
 
-                game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
-                game.board[finalPositionObj.line][finalPositionObj.column] = new King(finalPositionObj, this.color)
-            }
+            let rook = new Rook(rookInicialPosition, this.color)
+            rook.move(rookInicialPosition, rookFinalPosition, game, castling_K, castling_Q)
+
+            game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
+            game.board[finalPositionObj.line][finalPositionObj.column] = new King(finalPositionObj, this.color)
         }
+        
         
         if(possibleMoves.some(position => isEqual(position, finalPositionObj))) {
 

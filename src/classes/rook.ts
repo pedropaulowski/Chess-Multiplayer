@@ -36,7 +36,15 @@ export class Rook implements Piece {
       
         let finalPositionObj = new Position(finalPosition.line, finalPosition.column)
         
-        if(castling_K == true) {
+        
+
+
+        if(castling_K == true &&
+            (game.whosPlaying == game.players[0] && game.isWhiteInCheck == false) ||
+            (game.whosPlaying == game.players[1] && game.isBlackInCheck == false)
+        ) {
+            console.log(game.isWhiteInCheck, game.isBlackInCheck)
+
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new Rook(finalPositionObj, this.color)
 
@@ -47,7 +55,13 @@ export class Rook implements Piece {
 
             return game.board
 
-        } else if (castling_Q == true) {
+        } else if (castling_Q == true &&
+            (game.whosPlaying == game.players[0] && game.isWhiteInCheck == false) ||
+            (game.whosPlaying == game.players[1] && game.isBlackInCheck == false)
+        ) {
+
+            console.log(game.isWhiteInCheck, game.isBlackInCheck)
+
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
             game.board[finalPositionObj.line][finalPositionObj.column] = new Rook(finalPositionObj, this.color)
 
