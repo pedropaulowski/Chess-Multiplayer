@@ -1,7 +1,6 @@
 import { Game } from "../game";
 import { Piece } from "../interfaces/piece";
 import { color } from "../types/types";
-import { MovesAnalyzer } from "./movesAnalyzer";
 import { Pawn } from "./pawn";
 import { Position } from "./position";
 
@@ -17,7 +16,8 @@ export class Void implements Piece {
     }
     
     setPossibleMoves(position: Position, game: Game): Position[] {
-        let movesAnalyzer = new MovesAnalyzer() 
+        position
+        game
         return []
         // return (
             // movesAnalyzer.horizontalMoves(position, this, game), 

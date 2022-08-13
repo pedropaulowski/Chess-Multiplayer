@@ -2,18 +2,22 @@ import "./style.css"
 import { Game } from "./game";
 import { DBgame } from "./dao/firestoreCfg";
 import { onSnapshot, doc } from "firebase/firestore";
-export const storedHash = localStorage.getItem(`hash`) 
 import {db} from "./dao/firestoreCfg"
 import { joinMatch } from "./components/joinMatch";
 import { createMatch } from "./components/createMatch";
 import { history } from "./components/history";
-
-
+import {Md5} from "../node_modules/md5-typescript";
 
 let appBoard = document.querySelector<HTMLDivElement>("#app")
 
+let clientHash = localStorage.getItem(`hash`)
 
+if(clientHash == null) {
+  let random = Date.now().toString()
+  localStorage.setItem(`hash`,`${Md5.init(random)}`)
+}
 // let gameId;
+export const storedHash = localStorage.getItem(`hash`) 
 
 const joinMatchBtn = document.querySelector(`#joinMatch`)
 const createMatchBtn = document.querySelector(`#createMatch`)
