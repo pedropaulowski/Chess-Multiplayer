@@ -47,7 +47,7 @@
   height: 90px;
   word-wrap: break-word;
   border: 1px solid transparent;
-  font-size: 88px;
+  font-size: 80px;
   line-height: 90px;
   text-align: center;
 
@@ -83,6 +83,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 5%;
 }
 
 .input {
@@ -147,6 +148,7 @@
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
+  overflow-y: scroll;
 }
 .historyText {
   width: 49.3%;
@@ -183,5 +185,38 @@
   .history {
     height: 200px;
     overflow-y: scroll;
+  }
+
+
+}
+
+@media (max-width: 800px) {
+  .aside {
+    display: none;
+  }
+  .history {
+    height: 10vh;
+  }
+  .block {
+    display:flex;
+    width: 12.5%;
+    height: fit-content;
+    font-size: 150%;
+    line-height: 200%;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    aspect-ratio: 1/1;
+  }
+  #app {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .fontBorderBlack {
+    -webkit-text-stroke: 0.1px var(--brownDark);
+  }
+  .fontBorderWhite {
+    -webkit-text-stroke: 0.1px var(--soft);
   }
 }
