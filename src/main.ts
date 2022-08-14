@@ -130,7 +130,7 @@ createMatchBtn?.addEventListener(`click`, async() => {
 				let gameUpdated = doc.data()
 
 				game = gameStored.convertDataStored(game.id, gameUpdated)
-				console.log(game)
+				// console.log(game)
 
 				if(appBoard != null)
 					game.drawBoard(appBoard, storedHash)

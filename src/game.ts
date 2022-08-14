@@ -52,7 +52,7 @@ export class Game {
         if(divBoard != null) {
             divBoard.innerHTML = ``
             if(this.players[0] == clientPlayer) {
-                console.log(this.board)
+                // console.log(this.board)
                 let i = 0
                 let j = 0
                 for ( i = 0; i < 8; i++) {
@@ -114,7 +114,7 @@ export class Game {
 
                         divBoard.appendChild(block)
 
-                        console.log(this.board)
+                        // console.log(this.board)
                         if(this.board[i][j].color != "void") {
                             block.innerHTML = `${this.board[i][j].unicode}`
                             block.style.color = this.board[i][j].color

@@ -625,7 +625,7 @@ export class MovesAnalyzer {
                         let finalColumn = 2
     
                         let kingCastling_Q_Position = new Position(finalLine, finalColumn)
-                        console.log(kingCastling_Q_Position)
+                        // console.log(kingCastling_Q_Position)
                         return kingCastling_Q_Position
                     }
                 } else if(game.whosPlaying == game.players[1]) {
@@ -639,7 +639,7 @@ export class MovesAnalyzer {
                         let finalColumn = 2
     
                         let kingCastling_Q_Position = new Position(finalLine, finalColumn)
-                        console.log(kingCastling_Q_Position)
+                        // console.log(kingCastling_Q_Position)
                         return kingCastling_Q_Position
                     }
                 }
