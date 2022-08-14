@@ -26,3 +26,7 @@ firebaseCONF.ts
 .firebaserc
 firebase.json
 .env
+env.d.ts
+client.d.ts
+.env.staging
+*.local
