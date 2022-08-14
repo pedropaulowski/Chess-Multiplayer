@@ -33,7 +33,7 @@ export class MovesAnalyzer {
      */
 
     horizontalMoves(position: Position, piece: Piece, game: Game, verifyingCheck?: boolean) {
-        let pieceName = piece.constructor.name
+        let pieceName = piece.unicode
         let board = game.board
 
 
@@ -44,7 +44,9 @@ export class MovesAnalyzer {
                 
                 if(board[position.line][j] != undefined) {
                     if((board[position.line][j].constructor.name == "Rook" ||
-                        board[position.line][j].constructor.name == "Queen") &&
+                        board[position.line][j].constructor.name == "Queen") ||
+                        (board[position.line][j].unicode == `♜` ||
+                        board[position.line][j].unicode == `♛`) &&
                         board[position.line][j].color != piece.color
                     ) {
                         return true
@@ -60,7 +62,9 @@ export class MovesAnalyzer {
                 
                 if(board[position.line][j] != undefined) {
                     if((board[position.line][j].constructor.name == "Rook" ||
-                        board[position.line][j].constructor.name == "Queen") &&
+                        board[position.line][j].constructor.name == "Queen") ||
+                        (board[position.line][j].unicode == `♜` ||
+                        board[position.line][j].unicode == `♛`) &&
                         board[position.line][j].color != piece.color
                     ) {
 
@@ -80,13 +84,15 @@ export class MovesAnalyzer {
 
 
 
-        if(pieceName != "King") {
+        if(pieceName != "King" && pieceName != `♚`) {
 
             // Verificar as 8 colunas tanto a esquerda quanto a direita na mesma linha
             for(let j = position.column+1; j < 8; j++) {
                 
                 if(board[position.line][j] != undefined) {
-                    if(board[position.line][j].constructor.name == "Void") {
+                    if(board[position.line][j].constructor.name == "Void" || 
+                    board[position.line][j].unicode == ``
+                    ) {
                         let analyzedPosition = new Position(position.line, j)
                         this.possibleMoves.push(analyzedPosition)
                     } else if(board[position.line][j].color != piece.color){
@@ -103,7 +109,8 @@ export class MovesAnalyzer {
             for(let j = position.column-1; j >= 0; j--) {
                 
                 if(board[position.line][j] != undefined) {
-                    if(board[position.line][j].constructor.name == "Void") {
+                    if(board[position.line][j].constructor.name == "Void" ||
+                    board[position.line][j].unicode == ``) {
                         let analyzedPosition = new Position(position.line, j)
                         this.possibleMoves.push(analyzedPosition)
                     } else if(board[position.line][j].color != piece.color){
@@ -125,7 +132,7 @@ export class MovesAnalyzer {
     }
 
     verticalMoves(position: Position, piece: Piece, game: Game, verifyingCheck?: boolean) {
-        let pieceName = piece.constructor.name
+        let pieceName = piece.unicode
         let board = game.board
 
 
@@ -134,8 +141,10 @@ export class MovesAnalyzer {
             for(let j = position.line+1; j < 8; j++) {
                                 
                 if(board[j][position.column] != undefined) {
-                    if(board[j][position.column].constructor.name == "Rook" ||
-                        board[j][position.column].constructor.name == "Queen" && 
+                    if((board[j][position.column].constructor.name == "Rook" ||
+                        board[j][position.column].constructor.name == "Queen") ||
+                        (board[j][position.column].unicode == `♜` ||
+                        board[j][position.column].unicode == `♛`) && 
                         board[j][position.column].color != piece.color
                         ) {
                             return true
@@ -148,8 +157,10 @@ export class MovesAnalyzer {
             for(let j = position.line-1; j >= 0; j--) {
             
                 if(board[j][position.column] != undefined) {
-                    if(board[j][position.column].constructor.name == "Rook" ||
-                        board[j][position.column].constructor.name == "Queen" &&
+                    if((board[j][position.column].constructor.name == "Rook" ||
+                        board[j][position.column].constructor.name == "Queen") ||
+                        (board[j][position.column].unicode == `♜` ||
+                        board[j][position.column].unicode == `♛`) &&
                         board[j][position.column].color != piece.color
                         ) {
                         return true
@@ -165,12 +176,14 @@ export class MovesAnalyzer {
         }
 
 
-        if(pieceName != "Pawn") {
+        if(pieceName != "Pawn" && pieceName != `♟`) {
             // Verificar as 8 linhas tanto acima quanto a abaixo na mesma coluna
             for(let j = position.line+1; j < 8; j++) {
                                 
                 if(board[j][position.column] != undefined) {
-                    if(board[j][position.column].constructor.name == "Void") {
+                    if(board[j][position.column].constructor.name == "Void" ||
+                    board[j][position.column].unicode == ``
+                    ) {
                         let analyzedPosition = new Position(j, position.column)
                         this.possibleMoves.push(analyzedPosition)
                     } else if(board[j][position.column].color != piece.color){
@@ -186,7 +199,8 @@ export class MovesAnalyzer {
             for(let j = position.line-1; j >= 0; j--) {
             
                 if(board[j][position.column] != undefined) {
-                    if(board[j][position.column].constructor.name == "Void") {
+                    if(board[j][position.column].constructor.name == "Void" ||
+                    board[j][position.column].unicode == ``) {
                         let analyzedPosition = new Position(j, position.column)
                         this.possibleMoves.push(analyzedPosition)
                     } else if(board[j][position.column].color != piece.color){
@@ -207,7 +221,7 @@ export class MovesAnalyzer {
     }
 
     diagonalMoves(position: Position, piece: Piece, game: Game, verifyingCheck?: boolean) {
-        let pieceName = piece.constructor.name
+        let pieceName = piece.unicode
         let board = game.board
 
 
@@ -232,7 +246,9 @@ export class MovesAnalyzer {
 
                 if(board[i][j+aux] != undefined) {
                     if((board[i][j+aux].constructor.name == "Bishop" ||
-                    board[i][j+aux].constructor.name == "Queen") &&
+                    board[i][j+aux].constructor.name == "Queen") ||
+                    (board[i][j+aux].unicode == `♝` ||
+                    board[i][j+aux].unicode == `♛`) &&
                     board[i][j+aux].color != piece.color
                     ) {
                         return true
@@ -253,7 +269,9 @@ export class MovesAnalyzer {
 
                 if(board[i][j+aux] != undefined) {
                     if((board[i][j+aux].constructor.name == "Bishop" ||
-                        board[i][j+aux].constructor.name == "Queen") &&
+                        board[i][j+aux].constructor.name == "Queen") ||
+                        (board[i][j+aux].unicode == `♝` ||
+                        board[i][j+aux].unicode == `♛`) &&
                         board[i][j+aux].color != piece.color
                         ) {
                         return true
@@ -275,7 +293,9 @@ export class MovesAnalyzer {
 
                 if(board[i][j+aux] != undefined) {
                     if((board[i][j+aux].constructor.name == "Bishop" ||
-                        board[i][j+aux].constructor.name == "Queen") &&
+                        board[i][j+aux].constructor.name == "Queen") ||
+                        (board[i][j+aux].unicode == `♝` ||
+                        board[i][j+aux].unicode == `♛`)   &&
                         board[i][j+aux].color != piece.color
                         ) {
                         return true
@@ -296,7 +316,9 @@ export class MovesAnalyzer {
 
                 if(board[i][j+aux] != undefined) {
                     if((board[i][j+aux].constructor.name == "Bishop" ||
-                    board[i][j+aux].constructor.name == "Queen") &&
+                    board[i][j+aux].constructor.name == "Queen") ||
+                    (board[i][j+aux].unicode == `♝` ||
+                    board[i][j+aux].unicode == `♛`) &&
                     board[i][j+aux].color != piece.color 
                     ) {
                         return true
@@ -316,7 +338,7 @@ export class MovesAnalyzer {
 
 
 
-        if(pieceName != "King") {
+        if(pieceName != "King" && pieceName != `♚`) {
 
             /***
             ** Diagonal
@@ -336,7 +358,8 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
-                    if(board[i][j+aux].constructor.name == "Void") {
+                    if(board[i][j+aux].constructor.name == "Void" ||
+                        board[i][j+aux].unicode == ``) {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
                     } else if(board[i][j+aux].color != piece.color) {
@@ -361,7 +384,9 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
-                    if(board[i][j+aux].constructor.name == "Void") {
+                    if(board[i][j+aux].constructor.name == "Void" ||
+                    board[i][j+aux].unicode == ``
+                    ) {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
                     } else if(board[i][j+aux].color != piece.color) {
@@ -385,7 +410,8 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
-                    if(board[i][j+aux].constructor.name == "Void") {
+                    if(board[i][j+aux].constructor.name == "Void" ||
+                    board[i][j+aux].unicode == ``) {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
                     } else if(board[i][j+aux].color != piece.color) {
@@ -408,7 +434,8 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
-                    if(board[i][j+aux].constructor.name == "Void") {
+                    if(board[i][j+aux].constructor.name == "Void" ||
+                    board[i][j+aux].unicode == ``) {
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
                     } else if(board[i][j+aux].color != piece.color) {
@@ -478,7 +505,8 @@ export class MovesAnalyzer {
             if(verifyingCheck == true) {
                 if(analyzedLine >= 0 && analyzedLine < 8 && analyzedColumn >= 0 && analyzedColumn < 8) {
                     if(board[analyzedLine][analyzedColumn] != undefined) {
-                        if(board[analyzedLine][analyzedColumn].constructor.name == "Knight" &&
+                        if((board[analyzedLine][analyzedColumn].constructor.name == "Knight" ||
+                         board[analyzedLine][analyzedColumn].unicode == `♞`) &&
                         board[analyzedLine][analyzedColumn].color != piece.color
                         ){
                             return true
@@ -491,7 +519,9 @@ export class MovesAnalyzer {
 
             if(analyzedLine >= 0 && analyzedLine < 8 && analyzedColumn >= 0 && analyzedColumn < 8) {
                 if(board[analyzedLine][analyzedColumn] != undefined) {
-                    if(board[analyzedLine][analyzedColumn].constructor.name == "Void") {
+                    if(board[analyzedLine][analyzedColumn].constructor.name == "Void" ||
+                    board[analyzedLine][analyzedColumn].unicode == ``
+                    ) {
                         let analyzedPosition = new Position(analyzedLine, analyzedColumn)
                         this.possibleMoves.push(analyzedPosition)
                     } else if(board[analyzedLine][analyzedColumn].color != piece.color){
@@ -525,9 +555,8 @@ export class MovesAnalyzer {
         ) {
 
         enum pos {a, b, c, d, e, f, g, h}
-        let firstLetter = piece.constructor.name.charAt(0)
-
-        if(piece.constructor.name == `Knight`)
+        let firstLetter = piece.unicode
+        if(piece.constructor.name == `Knight` || piece.unicode == `♞`)
             firstLetter = `N`
         else if(firstLetter == `P`)
             firstLetter = ``
@@ -585,9 +614,13 @@ export class MovesAnalyzer {
         
             if(movesRook_Q == null && movesKing == null) {
                 if(game.whosPlaying == game.players[0]) {
-                    if(game.board[7][1].constructor.name == `Void`
+                    if((game.board[7][1].constructor.name == `Void`
                     && game.board[7][2].constructor.name == `Void`
-                    && game.board[7][3].constructor.name == `Void`) {
+                    && game.board[7][3].constructor.name == `Void`) ||
+                    (game.board[7][1].unicode == ``
+                    && game.board[7][2].unicode == ``
+                    && game.board[7][3].unicode == ``)
+                    ) {
                         let finalLine = 7
                         let finalColumn = 2
     
@@ -596,9 +629,12 @@ export class MovesAnalyzer {
                         return kingCastling_Q_Position
                     }
                 } else if(game.whosPlaying == game.players[1]) {
-                    if(game.board[0][1].constructor.name == `Void`
+                    if((game.board[0][1].constructor.name == `Void`
                     && game.board[0][2].constructor.name == `Void`
-                    && game.board[0][3].constructor.name == `Void`) {
+                    && game.board[0][3].constructor.name == `Void`) ||
+                    game.board[0][1].unicode == ``
+                    && game.board[0][2].unicode == ``
+                    && game.board[0][3].unicode == ``) {
                         let finalLine = 0
                         let finalColumn = 2
     
@@ -624,8 +660,10 @@ export class MovesAnalyzer {
     
         if(movesRook_Q == null && movesKing == null) {
             if(game.whosPlaying == game.players[0]) {
-                if(game.board[7][5].constructor.name == `Void`
-                && game.board[7][6].constructor.name == `Void`
+                if((game.board[7][5].constructor.name == `Void`
+                && game.board[7][6].constructor.name == `Void`) ||
+                (game.board[7][5].unicode == ``
+                && game.board[7][6].unicode == ``) 
                 ) {
                     let finalLine = 7
                     let finalColumn = 6
@@ -635,8 +673,10 @@ export class MovesAnalyzer {
                     return kingCastling_Q_Position
                 }
             } else if(game.whosPlaying == game.players[1]) {
-                if(game.board[0][5].constructor.name == `Void`
-                && game.board[0][6].constructor.name == `Void`
+                if((game.board[0][5].constructor.name == `Void`
+                && game.board[0][6].constructor.name == `Void`) ||
+                (game.board[0][5].unicode == ``
+                && game.board[0][6].unicode == ``)
                 ) {
                     let finalLine = 0
                     let finalColumn = 6
@@ -659,8 +699,8 @@ export class MovesAnalyzer {
     isCheck(possibleMoves: Position[], game: Game){
         let aux = 0
         possibleMoves.map( (position) => {
-            let piece = game.board[position.line][position.column].constructor.name
-            if(piece == `King`){
+            let piece = game.board[position.line][position.column].unicode
+            if(piece == `King` || piece == `♚`){
                 aux++
             }
    
@@ -697,7 +737,7 @@ export class MovesAnalyzer {
          
         virtualGame.board.map( (line) => {
             line.map((piece) => {
-                if(piece.constructor.name == `King` && piece.color == colorWhosPlaying)
+                if((piece.constructor.name == `King` || piece.unicode == `♚`) && piece.color == colorWhosPlaying)
                     king = piece
             })
         })

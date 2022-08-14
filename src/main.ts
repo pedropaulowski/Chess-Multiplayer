@@ -55,8 +55,10 @@ joinMatchBtn?.addEventListener(`click`, () => {
 					}
 					let whosPlaying = gameInfo.whosPlaying
 					let game = new Game(players, whosPlaying, gameIdValue)
-					
-					game.board = gameStored.transformBoard(gameInfo.board)
+
+					game.board = await gameStored.transformBoard(gameInfo.board)
+
+
 					
 					if(appBoard != null) {
 						if(storedHash != null) 
@@ -128,6 +130,7 @@ createMatchBtn?.addEventListener(`click`, async() => {
 				let gameUpdated = doc.data()
 
 				game = gameStored.convertDataStored(game.id, gameUpdated)
+				console.log(game)
 
 				if(appBoard != null)
 					game.drawBoard(appBoard, storedHash)

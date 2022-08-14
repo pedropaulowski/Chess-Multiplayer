@@ -36,7 +36,7 @@ export class DBgame {
         idStored = ``
         game.board.map( v => {
             v.map( e => {
-                let pieceName = e.constructor.name
+                let pieceName = e.unicode
                 gameBoard.push({
                     unicode : e.unicode,
                     position : e.position,
@@ -99,24 +99,37 @@ export class DBgame {
                 color = boardStored[aux].color
                 switch(boardStored[aux].pieceName) {
                     case(`Rook`):
+                    case(`♜`):
                         board[i][j] = new Rook(position, color)
                     break;
+
                     case(`Knight`):
+                    case(`♞`):
                         board[i][j] = new Knight(position, color)
                     break;
+
                     case(`Bishop`):
+                    case(`♝`):
                         board[i][j] = new Bishop(position, color)
                     break;
+
                     case(`Queen`):
+                    case(`♛`):
                         board[i][j] = new Queen(position, color)
                         break;
+
                     case(`King`):
+                    case(`♚`):
                         board[i][j] = new King(position, color)
                     break;
+
                     case (`Void`):
+                    case (``):
                         board[i][j] = new Void(position, color)
                     break;
+
                     case (`Pawn`):
+                    case (`♟`):
                         board[i][j] = new Pawn(position, color)
                     break;
                 }
@@ -134,7 +147,7 @@ export class DBgame {
         let gameBoard : any = []
         game.board.map( v => {
             v.map( e => {
-                let pieceName = e.constructor.name
+                let pieceName = e.unicode
                 gameBoard.push({
                     unicode : e.unicode,
                     position : e.position,

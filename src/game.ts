@@ -49,12 +49,16 @@ export class Game {
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
-
         if(divBoard != null) {
             divBoard.innerHTML = ``
             if(this.players[0] == clientPlayer) {
-                for (let i = 0; i < 8; i++) {
-                    for(let j = 0; j< 8; j++){
+                console.log(this.board)
+                let i = 0
+                let j = 0
+                for ( i = 0; i < 8; i++) {
+                    for( j = 0; j< 8; j++){
+
+
                         let block = document.createElement('div')
                         // block.innerHTML = `i${i}j${j}`
                         block.setAttribute("id", `i${i}j${j}`)
@@ -66,8 +70,6 @@ export class Game {
                         // console.log(block)
                         divBoard.appendChild(block)
                         // this.setOnClickFunctions(i, j, block)
-
-                        // console.log(this.board)
 
                         if(this.board[i][j].color != "void") {
                             block.classList.add(`clickable`)
@@ -92,8 +94,14 @@ export class Game {
                     }
                 }
             } else {
-                for (let i = 7; i >= 0; i--) {
-                    for(let j = 7; j >= 0; j--){
+                let i = 7
+                let j = 7
+                
+               
+                for ( i = 7; i >= 0; i--) {
+                    for( j = 7; j >= 0; j--){
+                        
+
                         let block = document.createElement('div')
                         block.setAttribute("id", `i${i}j${j}`)
                         block.setAttribute("class", "block")
@@ -106,6 +114,7 @@ export class Game {
 
                         divBoard.appendChild(block)
 
+                        console.log(this.board)
                         if(this.board[i][j].color != "void") {
                             block.innerHTML = `${this.board[i][j].unicode}`
                             block.style.color = this.board[i][j].color
@@ -191,7 +200,7 @@ export class Game {
         if(this.board[i][j] == undefined) {
             return
         }
-        let pieceType = this.board[i][j].constructor.name
+        let pieceType = this.board[i][j].unicode
         let pieceObj : Piece;
         let position = new Position(i, j)
         let color = this.board[i][j].color
@@ -200,30 +209,32 @@ export class Game {
 
         
         switch(pieceType) {
-            case "Pawn":
+            case (`Pawn`):
+            case (`♟`):
                 pieceObj = new Pawn(position, color)
-
                 break;
-            case "Bishop":
+            case(`Bishop`):
+            case(`♝`):
                 pieceObj = new Bishop(position, color)
-
                 break;
-            case "Knight":
+            case(`Knight`):
+            case(`♞`):
                 pieceObj = new Knight(position, color)
                 break;
-            case "Rook":
+            case(`Rook`):
+            case(`♜`):
                 pieceObj = new Rook(position, color)
-
                 break;
-            case "King":
+            case(`King`):
+            case(`♚`):
                 pieceObj = new King(position, color)
-
                 break;
-            case "Queen":
+            case(`Queen`):
+            case(`♛`):
                 pieceObj = new Queen(position, color)
-
                 break;
-            case "Void":
+            case (`Void`):
+            case (``):
                 pieceObj = new Void(position, color)
                 break;
         }
@@ -232,7 +243,7 @@ export class Game {
         let possibleMoves = pieceObj.setPossibleMoves(pieceObj.position, this)
         // console.log(possibleMoves)
         
-        if(pieceType != `Void`) {
+        if(pieceType != `Void` && pieceType != ``) {
             block.addEventListener("click", (e)=> {
                 e.preventDefault()
                 this.setMoves(possibleMoves, pieceObj, pieceType)
@@ -408,7 +419,7 @@ export class Game {
                     if(castling_K != null)  
                         castlingMoves.push(castling_K)
                     
-                    if(pieceType == `King` && (castling_K != null || castling_Q != null)) {
+                    if((pieceType == `King` || pieceType == `♚`) && (castling_K != null || castling_Q != null)) {
 
                         for(let i = 0; i < castlingMoves.length; i++) {
                             let line = castlingMoves[i].line
@@ -472,17 +483,17 @@ export class Game {
     async callMove(line:number, column:number, pieceObj: Piece, pieceType: string, castling_K?:boolean, castling_Q?:boolean) {
         let finalPosition = new Position(line, column)
         
-        if(pieceType == `King`) {
+        if(pieceType == `King` || pieceType == `♚`) {
             localStorage.setItem(`King`, `moved`)
             // console.log(localStorage)
-        } else if(pieceType == `Rook`) {
+        } else if(pieceType == `Rook` || pieceType == `♜`) {
             if( (pieceObj.position.line == 0 || pieceObj.position.line == 7 )&& pieceObj.position.column == 7)
                 localStorage.setItem(`Rook_K`, `moved`)
             else if((pieceObj.position.line == 0 || pieceObj.position.line == 7 )&& pieceObj.position.column == 0)
                 localStorage.setItem(`Rook_Q`, `moved`)
         }
 
-        if(pieceType == `King` && 
+        if((pieceType == `King` || pieceType == `♚`) && 
         (castling_K == true || castling_Q == true)) {
             if(pieceObj.color == `white` && this.isWhiteInCheck == true) {
                 localStorage.removeItem(`King`)
@@ -503,7 +514,7 @@ export class Game {
         let movesAnalyzer = new MovesAnalyzer()
 
         if(movesAnalyzer.isValidMove(this) == false) {
-            if(pieceType == `King` && (castling_K == true || castling_Q == true)) {
+            if((pieceType == `King` || pieceType == `♚`) && (castling_K == true || castling_Q == true)) {
                 localStorage.removeItem(`King`)
             }
             let gameStored = new DBgame()
@@ -543,7 +554,7 @@ export class Game {
 
     
 
-        if(pieceType == `Pawn` && (finalPosition.line == 0 || finalPosition.line == 7)) {
+        if((pieceType == `Pawn` || pieceType == `♟`) && (finalPosition.line == 0 || finalPosition.line == 7)) {
             this.pawnPromotion(finalPosition)
             return;
         }

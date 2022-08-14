@@ -99,7 +99,9 @@ export class King implements Piece {
 
             let movesAnalyzer = new MovesAnalyzer() 
 
-            if(game.board[finalPositionObj.line][finalPositionObj.column].constructor.name == `Void`) {
+            if(game.board[finalPositionObj.line][finalPositionObj.column].constructor.name == `Void` ||
+            game.board[finalPositionObj.line][finalPositionObj.column].unicode == ``
+            ) {
                 movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false, false, false, castling_Q, castling_K)
             } else {
                 movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, true, false, false, castling_Q, castling_K)

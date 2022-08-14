@@ -176,7 +176,9 @@ export class Pawn implements Piece {
             let checkBoolean = movesAnalyzer.isCheck(possibleMoves, game)
 
 
-            if(game.board[finalPositionObj.line][finalPositionObj.column].constructor.name == `Void`) {
+            if(game.board[finalPositionObj.line][finalPositionObj.column].constructor.name == `Void` ||
+                game.board[finalPositionObj.line][finalPositionObj.column].unicode == ``
+                ) {
                 movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, false, checkBoolean)
             } else {
                 movesAnalyzer.addMoveToHistory(currentPosition, finalPosition, this, game, true, checkBoolean)
