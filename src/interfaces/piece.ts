@@ -7,5 +7,9 @@ export interface Piece {
     position : Position;
     color: color;
     setPossibleMoves(position: Position, game: Game):Array<Position>;
-    move(currentPosition: Position, finalPosition: Position, game: Game, castling_K?:boolean, castling_Q?:boolean): Piece[][];
+    move(currentPosition: Position, 
+        finalPosition: Position, 
+        game: Game, 
+        castling_K?:boolean, 
+        castling_Q?:boolean): Piece[][];
 }
