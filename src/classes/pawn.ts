@@ -172,7 +172,6 @@ export class Pawn implements Piece {
 
             let movesAnalyzer = new MovesAnalyzer()    
             let possibleMoves = this.setPossibleMoves(finalPosition, game)
-            
             let checkBoolean = movesAnalyzer.isCheck(possibleMoves, game)
 
 

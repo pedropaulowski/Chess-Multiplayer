@@ -38,7 +38,6 @@ export class Queen implements Piece {
         let finalPositionObj = new Position(finalPosition.line, finalPosition.column)
        
         if(possibleMoves.some(position => isEqual(position, finalPositionObj))) {
-
             let movesAnalyzer = new MovesAnalyzer()    
             let possibleMoves = this.setPossibleMoves(finalPosition, game)
             let checkBoolean = movesAnalyzer.isCheck(possibleMoves, game)

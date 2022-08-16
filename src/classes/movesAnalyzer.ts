@@ -1,8 +1,13 @@
 import { Game } from "../game";
 import { Piece } from "../interfaces/piece";
 import { color } from "../types/types";
+import { Bishop } from "./bishop";
 import { King } from "./king";
+import { Knight } from "./knight";
+import { Pawn } from "./pawn";
 import { Position } from "./position";
+import { Queen } from "./queen";
+import { Rook } from "./rook";
 
 export class MovesAnalyzer {
     possibleMoves : Array<Position>
@@ -699,7 +704,7 @@ export class MovesAnalyzer {
                 game.isBlackInCheck = false
 
             }
-
+          
             return true
         }else {
 
@@ -718,14 +723,18 @@ export class MovesAnalyzer {
         king = new King(new Position(1,1), colorWhosPlaying)
 
          
+
+    
+        
         virtualGame.board.map( (line) => {
             line.map((piece) => {
                 if(piece.unicode == `♚` && piece.color == colorWhosPlaying)
                     king = piece
             })
         })
-    
+            
         
+
         if( this.diagonalMoves(king.position, king, virtualGame, true) == true||
             this.verticalMoves(king.position, king, virtualGame, true) == true ||
             this.horizontalMoves(king.position, king, virtualGame, true) == true||
@@ -733,7 +742,7 @@ export class MovesAnalyzer {
             this.hasAdjacentPawn(virtualGame, king) == true ||
             this.hasAdjacentKing(virtualGame, king) == true
         ) {
-            console.log(`Movimento Invalido`)
+            // console.log(`Movimento Invalido`)
             return false
         } else {
             return true
@@ -755,18 +764,22 @@ export class MovesAnalyzer {
         return possibleMoves
     }
     
-
-
     hasAdjacentPawn(virtualGame: Game, king: King) {
         let colorWhosPlaying : color = (virtualGame.whosPlaying == virtualGame.players[0])? `white` : `black`
+
 
         if(colorWhosPlaying == `white`) {
             //verificar se nas duas colunas adjacentes tem um peão na linha anterior a do rei
             
-            let adjacentBlocks = [
-                virtualGame.board[king.position.line-1][king.position.column+1], 
-                virtualGame.board[king.position.line-1][king.position.column-1]
-            ]
+            let adjacentBlocks : any = []
+
+            if(king.position.line != 7 && king.position.column) {
+                adjacentBlocks.push(virtualGame.board[king.position.line+1][king.position.column+1])
+            }
+
+            if(king.position.line != 7 && king.position.column != 0) {
+                adjacentBlocks.push(virtualGame.board[king.position.line+1][king.position.column-1])
+            }
 
 
             if(adjacentBlocks[0] != undefined) {
@@ -789,15 +802,19 @@ export class MovesAnalyzer {
         } else if(colorWhosPlaying == `black`) {
             //verificar se nas duas colunas adjacentes tem um peão na linha anterior a do rei
             
-            let adjacentBlocks = [
-                virtualGame.board[king.position.line+1][king.position.column+1], 
-                virtualGame.board[king.position.line+1][king.position.column-1]
-            ]
+            let adjacentBlocks : any = []
 
+            if(king.position.line != 7 && king.position.column) {
+                adjacentBlocks.push(virtualGame.board[king.position.line+1][king.position.column+1])
+            }
+
+            if(king.position.line != 7 && king.position.column != 0) {
+                adjacentBlocks.push(virtualGame.board[king.position.line+1][king.position.column-1])
+            }
 
         
             if(adjacentBlocks[0] != undefined) {
-                console.log(adjacentBlocks[0])
+                // console.log(adjacentBlocks[0])
 
                 if(adjacentBlocks[0].unicode == `♟` && adjacentBlocks[0].color == `white`)
                     return true
@@ -891,6 +908,65 @@ export class MovesAnalyzer {
             return true
         } else {
             return false
+        }
+
+    }
+
+    isMate(game: Game) {
+       
+
+        let pieces : Piece[]
+        pieces = []
+        let colorWhosPlaying = (game.whosPlaying == game.players[0])? `white`: `black`
+        game.board.map((line)=> {
+            line.map((piece) => {
+                if(piece.unicode != `` && piece.color == colorWhosPlaying) {
+                    if(piece instanceof Bishop ||
+                        piece instanceof King ||
+                        piece instanceof Knight ||
+                        piece instanceof Pawn ||
+                        piece instanceof Queen ||
+                        piece instanceof Rook
+                    ) {
+                        pieces.push(piece)
+
+                    }   
+                }
+                
+            })
+        })
+
+
+        localStorage.setItem(`game`, JSON.stringify(game))
+        let storedGame = localStorage.getItem(`game`)
+        
+        if(storedGame != null)  
+            storedGame = JSON.parse(storedGame)
+            
+
+        let aux = 0
+
+
+
+
+        pieces.map((piece) => {        
+            let possibleMoves = piece.setPossibleMoves(piece.position, game)
+            possibleMoves.map((finalPosition) => {
+                if(storedGame != undefined && typeof storedGame != `string`) {
+                    piece.move(piece.position, finalPosition, storedGame)
+                    if(this.isValidMove(storedGame) == true)
+                        aux++
+
+                }
+            })
+        })
+        
+        localStorage.removeItem(`game`)        
+        if(aux > 0) {
+            return false
+        } else {
+            game.winner = (game.whosPlaying == game.players[0])? game.players[0] : game.players[1]
+            return true
         }
 
     }

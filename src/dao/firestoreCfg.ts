@@ -44,6 +44,7 @@ export class DBgame {
                     position : e.position,
                     color : e.color,
                     pieceName : pieceName
+                    
                 })
                 // console.log(pieceName)
             })
@@ -55,6 +56,8 @@ export class DBgame {
             history: game.history,
             isBlackInCheck: game.isBlackInCheck,
             isWhiteInCheck: game.isWhiteInCheck,
+            winner: game.winner,
+
         }).then( (v : any) => {
             idStored = v._key.path.segments[1]
             return idStored;
@@ -167,7 +170,8 @@ export class DBgame {
             whosPlaying: game.whosPlaying,
             history: game.history,
             isBlackInCheck : game.isBlackInCheck,
-            isWhiteInCheck : game.isWhiteInCheck
+            isWhiteInCheck : game.isWhiteInCheck,
+            winner : game.winner
         });
     }
 
@@ -188,12 +192,14 @@ export class DBgame {
         let history = gameStored.history
         let isBlackInCheck = gameStored.isBlackInCheck
         let isWhiteInCheck = gameStored.isWhiteInCheck
+        let winner = gameStored.winner
 
         let game = new Game(players, whosPlaying, gameId)
         game.board = board
         game.history = history
         game.isBlackInCheck = isBlackInCheck
         game.isWhiteInCheck = isWhiteInCheck
+        game.winner = winner
         return game
     }   
     

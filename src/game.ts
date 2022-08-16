@@ -37,7 +37,7 @@ export class Game {
     history : Array<string> | undefined;
     isBlackInCheck : boolean;
     isWhiteInCheck : boolean;
-
+    winner : string
     constructor( players: Array<string>, whosPlaying: string, id : string) {
         this.board = this.createBoard()
         this.players = players
@@ -45,10 +45,18 @@ export class Game {
         this.id = id
         this.isWhiteInCheck = false
         this.isBlackInCheck = false
-
+        this.winner = ``
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
+        let movesAnalyzer = new MovesAnalyzer() 
+
+        if(movesAnalyzer.isMate(this) == true) {
+            console.log(`Check Mate`)
+        }
+
+
+
         if(divBoard != null) {
             divBoard.innerHTML = ``
             if(this.players[0] == clientPlayer) {
@@ -388,6 +396,9 @@ export class Game {
     }
 
     setMoves(possibleMoves: Position[], pieceObj: Piece, pieceType: string) {
+
+
+
                 // document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
                     // e.classList.remove(`possibleBlock`)
                 // })
