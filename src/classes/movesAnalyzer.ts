@@ -730,7 +730,8 @@ export class MovesAnalyzer {
             this.verticalMoves(king.position, king, virtualGame, true) == true ||
             this.horizontalMoves(king.position, king, virtualGame, true) == true||
             this.twoOneMoves(king.position, king, virtualGame, true) == true ||
-            this.hasAdjacentPawn(virtualGame, king) == true
+            this.hasAdjacentPawn(virtualGame, king) == true ||
+            this.hasAdjacentKing(virtualGame, king) == true
         ) {
             console.log(`Movimento Invalido`)
             return false
@@ -815,9 +816,86 @@ export class MovesAnalyzer {
         }
 
         return false
+
         
     }
+
+    hasAdjacentKing(virtualGame: Game, king: King) {
+       let colorWhosPlaying : color = (virtualGame.whosPlaying == virtualGame.players[0])? `white` : `black`
+
+        
+        // acima direita, acima meio, acima esquerda
+        let adjacentBlocks = []
+
+        if(king.position.line != 7) {
+            if(king.position.column != 7) {
+                let pos1 = (virtualGame.board[king.position.line+1][king.position.column+1] != undefined)? virtualGame.board[king.position.line+1][king.position.column+1] : undefined
+                adjacentBlocks.push(pos1)
+            }
+
+            let pos2 = (virtualGame.board[king.position.line+1][king.position.column] != undefined)? virtualGame.board[king.position.line+1][king.position.column] : undefined
+            adjacentBlocks.push(pos2)
+    
+            if(king.position.column != 0) {
+                let pos3 = (virtualGame.board[king.position.line+1][king.position.column-1] != undefined)? virtualGame.board[king.position.line+1][king.position.column-1] : undefined
+                adjacentBlocks.push(pos3)
+
+            }
+            
+            
+        }
+        // mesma linha a direita e a esquerda
+
+        if(king.position.column != 7) {
+            let pos4 = (virtualGame.board[king.position.line][king.position.column+1] != undefined)? virtualGame.board[king.position.line][king.position.column+1] : undefined
+            adjacentBlocks.push(pos4)
+        }
+
+        if(king.position.column != 0) {
+            let pos5 = (virtualGame.board[king.position.line][king.position.column-1] != undefined)? virtualGame.board[king.position.line][king.position.column-1] : undefined
+            adjacentBlocks.push(pos5)
+
+        }
+        // abaixo direita, abaixo meio, abaixo esquerda
+
+        if(king.position.line != 0) {
+    
+            if(king.position.column != 7) {
+                let pos6 = (virtualGame.board[king.position.line-1][king.position.column+1] != undefined)? virtualGame.board[king.position.line-1][king.position.column+1] : undefined
+                adjacentBlocks.push(pos6)
+
+            }
+
+            let pos7 = (virtualGame.board[king.position.line-1][king.position.column] != undefined)? virtualGame.board[king.position.line-1][king.position.column] : undefined
+            adjacentBlocks.push(pos7)
+
+            if(king.position.column != 0) {
+                let pos8 = (virtualGame.board[king.position.line-1][king.position.column-1] != undefined)? virtualGame.board[king.position.line-1][king.position.column-1] : undefined
+                adjacentBlocks.push(pos8)
+            }
+
+        }
+
+
+        let aux = 0
+        adjacentBlocks.map((piece) => {
+            if(piece != undefined) {
+                if( piece.unicode == `♚` 
+                &&  piece.color != colorWhosPlaying)
+                aux ++
+            }
+
+        })
+
+        if(aux > 0) {
+            return true
+        } else {
+            return false
+        }
+
+    }
     /*
+
     
     verifyAllMovesFromOponent(game: Game) {
         let possibleMoves : Position[][]
