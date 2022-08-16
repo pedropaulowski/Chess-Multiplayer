@@ -144,8 +144,11 @@ export class MovesAnalyzer {
                         board[j][position.column].unicode == `♛`) && 
                         board[j][position.column].color != piece.color
                         ) {
+                            // console.log(board[j][position.column])
                             return true
-                    } else if(board[j][position.column].color == piece.color) {
+                    } else if(board[j][position.column].color == piece.color ||
+                        (board[j][position.column].unicode != `♜` ||
+                        board[j][position.column].unicode != `♛`)) {
                         break;
                     }
                 }
@@ -155,12 +158,16 @@ export class MovesAnalyzer {
             
                 if(board[j][position.column] != undefined) {
                     if(
+                        
                         (board[j][position.column].unicode == `♜` ||
                         board[j][position.column].unicode == `♛`) &&
                         board[j][position.column].color != piece.color
                         ) {
                         return true
-                    } else if(board[j][position.column].color == piece.color) {
+                    } else if(board[j][position.column].color == piece.color ||
+                        (board[j][position.column].unicode != `♜` ||
+                        board[j][position.column].unicode != `♛`)
+                        ) {
                         break;
                     }
         
@@ -722,7 +729,8 @@ export class MovesAnalyzer {
         if( this.diagonalMoves(king.position, king, virtualGame, true) == true||
             this.verticalMoves(king.position, king, virtualGame, true) == true ||
             this.horizontalMoves(king.position, king, virtualGame, true) == true||
-            this.twoOneMoves(king.position, king, virtualGame, true) == true
+            this.twoOneMoves(king.position, king, virtualGame, true) == true ||
+            this.hasAdjacentPawn(virtualGame, king) == true
         ) {
             console.log(`Movimento Invalido`)
             return false
@@ -746,6 +754,69 @@ export class MovesAnalyzer {
         return possibleMoves
     }
     
+
+
+    hasAdjacentPawn(virtualGame: Game, king: King) {
+        let colorWhosPlaying : color = (virtualGame.whosPlaying == virtualGame.players[0])? `white` : `black`
+
+        if(colorWhosPlaying == `white`) {
+            //verificar se nas duas colunas adjacentes tem um peão na linha anterior a do rei
+            
+            let adjacentBlocks = [
+                virtualGame.board[king.position.line-1][king.position.column+1], 
+                virtualGame.board[king.position.line-1][king.position.column-1]
+            ]
+
+
+            if(adjacentBlocks[0] != undefined) {
+                
+
+                if(adjacentBlocks[0].unicode == `♟` && adjacentBlocks[0].color == `black`)
+                    return true
+            }
+
+            if(adjacentBlocks[1] != undefined) {
+                
+
+                if(adjacentBlocks[1].unicode == `♟` && adjacentBlocks[1].color == `black`)
+                    return true
+
+            }
+
+            
+            return false
+        } else if(colorWhosPlaying == `black`) {
+            //verificar se nas duas colunas adjacentes tem um peão na linha anterior a do rei
+            
+            let adjacentBlocks = [
+                virtualGame.board[king.position.line+1][king.position.column+1], 
+                virtualGame.board[king.position.line+1][king.position.column-1]
+            ]
+
+
+        
+            if(adjacentBlocks[0] != undefined) {
+                console.log(adjacentBlocks[0])
+
+                if(adjacentBlocks[0].unicode == `♟` && adjacentBlocks[0].color == `white`)
+                    return true
+            }
+            
+            if(adjacentBlocks[1] != undefined) {
+                
+
+                if(adjacentBlocks[1].unicode == `♟` && adjacentBlocks[1].color == `white`)
+                    return true
+
+            }
+
+            
+            return false
+        }
+
+        return false
+        
+    }
     /*
     
     verifyAllMovesFromOponent(game: Game) {
