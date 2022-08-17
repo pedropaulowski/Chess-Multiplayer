@@ -688,11 +688,14 @@ export class MovesAnalyzer {
     isCheck(possibleMoves: Position[], game: Game){
         let aux = 0
         possibleMoves.map( (position) => {
-            let piece = game.board[position.line][position.column].unicode
-            if(piece == `King` || piece == `♚`){
-                aux++
-            }
-   
+            if(position.line <= 7 && position.line >= 0 &&
+                position.column <= 7 && position.column >= 0
+                ) {
+                    let piece = game.board[position.line][position.column].unicode
+                    if(piece == `King` || piece == `♚`){
+                        aux++
+                    }
+                }   
         })
 
         if(aux > 0) {
@@ -975,6 +978,100 @@ export class MovesAnalyzer {
             return true
         }
 
+    }
+
+    enPassantMoves(game: Game, pawn: Pawn) {
+        let colorWhosPlaying = (game.whosPlaying == game.players[0])? `white`: `black` 
+
+        enum pos {a, b, c, d, e, f, g, h}
+        let possibleMoves : Position[]
+        possibleMoves = []
+
+        if(colorWhosPlaying == `white` && 
+            pawn.position.line == 3 &&
+            pawn.color == `white` &&
+            game.history != null ) {
+
+                
+            
+            if(pawn.position.column > 0) {
+                if(game.history[game.history.length-1] == `♟${pos[pawn.position.column-1]}${pawn.position.line}`
+                ) {
+                    console.log(`En passant`)
+                     
+                    let finalPosition = {
+                        line: pawn.position.line-1,
+                        column: pawn.position.column-1
+                    }
+
+                    possibleMoves.push(finalPosition)
+
+                    console.log(possibleMoves)
+
+                } 
+            }
+
+            if(pawn.position.column < 7) {
+                if(game.history[game.history.length-1] == `♟${pos[pawn.position.column+1]}${pawn.position.line}`
+                ) {
+                    console.log(`En passant`)
+                     
+                    let finalPosition = {
+                        line: pawn.position.line-1,
+                        column: pawn.position.column+1
+                    }
+
+                    possibleMoves.push(finalPosition)
+
+                    console.log(possibleMoves)
+
+                } 
+            }
+
+
+        } else if (colorWhosPlaying != `white` && 
+            pawn.position.line == 4 &&
+            pawn.color == `black` &&
+            game.history != null) {
+
+                if(pawn.position.column > 0) {
+                    if(game.history[game.history.length-1] == `♟${pos[pawn.position.column-1]}${pawn.position.line}`
+                    ) {
+                        console.log(`En passant`)
+                         
+                        let finalPosition = {
+                            line: pawn.position.line+1,
+                            column: pawn.position.column-1
+                        }
+    
+                        possibleMoves.push(finalPosition)
+    
+                        console.log(possibleMoves)
+    
+                    } 
+                }
+    
+                if(pawn.position.column < 7) {
+                    if(game.history[game.history.length-1] == `♟${pos[pawn.position.column+1]}${pawn.position.line}`
+                    ) {
+                        console.log(`En passant`)
+                         
+                        let finalPosition = {
+                            line: pawn.position.line+1,
+                            column: pawn.position.column+1
+                        }
+    
+                        possibleMoves.push(finalPosition)
+    
+                        console.log(possibleMoves)
+    
+                    } 
+                }
+        }
+
+      
+
+        return possibleMoves
     }
     /*
 

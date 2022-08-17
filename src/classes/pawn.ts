@@ -20,14 +20,23 @@ export class Pawn implements Piece {
 
     setPossibleMoves(position: Position, game: Game): Position[] {
         let possibleMoves :any = []
-       
+        
+
+        
         let i : number;
-        switch(this.color) {
+        switch(game.board[position.line][position.column].color) {
             case "white":
                 // let lastBlock : Piece
                 // lastBlock = game.board[position.line][position.column]
                 // let auxBlock : Piece
                 // auxBlock = new Void()
+
+
+
+
+
+
+
                 if(position.line == 6) {
                     
                     // verifying Pawn's vertical move
@@ -58,6 +67,7 @@ export class Pawn implements Piece {
                     }while(i < 2)
 
                 } else {
+
                     if(position.line-1 >= 0) {
                         let blockAnalyzed : Piece = game.board[position.line-1][position.column]
                         if(blockAnalyzed.color == "void" ) {
@@ -145,14 +155,18 @@ export class Pawn implements Piece {
         }
 
         let movesAnalyzer = new MovesAnalyzer() 
+        let enPassantMoves = movesAnalyzer.enPassantMoves(game, game.board[position.line][position.column])
 
-        return possibleMoves.concat(
-            // movesAnalyzer.diagonalMoves(position, this, game), 
-            movesAnalyzer.verticalMoves(position, this, game),
-            // movesAnalyzer.horizontalMoves(position, this, game)
-            // let possibleMoves = this.virtualMove(this.possibleMoves, game, piece)
-            // return possibleMoves
-        )
+
+
+
+        if(enPassantMoves.length > 0) {
+            enPassantMoves.map((pos) => possibleMoves.push(pos))
+        }
+            
+
+
+        return possibleMoves
         
     }
 
@@ -186,9 +200,18 @@ export class Pawn implements Piece {
 
 
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
+
+            if(game.whosPlaying == game.players[1]) {
+                game.board[finalPositionObj.line-1][finalPositionObj.column] = new Void(currentPosition, "void")
+
+            } else {    
+                game.board[finalPositionObj.line+1][finalPositionObj.column] = new Void(currentPosition, "void")
+            }
+
             game.board[finalPositionObj.line][finalPositionObj.column] = new Pawn(finalPositionObj, this.color)
 
             movesAnalyzer.isValidMove(game)
+
 
         }
 

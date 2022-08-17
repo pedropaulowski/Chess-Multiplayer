@@ -262,6 +262,13 @@ export class Game {
         let possibleMoves = pieceObj.setPossibleMoves(pieceObj.position, this)
         // console.log(possibleMoves)
         
+        if(pieceType == `♟`) {
+            console.log(possibleMoves)
+        }
+
+
+
+
         if(pieceType != `Void` && pieceType != ``) {
             block.addEventListener("click", (e)=> {
                 e.preventDefault()
@@ -474,12 +481,13 @@ export class Game {
                         }
                     }
 
+
                     for(let i = 0; i < possibleMoves.length; i++) {
 
                         let line = possibleMoves[i].line
                         let column = possibleMoves[i].column
                         let possibleBlock:any = document.querySelector(`#i${line}j${column}`)
-                        
+                        console.log(possibleBlock, possibleMoves[i])
                         if(possibleBlock != undefined) {
                             /*if(pieceType == "Queen") {
                                 console.log(possibleBlock)
