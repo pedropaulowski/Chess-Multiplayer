@@ -13,6 +13,8 @@ import { Rook } from "../classes/rook";
 import { Void } from "../classes/void";
 import { color } from "../types/types";
 import { firebaseConfig } from "../firebaseCONF";
+import { Clock } from "../classes/clock";
+import { createTimer } from "../components/timerComponent";
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -33,6 +35,7 @@ export const db = getFirestore(app)
 export class DBgame {
 
     setGameStored = async (game : Game): Promise<string> => {
+
         let gameBoard : any = []
         let idStored : string
         idStored = ``
@@ -57,9 +60,13 @@ export class DBgame {
             isBlackInCheck: game.isBlackInCheck,
             isWhiteInCheck: game.isWhiteInCheck,
             winner: game.winner,
+            timers: [JSON.stringify(this.transformClock(game.timers[0]))]
 
         }).then( (v : any) => {
             idStored = v._key.path.segments[1]
+
+
+
             return idStored;
 
         })
@@ -68,6 +75,9 @@ export class DBgame {
 
         })
         .finally(function() { });
+
+
+
 
         return idStored;
 
@@ -88,6 +98,18 @@ export class DBgame {
         }
 
     }
+
+
+    transformClock(clock: Clock) {
+        return {
+            minutes : clock.minutes,
+            seconds : clock.seconds,
+            interval : clock.interval,
+            status : clock.status,
+            timerString : clock.timerString,
+        }
+    }
+
 
     transformBoard(boardString: string) {
         let aux = 0
@@ -150,6 +172,7 @@ export class DBgame {
 
     updateGame = async (gameId: string , game : Game) => {
         let gameBoard : any = []
+        console.log(game)
         game.board.map( v => {
             v.map( e => {
                 let pieceName = e.unicode
@@ -171,15 +194,22 @@ export class DBgame {
             history: game.history,
             isBlackInCheck : game.isBlackInCheck,
             isWhiteInCheck : game.isWhiteInCheck,
-            winner : game.winner
+            winner : game.winner,
+            timers: [
+                JSON.stringify(this.transformClock(game.timers[0])), 
+                JSON.stringify(this.transformClock(game.timers[1])),
+            ]
+
         });
+
+
     }
 
     addPlayer2 = async (gameId: string, player2Hash: string) => {
         const gameRef = doc(db, `games`, gameId)
         await updateDoc( gameRef, {
             players: arrayUnion(player2Hash),
-        });
+        })
     }
 
     convertDataStored = (id: string, gameStored : any) => {
@@ -193,6 +223,7 @@ export class DBgame {
         let isBlackInCheck = gameStored.isBlackInCheck
         let isWhiteInCheck = gameStored.isWhiteInCheck
         let winner = gameStored.winner
+        let timers = gameStored.timers
 
         let game = new Game(players, whosPlaying, gameId)
         game.board = board
@@ -200,6 +231,38 @@ export class DBgame {
         game.isBlackInCheck = isBlackInCheck
         game.isWhiteInCheck = isWhiteInCheck
         game.winner = winner
+        // console.log(timers)
+        
+        timers[0] = JSON.parse(timers[0])
+        game.timers[0] = new Clock(timers[0].minutes, timers[0].seconds, game.id)
+        
+        if(timers.length > 1) {
+            timers[1] = JSON.parse(timers[1])
+            game.timers[1] = new Clock(timers[1].minutes, timers[1].seconds, game.id)
+        }
+
+
+
+        
+        if(game.players.length > 1) {
+            createTimer(true)
+            createTimer(false)
+            if(game.whosPlaying == game.players[0]) {
+                game.timers[0].start(`player1`)
+                game.timers[1].pause(`player2`)
+            } else {
+                game.timers[1].start(`player2`)
+                game.timers[0].pause(`player1`)
+
+            }
+
+            if(game.winner != ``) {
+                game.timers[0].pause(`player1`)
+                game.timers[1].pause(`player2`)
+
+            }
+        }
+
         return game
     }   
     

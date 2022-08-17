@@ -65,7 +65,6 @@ joinMatchBtn?.addEventListener(`click`, () => {
 							game.drawBoard(appBoard, storedHash)
 							
 						game.paintBoard()
-						
 					}
 				}
 
@@ -76,13 +75,13 @@ joinMatchBtn?.addEventListener(`click`, () => {
 
 					let game = dataTransformed
 					
-					if(appBoard != null )
+					if(appBoard != null ) {
 						if(storedHash != null) 
 							game.drawBoard(appBoard, storedHash)
+						
+					}
 
-					
 					game.addToHistory()
-
 
 				});
 
@@ -118,13 +117,6 @@ createMatchBtn?.addEventListener(`click`, async() => {
 			pGameId.innerHTML = game.id
 			urlGame = game.id
 	
-			if(appBoard != null) {
-				game.drawBoard(appBoard, storedHash)
-					game.paintBoard()
-
-				
-			}
-	
 			const unsub = onSnapshot(doc(db, "games", game.id), (doc) => {
 				
 				let gameUpdated = doc.data()
@@ -149,7 +141,7 @@ createMatchBtn?.addEventListener(`click`, async() => {
 
 	if(btnCopyId != null)  {
 		btnCopyId.addEventListener(`click`, () => {
-			console.log(urlGame)
+			// console.log(urlGame)
 			if(urlGame != null)
 				navigator.clipboard.writeText(urlGame)
 			

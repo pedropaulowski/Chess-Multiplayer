@@ -13,7 +13,7 @@ import { storedHash } from "./main"
 import { color } from "./types/types"
 import { MovesAnalyzer } from "../src/classes/movesAnalyzer";
 import { gameOver } from "./components/gameOver"
-
+import { Clock } from "./classes/clock"
 
 const dbGame = new DBgame()
 
@@ -31,6 +31,7 @@ const dbGame = new DBgame()
 
 
 export class Game {
+    
     id: string;
     board : Piece[][];
     players : Array<string>;
@@ -38,7 +39,9 @@ export class Game {
     history : Array<string> | undefined;
     isBlackInCheck : boolean;
     isWhiteInCheck : boolean;
-    winner : string
+    winner : string;
+    timers : Clock[]
+
     constructor( players: Array<string>, whosPlaying: string, id : string) {
         this.board = this.createBoard()
         this.players = players
@@ -47,6 +50,7 @@ export class Game {
         this.isWhiteInCheck = false
         this.isBlackInCheck = false
         this.winner = ``
+        this.timers = [new Clock(5, 0, this.id), new Clock(5, 0, this.id)]
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
@@ -58,12 +62,23 @@ export class Game {
             if(aside != undefined) {
 
                 if(this.winner == storedHash)
-                    aside.innerHTML = gameOver(true)
+                    aside.innerHTML = gameOver(true, true)
                 else 
-                    aside.innerHTML = gameOver(false)
+                    aside.innerHTML = gameOver(false, true)
 
             }
 
+        } else if(this.winner != ``) {
+            let aside = document.querySelector(`.aside`)
+
+            if(aside != undefined) {
+
+                if(this.winner == storedHash)
+                    aside.innerHTML = gameOver(true, false)
+                else 
+                    aside.innerHTML = gameOver(false, false)
+
+            }
         }
 
 
@@ -159,7 +174,8 @@ export class Game {
         this.paintBoard()
     }
 
-    createBoard() {
+    createBoard() {      
+
         let board : Piece[][]
         board = []
         for(let i : number = 0 ; i < 8; i++) {
@@ -216,6 +232,7 @@ export class Game {
     }
 
     setOnClickFunctions(i: number, j: number, block: HTMLDivElement) {
+
         if(this.board[i][j] == undefined) {
             return
         }
@@ -262,17 +279,12 @@ export class Game {
         let possibleMoves = pieceObj.setPossibleMoves(pieceObj.position, this)
         // console.log(possibleMoves)
         
-        if(pieceType == `♟`) {
-            console.log(possibleMoves)
-        }
-
-
-
-
         if(pieceType != `Void` && pieceType != ``) {
             block.addEventListener("click", (e)=> {
                 e.preventDefault()
                 this.setMoves(possibleMoves, pieceObj, pieceType)
+                
+                
                 
             })
         }
@@ -358,6 +370,8 @@ export class Game {
                 this.whosPlaying = this.players[0]
 
         }
+        
+
     }
 
     paintPossibleBlock(possibleBlock:Element) {
@@ -366,8 +380,6 @@ export class Game {
         possibleBlock.classList.add(`possibleBlock`) 
     }
 
-
- 
     pawnPromotion(finalPosition: Position) {
         let divPromotion = document.querySelector(`#promotion`)
         
@@ -414,9 +426,6 @@ export class Game {
     }
 
     setMoves(possibleMoves: Position[], pieceObj: Piece, pieceType: string) {
-
-
-
                 // document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
                     // e.classList.remove(`possibleBlock`)
                 // })
@@ -487,7 +496,7 @@ export class Game {
                         let line = possibleMoves[i].line
                         let column = possibleMoves[i].column
                         let possibleBlock:any = document.querySelector(`#i${line}j${column}`)
-                        console.log(possibleBlock, possibleMoves[i])
+                        // console.log(possibleBlock, possibleMoves[i])
                         if(possibleBlock != undefined) {
                             /*if(pieceType == "Queen") {
                                 console.log(possibleBlock)
@@ -511,6 +520,13 @@ export class Game {
     }
 
     async callMove(line:number, column:number, pieceObj: Piece, pieceType: string, castling_K?:boolean, castling_Q?:boolean) {
+
+        if(this.players.length < 2) {
+            alert(`Espere o segundo jogador!`)
+            return
+        }
+
+
         let finalPosition = new Position(line, column)
         
         if(pieceType == `King` || pieceType == `♚`) {
@@ -603,11 +619,18 @@ export class Game {
 
     addToHistory() {
         let historyDOM = document.querySelector(`.history`)
+        
+        let textBlack = `background-color: black; color: white;`
+        let textWhite = ``
 
         if(historyDOM != null && this.history != null) {
             if(this.history.slice(-1)[0] != undefined) {
-                let movementDOM = `<p class="historyText">${this.history.slice(-1)[0]}</p>`
+                let movementDOM = `
+                    <p class="historyText" style='${(this.history.length%2 == 0)? textBlack : textWhite}'>
+                    ${this.history.length}.${this.history.slice(-1)[0]}</p>`
+                    
                 historyDOM.innerHTML += movementDOM
+
 
             }
 

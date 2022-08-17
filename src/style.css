@@ -27,7 +27,26 @@
 .fontBorderWhite {
   -webkit-text-stroke: 1px var(--soft);
 }
+.timer--black{
+  padding: 5px;
+  margin: 5px;
+  width: 50%;
+  background-color: black;
+  color: white;
+  text-align: center;
+  font-size: 1.2rem;
+}
+.timer--white{
+  padding: 5px;
+  margin: 5px;
+  width: 50%;
+  background-color: white;
+  color: black;
+  text-align: center;
+  font-size: 1.2rem;
 
+
+}
 #app {
   display: grid;
   grid-template-columns: auto auto auto auto auto auto auto auto;
