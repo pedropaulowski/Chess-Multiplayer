@@ -12,6 +12,7 @@ import { storedHash } from "./main"
 // import { players } from "./main"
 import { color } from "./types/types"
 import { MovesAnalyzer } from "../src/classes/movesAnalyzer";
+import { gameOver } from "./components/gameOver"
 
 
 const dbGame = new DBgame()
@@ -52,7 +53,17 @@ export class Game {
         let movesAnalyzer = new MovesAnalyzer() 
 
         if(movesAnalyzer.isMate(this) == true) {
-            console.log(`Check Mate`)
+            let aside = document.querySelector(`.aside`)
+
+            if(aside != undefined) {
+
+                if(this.winner == storedHash)
+                    aside.innerHTML = gameOver(true)
+                else 
+                    aside.innerHTML = gameOver(false)
+
+            }
+
         }
 
 

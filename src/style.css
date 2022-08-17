@@ -190,10 +190,10 @@
 
 }
 
+#gameOver{
+  background-color: var(--brownSoft);
+}
 @media (max-width: 800px) {
-  .aside {
-    display: none;
-  }
   .history {
     height: 10vh;
   }

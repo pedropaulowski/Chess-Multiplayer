@@ -1,3 +1,4 @@
+import { DBgame } from "../dao/firestoreCfg";
 import { Game } from "../game";
 import { Piece } from "../interfaces/piece";
 import { color } from "../types/types";
@@ -773,7 +774,7 @@ export class MovesAnalyzer {
             
             let adjacentBlocks : any = []
 
-            if(king.position.line != 7 && king.position.column) {
+            if(king.position.line != 7 && king.position.column != 7) {
                 adjacentBlocks.push(virtualGame.board[king.position.line+1][king.position.column+1])
             }
 
@@ -804,7 +805,7 @@ export class MovesAnalyzer {
             
             let adjacentBlocks : any = []
 
-            if(king.position.line != 7 && king.position.column) {
+            if(king.position.line != 7 && king.position.column != 7) {
                 adjacentBlocks.push(virtualGame.board[king.position.line+1][king.position.column+1])
             }
 
@@ -965,7 +966,12 @@ export class MovesAnalyzer {
         if(aux > 0) {
             return false
         } else {
-            game.winner = (game.whosPlaying == game.players[0])? game.players[0] : game.players[1]
+            game.winner = (game.whosPlaying == game.players[0])? game.players[1] : game.players[0]
+
+            let dbGame = new DBgame()
+
+            dbGame.updateGame(game.id, game)
+
             return true
         }
 
