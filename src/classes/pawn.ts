@@ -202,10 +202,20 @@ export class Pawn implements Piece {
             game.board[currentPosition.line][currentPosition.column] = new Void(currentPosition, "void")
 
             if(game.whosPlaying == game.players[1]) {
-                game.board[finalPositionObj.line-1][finalPositionObj.column] = new Void(currentPosition, "void")
 
-            } else {    
-                game.board[finalPositionObj.line+1][finalPositionObj.column] = new Void(currentPosition, "void")
+                if(game.board[finalPositionObj.line][finalPositionObj.column].unicode == `` &&
+                    game.board[finalPositionObj.line-1][finalPositionObj.column].color == `white`) {
+                        game.board[finalPositionObj.line-1][finalPositionObj.column] = new Void(currentPosition, "void")
+                    }
+
+            } else{  
+                
+                if(game.board[finalPositionObj.line][finalPositionObj.column].unicode == `` &&
+                    game.board[finalPositionObj.line+1][finalPositionObj.column].color == `black`) {
+                        game.board[finalPositionObj.line+1][finalPositionObj.column] = new Void(currentPosition, "void")
+
+                    }
+
             }
 
             game.board[finalPositionObj.line][finalPositionObj.column] = new Pawn(finalPositionObj, this.color)
