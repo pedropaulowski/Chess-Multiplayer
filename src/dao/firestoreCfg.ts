@@ -172,7 +172,7 @@ export class DBgame {
 
     updateGame = async (gameId: string , game : Game) => {
         let gameBoard : any = []
-        console.log(game)
+        // console.log(game)
         game.board.map( v => {
             v.map( e => {
                 let pieceName = e.unicode

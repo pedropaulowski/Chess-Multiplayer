@@ -49,8 +49,7 @@ export class MovesAnalyzer {
             for(let j = position.column+1; j < 8; j++) {
                 
                 if(board[position.line][j] != undefined) {
-                    if(
-                        (board[position.line][j].unicode == `♜` ||
+                    if((board[position.line][j].unicode == `♜` ||
                         board[position.line][j].unicode == `♛`) &&
                         board[position.line][j].color != piece.color
                     ) {
@@ -66,11 +65,9 @@ export class MovesAnalyzer {
             for(let j = position.column-1; j >= 0; j--) {
                 
                 if(board[position.line][j] != undefined) {
-                    if(
-                        (board[position.line][j].unicode == `♜` ||
+                    if((board[position.line][j].unicode == `♜` ||
                         board[position.line][j].unicode == `♛`) &&
-                        board[position.line][j].color != piece.color
-                    ) {
+                        board[position.line][j].color != piece.color) {
 
                         return true
                     } else if(board[position.line][j].color == piece.color) {
@@ -139,22 +136,17 @@ export class MovesAnalyzer {
         let pieceName = piece.unicode
         let board = game.board
 
-
         if(verifyingCheck == true) {
             // Verificar as 8 linhas tanto acima quanto a abaixo na mesma coluna
             for(let j = position.line+1; j < 8; j++) {
                                 
                 if(board[j][position.column] != undefined) {
-                    if(
-                        (board[j][position.column].unicode == `♜` ||
+                    if((board[j][position.column].unicode == `♜` ||
                         board[j][position.column].unicode == `♛`) && 
-                        board[j][position.column].color != piece.color
-                        ) {
+                        board[j][position.column].color != piece.color) {
                             // console.log(board[j][position.column])
                             return true
-                    } else if(board[j][position.column].color == piece.color ||
-                        (board[j][position.column].unicode != `♜` ||
-                        board[j][position.column].unicode != `♛`)) {
+                    } else if(board[j][position.column].color == piece.color) {
                         break;
                     }
                 }
@@ -163,17 +155,14 @@ export class MovesAnalyzer {
             for(let j = position.line-1; j >= 0; j--) {
             
                 if(board[j][position.column] != undefined) {
-                    if(
-                        
-                        (board[j][position.column].unicode == `♜` ||
+                    if((board[j][position.column].unicode == `♜` ||
                         board[j][position.column].unicode == `♛`) &&
-                        board[j][position.column].color != piece.color
-                        ) {
+                        board[j][position.column].color != piece.color) {
+                            // console.log(board[j][position.column])
+
                         return true
-                    } else if(board[j][position.column].color == piece.color ||
-                        (board[j][position.column].unicode != `♜` ||
-                        board[j][position.column].unicode != `♛`)
-                        ) {
+                    } else if(board[j][position.column].color == piece.color) {
+                            // console.log(`Parou em:`, board[j][position.column])
                         break;
                     }
         
@@ -255,8 +244,7 @@ export class MovesAnalyzer {
                 if(board[i][j+aux] != undefined) {
                     if((board[i][j+aux].unicode == `♝` ||
                     board[i][j+aux].unicode == `♛`) &&
-                    board[i][j+aux].color != piece.color
-                    ) {
+                    board[i][j+aux].color != piece.color) {
                         return true
                     } else if(board[i][j+aux].color == piece.color) {
                         break;
@@ -297,11 +285,9 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
-                    if(
-                        (board[i][j+aux].unicode == `♝` ||
-                        board[i][j+aux].unicode == `♛`)   &&
-                        board[i][j+aux].color != piece.color
-                        ) {
+                    if((board[i][j+aux].unicode == `♝` ||
+                        board[i][j+aux].unicode == `♛`) &&
+                        board[i][j+aux].color != piece.color) {
                         return true
                     } else if(board[i][j+aux].color == piece.color) {
                         break;
@@ -319,11 +305,9 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
-                    if(
-                    (board[i][j+aux].unicode == `♝` ||
+                    if((board[i][j+aux].unicode == `♝` ||
                     board[i][j+aux].unicode == `♛`) &&
-                    board[i][j+aux].color != piece.color 
-                    ) {
+                    board[i][j+aux].color != piece.color) {
                         return true
                     } else if(board[i][j+aux].color == piece.color) {
                         break;
@@ -361,13 +345,14 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
-                    if(
-                        board[i][j+aux].unicode == ``) {
+                    if(board[i][j+aux].unicode == ``) {
+
                         let analyzedPosition = new Position(i, j+aux)
                         this.possibleMoves.push(analyzedPosition)
+                    
                     } else if(board[i][j+aux].color != piece.color) {
                         let analyzedPosition = new Position(i, j+aux)
-                        
+            
                         this.possibleMoves.push(analyzedPosition)
                         
                         break;
@@ -724,31 +709,29 @@ export class MovesAnalyzer {
     isValidMove(virtualGame: Game) {
         let colorWhosPlaying : color = (virtualGame.whosPlaying == virtualGame.players[0])? `white` : `black`
         let king : Piece
-        king = new King(new Position(1,1), colorWhosPlaying)
+        king = new King(new Position(9,9), colorWhosPlaying)
 
-         
 
-    
-        
         virtualGame.board.map( (line) => {
             line.map((piece) => {
-                if(piece.unicode == `♚` && piece.color == colorWhosPlaying)
+                if(piece.unicode == `♚` && piece.color == colorWhosPlaying) {
                     king = piece
+                }
             })
         })
             
-        
 
         if( this.diagonalMoves(king.position, king, virtualGame, true) == true||
             this.verticalMoves(king.position, king, virtualGame, true) == true ||
             this.horizontalMoves(king.position, king, virtualGame, true) == true||
             this.twoOneMoves(king.position, king, virtualGame, true) == true ||
             this.hasAdjacentPawn(virtualGame, king) == true ||
-            this.hasAdjacentKing(virtualGame, king) == true
-        ) {
-            // console.log(`Movimento Invalido`)
+            this.hasAdjacentKing(virtualGame, king) == true) {
+            console.log(`Movimento Invalido`)
             return false
         } else {
+
+            console.log(virtualGame)
             return true
         }
     }
@@ -942,24 +925,31 @@ export class MovesAnalyzer {
 
 
         localStorage.setItem(`game`, JSON.stringify(game))
-        let storedGame = localStorage.getItem(`game`)
-        
-        if(storedGame != null)  
-            storedGame = JSON.parse(storedGame)
-            
+
+
 
         let aux = 0
-
-
-
 
         pieces.map((piece) => {        
             let possibleMoves = piece.setPossibleMoves(piece.position, game)
             possibleMoves.map((finalPosition) => {
+                let storedGame = localStorage.getItem(`game`)
+        
+                if(storedGame != null)  {
+                    storedGame = JSON.parse(storedGame)
+                }
+                    
                 if(storedGame != undefined && typeof storedGame != `string`) {
                     piece.move(piece.position, finalPosition, storedGame)
-                    if(this.isValidMove(storedGame) == true)
+                    storedGame = storedGame
+                    
+                    if(this.isValidMove(storedGame) == true) {
+                        // console.log(piece, finalPosition, this.isValidMove(storedGame))
                         aux++
+                        
+                    }
+                    
+
 
                 }
             })
@@ -997,7 +987,7 @@ export class MovesAnalyzer {
             if(pawn.position.column > 0) {
                 if(game.history[game.history.length-1] == `♟${pos[pawn.position.column-1]}${pawn.position.line}`
                 ) {
-                    console.log(`En passant`)
+                    // console.log(`En passant`)
                      
                     let finalPosition = {
                         line: pawn.position.line-1,
@@ -1006,7 +996,7 @@ export class MovesAnalyzer {
 
                     possibleMoves.push(finalPosition)
 
-                    console.log(possibleMoves)
+                    // console.log(possibleMoves)
 
                 } 
             }
@@ -1023,7 +1013,7 @@ export class MovesAnalyzer {
 
                     possibleMoves.push(finalPosition)
 
-                    console.log(possibleMoves)
+                    // console.log(possibleMoves)
 
                 } 
             }
@@ -1046,7 +1036,7 @@ export class MovesAnalyzer {
     
                         possibleMoves.push(finalPosition)
     
-                        console.log(possibleMoves)
+                        // console.log(possibleMoves)
     
                     } 
                 }
@@ -1063,7 +1053,7 @@ export class MovesAnalyzer {
     
                         possibleMoves.push(finalPosition)
     
-                        console.log(possibleMoves)
+                        // console.log(possibleMoves)
     
                     } 
                 }

@@ -212,6 +212,8 @@
 #gameOver{
   background-color: var(--brownSoft);
 }
+
+/* 
 @media (max-width: 800px) {
   .history {
     height: 10vh;
@@ -238,4 +240,4 @@
   .fontBorderWhite {
     -webkit-text-stroke: 0.1px var(--soft);
   }
-}
+} */
