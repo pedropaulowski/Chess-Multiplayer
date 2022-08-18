@@ -83,6 +83,8 @@ export class Clock {
                 clearInterval(counter)
 
             }
+            clearInterval(cron)
+            clearInterval(counter)
             // alert(`Acabou o tempo`)
         }
 

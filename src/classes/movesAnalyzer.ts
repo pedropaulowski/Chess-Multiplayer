@@ -49,6 +49,17 @@ export class MovesAnalyzer {
             for(let j = position.column+1; j < 8; j++) {
                 
                 if(board[position.line][j] != undefined) {
+
+                    if(!(board[position.line][j].unicode == `♜` ||
+                        board[position.line][j].unicode == `♛`) && 
+                        (board[position.line][j].color == `black` ||
+                        board[position.line][j].color == `white`)
+                    ) {
+                        break;
+                    }
+
+
+
                     if((board[position.line][j].unicode == `♜` ||
                         board[position.line][j].unicode == `♛`) &&
                         board[position.line][j].color != piece.color
@@ -65,13 +76,21 @@ export class MovesAnalyzer {
             for(let j = position.column-1; j >= 0; j--) {
                 
                 if(board[position.line][j] != undefined) {
+
+                    if(!(board[position.line][j].unicode == `♜` ||
+                        board[position.line][j].unicode == `♛`) && 
+                        (board[position.line][j].color == `black` ||
+                        board[position.line][j].color == `white`)
+                    ) {
+                        break;
+                    }
+
                     if((board[position.line][j].unicode == `♜` ||
                         board[position.line][j].unicode == `♛`) &&
                         board[position.line][j].color != piece.color) {
 
                         return true
                     } else if(board[position.line][j].color == piece.color) {
-  
                         break;
                     }
                 }
@@ -141,6 +160,17 @@ export class MovesAnalyzer {
             for(let j = position.line+1; j < 8; j++) {
                                 
                 if(board[j][position.column] != undefined) {
+
+
+                    if(!(board[j][position.column].unicode == `♜` ||
+                        board[j][position.column].unicode == `♛`) && 
+                        (board[j][position.column].color == `black` ||
+                        board[j][position.column].color == `white`)
+                    ) {
+                        break;
+                    }
+
+
                     if((board[j][position.column].unicode == `♜` ||
                         board[j][position.column].unicode == `♛`) && 
                         board[j][position.column].color != piece.color) {
@@ -149,19 +179,33 @@ export class MovesAnalyzer {
                     } else if(board[j][position.column].color == piece.color) {
                         break;
                     }
+
+                    
                 }
             }
 
             for(let j = position.line-1; j >= 0; j--) {
             
                 if(board[j][position.column] != undefined) {
+
+                    if(!(board[j][position.column].unicode == `♜` ||
+                    board[j][position.column].unicode == `♛`) && 
+                    (board[j][position.column].color == `black` ||
+                    board[j][position.column].color == `white`)
+                    ) {
+
+                    console.log(board[j][position.column].unicode, board[j][position.column].color)
+                        break;
+                    }
+
+
                     if((board[j][position.column].unicode == `♜` ||
                         board[j][position.column].unicode == `♛`) &&
                         board[j][position.column].color != piece.color) {
                             // console.log(board[j][position.column])
 
                         return true
-                    } else if(board[j][position.column].color == piece.color) {
+                    } else if(board[j][position.column].color == piece.color)  {
                             // console.log(`Parou em:`, board[j][position.column])
                         break;
                     }
@@ -242,6 +286,17 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
+
+                    if(!(board[i][j+aux].unicode == `♝` ||
+                        board[i][j+aux].unicode == `♛`) && 
+                        (board[i][j+aux].color == `black` ||
+                        board[i][j+aux].color == `white`)
+                    ) {
+                        break;
+                    }
+
+
+
                     if((board[i][j+aux].unicode == `♝` ||
                     board[i][j+aux].unicode == `♛`) &&
                     board[i][j+aux].color != piece.color) {
@@ -262,8 +317,16 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
-                    if(
-                        (board[i][j+aux].unicode == `♝` ||
+
+                    if(!(board[i][j+aux].unicode == `♝` ||
+                        board[i][j+aux].unicode == `♛`) && 
+                        (board[i][j+aux].color == `black` ||
+                        board[i][j+aux].color == `white`)
+                    ) {
+                        break;
+                    }
+
+                    if((board[i][j+aux].unicode == `♝` ||
                         board[i][j+aux].unicode == `♛`) &&
                         board[i][j+aux].color != piece.color
                         ) {
@@ -285,6 +348,17 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
+
+
+                    
+                    if(!(board[i][j+aux].unicode == `♝` ||
+                        board[i][j+aux].unicode == `♛`) && 
+                        (board[i][j+aux].color == `black` ||
+                        board[i][j+aux].color == `white`)
+                    ) {
+                        break;
+                    }
+
                     if((board[i][j+aux].unicode == `♝` ||
                         board[i][j+aux].unicode == `♛`) &&
                         board[i][j+aux].color != piece.color) {
@@ -305,6 +379,17 @@ export class MovesAnalyzer {
                     break;
 
                 if(board[i][j+aux] != undefined) {
+
+
+                    if(!(board[i][j+aux].unicode == `♝` ||
+                        board[i][j+aux].unicode == `♛`) && 
+                        (board[i][j+aux].color == `black` ||
+                        board[i][j+aux].color == `white`)
+                    ) {
+                        break;
+                    }
+
+
                     if((board[i][j+aux].unicode == `♝` ||
                     board[i][j+aux].unicode == `♛`) &&
                     board[i][j+aux].color != piece.color) {
@@ -567,7 +652,7 @@ export class MovesAnalyzer {
 
         if(check == true && checkMate != false) {
             moveNotation += `+`
-            console.log(`Check: ${check}`)
+            // console.log(`Check: ${check}`)
         }else if(checkMate == true)
             moveNotation += `#`
 
@@ -731,7 +816,7 @@ export class MovesAnalyzer {
             return false
         } else {
 
-            console.log(virtualGame)
+            // console.log(virtualGame)
             return true
         }
     }
