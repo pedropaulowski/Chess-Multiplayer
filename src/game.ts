@@ -50,38 +50,15 @@ export class Game {
         this.isWhiteInCheck = false
         this.isBlackInCheck = false
         this.winner = ``
-        this.timers = [new Clock(1, 10, this.id), new Clock(1, 10, this.id)]
+
+        this.timers = [new Clock(5, 0, this.id), new Clock(5, 0, this.id)]
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
-        let movesAnalyzer = new MovesAnalyzer() 
-
-        if(movesAnalyzer.isMate(this) == true) {
-            let aside = document.querySelector(`.aside`)
-
-            if(aside != undefined) {
-
-                if(this.winner == storedHash)
-                    aside.innerHTML = gameOver(true, true)
-                else 
-                    aside.innerHTML = gameOver(false, true)
-
-            }
-
-        } else if(this.winner != ``) {
-            let aside = document.querySelector(`.aside`)
-
-            if(aside != undefined) {
-
-                if(this.winner == storedHash)
-                    aside.innerHTML = gameOver(true, false)
-                else 
-                    aside.innerHTML = gameOver(false, false)
-
-            }
-        }
-
-
+        
+        this.verifyGameOver()
+        
+        
 
         if(divBoard != null) {
             divBoard.innerHTML = ``
@@ -232,6 +209,10 @@ export class Game {
     }
 
     setOnClickFunctions(i: number, j: number, block: HTMLDivElement) {
+        
+        if(this.verifyGameOver() == true) {
+            return
+        }
 
         if(this.board[i][j] == undefined) {
             return
@@ -579,7 +560,7 @@ export class Game {
                 game.history = this.history
                 game.isBlackInCheck = this.isBlackInCheck
                 game.isWhiteInCheck = this.isWhiteInCheck
-
+                game.timers = this.timers
 
                 if(appBoard != null) {
                     if(storedHash != null) 
@@ -623,13 +604,21 @@ export class Game {
         let textBlack = `background-color: black; color: white;`
         let textWhite = ``
 
+        let allMoves = document.querySelectorAll(`.historyText`)
+        let lastMovement
+        if(allMoves != null) {
+            lastMovement = document.querySelectorAll(`.historyText`)[allMoves.length-1]
+        }
+        
+
         if(historyDOM != null && this.history != null) {
             if(this.history.slice(-1)[0] != undefined) {
-                let movementDOM = `
-                    <p class="historyText" style='${(this.history.length%2 == 0)? textBlack : textWhite}'>
-                    ${this.history.length}.${this.history.slice(-1)[0]}</p>`
+                let text = `${this.history.length}.${this.history.slice(-1)[0]}`
+                let movementDOM = `<p class="historyText" style='${(this.history.length%2 == 0)? textBlack : textWhite}'>${text}</p>`
                     
-                historyDOM.innerHTML += movementDOM
+                if(lastMovement?.innerHTML !== text)
+                    historyDOM.innerHTML += movementDOM
+
 
 
             }
@@ -639,4 +628,38 @@ export class Game {
         }
     }
     
+    verifyGameOver() {
+        let movesAnalyzer = new MovesAnalyzer() 
+
+        if(movesAnalyzer.isMate(this) == true) {
+            let aside = document.querySelector(`.aside`)
+
+            if(aside != undefined) {
+
+                if(this.winner == storedHash)
+                    aside.innerHTML = gameOver(true, true)
+                else 
+                    aside.innerHTML = gameOver(false, true)
+
+            }
+            return true
+
+
+        } else if(this.winner != ``) {
+            let aside = document.querySelector(`.aside`)
+
+            if(aside != undefined) {
+
+                if(this.winner == storedHash)
+                    aside.innerHTML = gameOver(true, false)
+                else 
+                    aside.innerHTML = gameOver(false, false)
+
+            }
+
+            return true
+        }
+
+        return false
+    }
 }

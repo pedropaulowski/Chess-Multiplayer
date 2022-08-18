@@ -193,8 +193,7 @@ export class MovesAnalyzer {
                     (board[j][position.column].color == `black` ||
                     board[j][position.column].color == `white`)
                     ) {
-
-                    console.log(board[j][position.column].unicode, board[j][position.column].color)
+                    // console.log(board[j][position.column].unicode, board[j][position.column].color)
                         break;
                     }
 
