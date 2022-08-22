@@ -631,7 +631,7 @@ export class MovesAnalyzer {
         // let inicialLine = inicialPosition.line
 
         let finalColumn = pos[finalPosition.column]
-        let finalLine = finalPosition.line
+        let finalLine = 8-finalPosition.line
 
 
         if(isCapturing == false) {
