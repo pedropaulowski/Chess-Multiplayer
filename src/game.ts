@@ -51,7 +51,7 @@ export class Game {
         this.isBlackInCheck = false
         this.winner = ``
 
-        this.timers = [new Clock(5, 0, this.id), new Clock(5, 0, this.id)]
+        this.timers = [new Clock(3, 0, this.id), new Clock(3, 0, this.id)]
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
@@ -84,7 +84,13 @@ export class Game {
 
                         if(this.board[i][j].color != "void") {
                             block.classList.add(`clickable`)
-                            block.innerHTML = `${this.board[i][j].unicode}`
+                            //  block.innerHTML = `${this.board[i][j].unicode}`
+                            let imgDOM = document.createElement(`img`)
+                            let stringSVG :any = this.getSVG(this.board[i][j].unicode, this.board[i][j].color)
+                            imgDOM.setAttribute(`src`, `/${stringSVG}`)
+
+  
+                            block.appendChild(imgDOM)
                             block.style.color = this.board[i][j].color 
 
                             if(block.style.color == `white`) {
@@ -127,7 +133,15 @@ export class Game {
 
                         // console.log(this.board)
                         if(this.board[i][j].color != "void") {
-                            block.innerHTML = `${this.board[i][j].unicode}`
+                            // block.innerHTML = `${this.board[i][j].unicode}`
+                            //  block.innerHTML = `${this.board[i][j].unicode}`
+                            let imgDOM = document.createElement(`img`)
+                            let stringSVG = this.getSVG(this.board[i][j].unicode, this.board[i][j].color)
+                            imgDOM.setAttribute(`src`, `/${stringSVG}`)
+
+                            block.appendChild(imgDOM)
+                            block.style.color = this.board[i][j].color 
+
                             block.style.color = this.board[i][j].color
                             block.classList.add(`clickable`)
 
@@ -351,14 +365,32 @@ export class Game {
                 this.whosPlaying = this.players[0]
 
         }
-        
-
+    
     }
 
-    paintPossibleBlock(possibleBlock:Element) {
+    soundOfMove() {
+        let audio = new Audio('sound.wav');
+        audio.play();
+    }
+
+    paintPossibleBlock(possibleBlock:any) {
         possibleBlock.classList.remove(`white`)  
         possibleBlock.classList.remove(`black`)  
         possibleBlock.classList.add(`possibleBlock`) 
+
+
+        possibleBlock.ondragover = (e:any) => {
+            e.preventDefault()
+            console.log(`over`)
+        }
+
+        possibleBlock.addEventListener(`drop`, (e:any)=> {
+            e.preventDefault()
+
+            console.log(`drop`)
+
+        })
+
     }
 
     pawnPromotion(finalPosition: Position) {
@@ -488,6 +520,10 @@ export class Game {
                             this.paintPossibleBlock(possibleBlock)
                             
                             possibleBlock.onclick = () => {
+
+
+
+
                                 this.callMove(line, column, pieceObj, pieceType)
                             }
 
@@ -631,6 +667,12 @@ export class Game {
     verifyGameOver() {
         let movesAnalyzer = new MovesAnalyzer() 
 
+
+        if(this.winner != ``){
+            this.timers[0].pause(`player1`)
+            this.timers[1].pause(`player2`)
+        }
+
         if(movesAnalyzer.isMate(this) == true) {
             let aside = document.querySelector(`.aside`)
 
@@ -641,13 +683,18 @@ export class Game {
                 else 
                     aside.innerHTML = gameOver(false, true)
 
+
+                if(this.winner != ``){
+                    this.timers[0].pause(`player1`)
+                    this.timers[1].pause(`player2`)
+        
+                }
             }
             return true
 
 
         } else if(this.winner != ``) {
             let aside = document.querySelector(`.aside`)
-
             if(aside != undefined) {
 
                 if(this.winner == storedHash)
@@ -655,11 +702,56 @@ export class Game {
                 else 
                     aside.innerHTML = gameOver(false, false)
 
+
+                if(this.winner != ``){
+                    this.timers[0].pause(`player1`)
+                    this.timers[1].pause(`player2`)
+        
+                }
             }
 
             return true
         }
 
+
+
         return false
+    }
+
+    getSVG(unicode: string, color: color) {
+        let svgString : string = ``
+        switch(unicode) {
+
+            case(`♜`):
+            svgString = `${color}_rook.svg`
+
+            break;
+
+            case(`♞`):
+            svgString = `${color}_knight.svg`
+
+            break;
+
+            case(`♝`):
+            svgString = `${color}_bishop.svg`
+
+            break;
+
+            case(`♛`):
+            svgString = `${color}_queen.svg`
+
+            break;
+
+            case(`♚`):
+            svgString = `${color}_king.svg`
+
+            break;
+
+            case (`♟`):
+            svgString = `${color}_pawn.svg`
+            break;
+        }
+
+        return svgString
     }
 }

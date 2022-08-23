@@ -65,16 +65,20 @@
   width: 90px;
   height: 90px;
   word-wrap: break-word;
-  border: 1px solid transparent;
-  font-size: 80px;
+  /* border: 1px solid transparent; */
   line-height: 90px;
   text-align: center;
-
+  box-sizing: border-box;
 }
 
 .possibleBlock {
-  background-color: var(--green);
+  text-align: center;
+  background-color: #f4eb9e;
   border: 1px solid black;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .white {
@@ -195,6 +199,10 @@
   color: var(--white);
 }
 
+img{
+  background-color: transparent;
+  width: 88px;
+}
 
 @media (max-width: 1120px)
 {
@@ -208,7 +216,9 @@
 
 
 }
-
+.invisible {
+  display: none;
+}
 #gameOver{
   background-color: var(--brownSoft);
 }

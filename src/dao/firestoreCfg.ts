@@ -263,6 +263,8 @@ export class DBgame {
             }
         }
 
+        game.soundOfMove()
+
         return game
     }   
     
