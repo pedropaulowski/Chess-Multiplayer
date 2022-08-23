@@ -51,13 +51,21 @@ export class Game {
         this.isBlackInCheck = false
         this.winner = ``
 
-        this.timers = [new Clock(3, 0, this.id), new Clock(3, 0, this.id)]
+        this.timers = [new Clock(0, 10, this.id), new Clock(0, 10, this.id)]
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
         
-        this.verifyGameOver()
+        let gameOver = this.verifyGameOver()
+        console.log(gameOver)
+        if(gameOver == true) {
         
+            this.timers[0].pause(`player1`)
+            this.timers[1].pause(`player2`)
+
+          
+      
+        }
         
 
         if(divBoard != null) {
@@ -668,11 +676,6 @@ export class Game {
         let movesAnalyzer = new MovesAnalyzer() 
 
 
-        if(this.winner != ``){
-            this.timers[0].pause(`player1`)
-            this.timers[1].pause(`player2`)
-        }
-
         if(movesAnalyzer.isMate(this) == true) {
             let aside = document.querySelector(`.aside`)
 
@@ -683,12 +686,6 @@ export class Game {
                 else 
                     aside.innerHTML = gameOver(false, true)
 
-
-                if(this.winner != ``){
-                    this.timers[0].pause(`player1`)
-                    this.timers[1].pause(`player2`)
-        
-                }
             }
             return true
 
@@ -702,17 +699,10 @@ export class Game {
                 else 
                     aside.innerHTML = gameOver(false, false)
 
-
-                if(this.winner != ``){
-                    this.timers[0].pause(`player1`)
-                    this.timers[1].pause(`player2`)
-        
-                }
             }
 
             return true
         }
-
 
 
         return false

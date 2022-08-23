@@ -86,6 +86,9 @@ export class Clock {
             clearInterval(cron)
             clearInterval(counter)
             // alert(`Acabou o tempo`)
+        } else if (this.minutes < 0 || this.seconds < 0) {
+            clearInterval(cron)
+            clearInterval(counter)
         }
 
     }
@@ -94,7 +97,7 @@ export class Clock {
 
         if(divID == `player1`)
             clearInterval(counter)
-        else 
+        if(divID == `player2`)
             clearInterval(cron)
 
 
