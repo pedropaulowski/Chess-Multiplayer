@@ -403,18 +403,6 @@ export class Game {
             possibleBlock.classList.add(`bgc--brownDark`)
         }
 
-        possibleBlock.ondragover = (e:any) => {
-            e.preventDefault()
-            console.log(`over`)
-        }
-
-        possibleBlock.addEventListener(`drop`, (e:any)=> {
-            e.preventDefault()
-
-            console.log(`drop`)
-
-        })
-
     }
 
     pawnPromotion(finalPosition: Position) {
@@ -601,6 +589,7 @@ export class Game {
         let movesAnalyzer = new MovesAnalyzer()
 
         if(movesAnalyzer.isValidMove(this) == false) {
+            this.history?.pop()
             if((pieceType == `King` || pieceType == `♚`) && (castling_K == true || castling_Q == true)) {
                 localStorage.removeItem(`King`)
             }

@@ -811,8 +811,9 @@ export class MovesAnalyzer {
             this.twoOneMoves(king.position, king, virtualGame, true) == true ||
             this.hasAdjacentPawn(virtualGame, king) == true ||
             this.hasAdjacentKing(virtualGame, king) == true) {
-            console.log(`Movimento Invalido`)
+            // console.log(`Movimento Invalido`)
             return false
+            
         } else {
 
             // console.log(virtualGame)

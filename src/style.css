@@ -86,11 +86,12 @@
   align-items: center;
 }
 .circle {
+  position: absolute;
   width: 25px;
   height: 25px;
-  background-color: black;
+  background-color: red;
   border-radius: 50%;
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .white {
