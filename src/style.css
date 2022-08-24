@@ -53,7 +53,7 @@
   max-width: 736px;
   width: 100%;
   margin: auto;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   min-height: 10vh;
   justify-content: center;
   align-items: center;
@@ -69,6 +69,8 @@
   line-height: 90px;
   text-align: center;
   box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
 }
 .bgc--brownDark {
   background-color: var(--brownDark);
@@ -87,11 +89,22 @@
 }
 .circle {
   position: absolute;
-  width: 25px;
-  height: 25px;
-  background-color: red;
+  width: 33px;
+  height: 33px;
+  background-color: black;
   border-radius: 50%;
-  opacity: 1;
+  opacity: 0.1;
+
+}
+
+.bigCircle {
+  position: absolute;
+  width: 85px;
+  height: 85px;
+  background-color: transparent;
+  border-radius: 50%;
+  opacity: 0.1;
+  border: 7px solid black;
 }
 
 .white {
@@ -102,7 +115,17 @@
 }
 .clickable {
   cursor: pointer;
+  box-sizing: border-box;
+  transition: all ease 0s;
+  
 }
+.clickable:hover{
+  border: 3px solid var(--soft);
+}
+.borderSelected{
+  border: 3px solid var(--soft);
+}
+
 
 
 
@@ -119,7 +142,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 5%;
+  margin-top: 2px;
 }
 
 .input {
@@ -213,8 +236,9 @@
 }
 
 img{
+  /* position: absolute; */
   background-color: transparent;
-  width: 88px;
+  width: 85px;
 }
 
 @media (max-width: 1120px)

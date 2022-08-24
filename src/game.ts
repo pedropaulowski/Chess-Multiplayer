@@ -91,7 +91,9 @@ export class Game {
                         // this.setOnClickFunctions(i, j, block)
 
                         if(this.board[i][j].color != "void") {
-                            block.classList.add(`clickable`)
+                            if(this.board[i][j].color == "white" && this.whosPlaying == storedHash) {
+                                block.classList.add(`clickable`)
+                            }
                             //  block.innerHTML = `${this.board[i][j].unicode}`
                             let imgDOM = document.createElement(`img`)
                             let stringSVG :any = this.getSVG(this.board[i][j].unicode, this.board[i][j].color)
@@ -143,6 +145,9 @@ export class Game {
                         if(this.board[i][j].color != "void") {
                             // block.innerHTML = `${this.board[i][j].unicode}`
                             //  block.innerHTML = `${this.board[i][j].unicode}`
+                            if(this.board[i][j].color == "black" && this.whosPlaying == storedHash) {
+                                block.classList.add(`clickable`)
+                            }
                             let imgDOM = document.createElement(`img`)
                             let stringSVG = this.getSVG(this.board[i][j].unicode, this.board[i][j].color)
                             imgDOM.setAttribute(`src`, `/${stringSVG}`)
@@ -151,7 +156,7 @@ export class Game {
                             block.style.color = this.board[i][j].color 
 
                             block.style.color = this.board[i][j].color
-                            block.classList.add(`clickable`)
+                            // block.classList.add(`clickable`)
 
                             if(block.style.color == `white`) {
                                 block.classList.add(`fontBorderBlack`)
@@ -244,8 +249,6 @@ export class Game {
         let position = new Position(i, j)
         let color = this.board[i][j].color
         pieceObj = new Void(position, color)
-
-
         
         switch(pieceType) {
             case (`Pawn`):
@@ -286,6 +289,7 @@ export class Game {
             block.addEventListener("click", (e)=> {
                 e.preventDefault()
                 this.setMoves(possibleMoves, pieceObj, pieceType)
+                
                 
                 
                 
@@ -385,9 +389,22 @@ export class Game {
         possibleBlock.classList.remove(`white`)  
         possibleBlock.classList.remove(`black`)  
         possibleBlock.classList.add(`possibleBlock`) 
-        let circle = document.createElement(`div`)
-        possibleBlock.appendChild(circle)
-        circle.className = `circle`
+        // console.log(possibleBlock)
+        let piece = possibleBlock.querySelector(`img`)
+
+        if(piece === null) {
+            let circle = document.createElement(`div`)
+            possibleBlock.classList.remove(`bigCircle`)  
+            possibleBlock.appendChild(circle)
+            circle.className = `circle`
+
+        } else{
+            let bigCircle = document.createElement(`div`)
+            possibleBlock.classList.remove(`bigCircle`)  
+            possibleBlock.appendChild(bigCircle)
+            bigCircle.className = `bigCircle`
+        }
+
 
         let i = parseInt(possibleBlock.getAttribute(`i`))
         let j = parseInt(possibleBlock.getAttribute(`j`))
@@ -454,6 +471,7 @@ export class Game {
                 // document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
                     // e.classList.remove(`possibleBlock`)
                 // })
+
                 let clientToken = storedHash
                 if(clientToken != null) {
 
