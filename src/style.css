@@ -70,15 +70,27 @@
   text-align: center;
   box-sizing: border-box;
 }
-
+.bgc--brownDark {
+  background-color: var(--brownDark);
+}
+.bgc--brownSoft {
+  background-color: var(--brownSoft);
+}
 .possibleBlock {
   text-align: center;
-  background-color: #f4eb9e;
-  border: 1px solid black;
+  /* background-color: var(--brownSoft); */
+  /* border: 1px solid black; */
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.circle {
+  width: 25px;
+  height: 25px;
+  background-color: black;
+  border-radius: 50%;
+  opacity: 0.5;
 }
 
 .white {

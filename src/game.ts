@@ -51,13 +51,13 @@ export class Game {
         this.isBlackInCheck = false
         this.winner = ``
 
-        this.timers = [new Clock(0, 10, this.id), new Clock(0, 10, this.id)]
+        this.timers = [new Clock(5, 0, this.id), new Clock(5, 0, this.id)]
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
         
         let gameOver = this.verifyGameOver()
-        console.log(gameOver)
+        // console.log(gameOver)
         if(gameOver == true) {
         
             this.timers[0].pause(`player1`)
@@ -385,7 +385,23 @@ export class Game {
         possibleBlock.classList.remove(`white`)  
         possibleBlock.classList.remove(`black`)  
         possibleBlock.classList.add(`possibleBlock`) 
+        let circle = document.createElement(`div`)
+        possibleBlock.appendChild(circle)
+        circle.className = `circle`
 
+        let i = parseInt(possibleBlock.getAttribute(`i`))
+        let j = parseInt(possibleBlock.getAttribute(`j`))
+
+        // console.log(i, j)
+        if(i%2 == 0 && j%2== 0) {
+            possibleBlock.classList.add(`bgc--brownSoft`)
+        } else if(i%2 != 0 && j%2 ==  0){
+            possibleBlock.classList.add(`bgc--brownDark`)
+        } else if(i%2 != 0 && j%2!= 0){
+            possibleBlock.classList.add(`bgc--brownSoft`)
+        } else if(i%2 == 0 && j%2 != 0){
+            possibleBlock.classList.add(`bgc--brownDark`)
+        }
 
         possibleBlock.ondragover = (e:any) => {
             e.preventDefault()
