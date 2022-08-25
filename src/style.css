@@ -61,6 +61,7 @@
 }
 
 .block {
+  font-size: 70px;
   display: inline-grid;
   width: 90px;
   height: 90px;
@@ -99,8 +100,8 @@
 
 .bigCircle {
   position: absolute;
-  width: 85px;
-  height: 85px;
+  width: 75px;
+  height: 75px;
   background-color: transparent;
   border-radius: 50%;
   opacity: 0.1;
@@ -125,9 +126,6 @@
 .borderSelected{
   border: 3px solid var(--soft);
 }
-
-
-
 
 .label {
   width: 90%;
@@ -216,9 +214,8 @@
   height: 1.4rem;
 }
 .promotion {
-  position: fixed;
+  position: absolute;
   max-width: 816px;
-  width: 100%;
   top: 50%;
   left: 50%;
   transform: translate(-30%, -50%);

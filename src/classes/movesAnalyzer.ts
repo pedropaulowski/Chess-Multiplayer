@@ -1062,15 +1062,16 @@ export class MovesAnalyzer {
         let possibleMoves : Position[]
         possibleMoves = []
 
+
         if(colorWhosPlaying == `white` && 
             pawn.position.line == 3 &&
             pawn.color == `white` &&
             game.history != null ) {
-
-                
             
             if(pawn.position.column > 0) {
-                if(game.history[game.history.length-1] == `♟${pos[pawn.position.column-1]}${pawn.position.line}`
+                // console.log(`♟${pos[pawn.position.column-1]}${8-pawn.position.line}`)
+
+                if(game.history[game.history.length-1] == `♟${pos[pawn.position.column-1]}${8-pawn.position.line}`
                 ) {
                     // console.log(`En passant`)
                      
@@ -1087,9 +1088,9 @@ export class MovesAnalyzer {
             }
 
             if(pawn.position.column < 7) {
-                if(game.history[game.history.length-1] == `♟${pos[pawn.position.column+1]}${pawn.position.line}`
+                if(game.history[game.history.length-1] == `♟${pos[pawn.position.column+1]}${8-pawn.position.line}`
                 ) {
-                    console.log(`En passant`)
+                    // console.log(`En passant`)
                      
                     let finalPosition = {
                         line: pawn.position.line-1,
@@ -1129,7 +1130,7 @@ export class MovesAnalyzer {
                 if(pawn.position.column < 7) {
                     if(game.history[game.history.length-1] == `♟${pos[pawn.position.column+1]}${pawn.position.line}`
                     ) {
-                        console.log(`En passant`)
+                        // console.log(`En passant`)
                          
                         let finalPosition = {
                             line: pawn.position.line+1,

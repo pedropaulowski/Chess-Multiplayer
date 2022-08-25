@@ -468,102 +468,102 @@ export class Game {
     }
 
     setMoves(possibleMoves: Position[], pieceObj: Piece, pieceType: string) {
-                // document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
-                    // e.classList.remove(`possibleBlock`)
-                // })
+        // document.querySelectorAll(`.possibleBlock`).forEach((e) =>{
+            // e.classList.remove(`possibleBlock`)
+        // })
+        let clientToken = storedHash
+        if(clientToken != null) {
+
+            let appBoard = document.querySelector<HTMLDivElement>("#app")
+            
+            if(appBoard != null) {
 
                 let clientToken = storedHash
-                if(clientToken != null) {
+                if(clientToken != null){
 
-                    let appBoard = document.querySelector<HTMLDivElement>("#app")
-                    
-                    if(appBoard != null) {
+                    this.drawBoard(appBoard, clientToken)
 
-                        let clientToken = storedHash
-                        if(clientToken != null){
-
-                            this.drawBoard(appBoard, clientToken)
-
-                        }
-            
-                    }
-
-                    let movesAnalyzer = new MovesAnalyzer()
-                    let castling_Q:any = movesAnalyzer.castling_Q(this)
-                    let castlingMoves = []
-
-                    if(castling_Q != null) 
-                        castlingMoves.push(castling_Q)
-      
-                    let castling_K:any = movesAnalyzer.castling_K(this)
-                        
-                    if(castling_K != null)  
-                        castlingMoves.push(castling_K)
-                    
-                    if((pieceType == `King` || pieceType == `♚`) && (castling_K != null || castling_Q != null)) {
-
-                        for(let i = 0; i < castlingMoves.length; i++) {
-                            let line = castlingMoves[i].line
-                            let column = castlingMoves[i].column
-                            let possibleBlock:any = document.querySelector(`#i${line}j${column}`)
-                            
-                            if(possibleBlock != undefined) {
-                                /*if(pieceType == "Queen") {
-                                    console.log(possibleBlock)
-                                    possibleBlock.setAttribute(`class`, `possibleBlock`)
-                
-                                }*/
-                            
-                                this.paintPossibleBlock(possibleBlock)
-                                
-                                possibleBlock.onclick = () => {
-                                    if(column == 6) {
-                                        castling_K = true
-                                        castling_Q = false
-                                    } else {
-                                        castling_K = false
-                                        castling_Q = true
-                                    }
-                                    // console.log(`A
-                                    this.callMove(line, column, pieceObj, pieceType, castling_K, castling_Q)
-                                }
-                                    
-                                
-                            }
-                        }
-                    }
-
-
-                    for(let i = 0; i < possibleMoves.length; i++) {
-
-                        let line = possibleMoves[i].line
-                        let column = possibleMoves[i].column
-                        let possibleBlock:any = document.querySelector(`#i${line}j${column}`)
-                        // console.log(possibleBlock, possibleMoves[i])
-                        if(possibleBlock != undefined) {
-                            /*if(pieceType == "Queen") {
-                                console.log(possibleBlock)
-                                possibleBlock.setAttribute(`class`, `possibleBlock`)
-            
-                            }*/
+                }
     
-                            this.paintPossibleBlock(possibleBlock)
-                            
-                            possibleBlock.onclick = () => {
+            }
 
+            let movesAnalyzer = new MovesAnalyzer()
+            let castling_Q:any = movesAnalyzer.castling_Q(this)
+            let castlingMoves = []
 
+            if(castling_Q != null) 
+                castlingMoves.push(castling_Q)
 
-
-                                this.callMove(line, column, pieceObj, pieceType)
-                            }
-
-                                
-                            
-                            
-                        }
+            let castling_K:any = movesAnalyzer.castling_K(this)
+                
+            if(castling_K != null)  
+                castlingMoves.push(castling_K)
             
+            if((pieceType == `King` || pieceType == `♚`) && (castling_K != null || castling_Q != null)) {
+
+                for(let i = 0; i < castlingMoves.length; i++) {
+                    let line = castlingMoves[i].line
+                    let column = castlingMoves[i].column
+                    let possibleBlock:any = document.querySelector(`#i${line}j${column}`)
+                    
+                    if(possibleBlock != undefined) {
+                        /*if(pieceType == "Queen") {
+                            console.log(possibleBlock)
+                            possibleBlock.setAttribute(`class`, `possibleBlock`)
+        
+                        }*/
+                    
+                        this.paintPossibleBlock(possibleBlock)
+                        
+                        possibleBlock.onclick = () => {
+                            if(column == 6) {
+                                castling_K = true
+                                castling_Q = false
+                            } else {
+                                castling_K = false
+                                castling_Q = true
+                            }
+                            // console.log(`A
+                            this.callMove(line, column, pieceObj, pieceType, castling_K, castling_Q)
+                        }
+                            
+                        
                     }
                 }
+            }
+
+
+            for(let i = 0; i < possibleMoves.length; i++) {
+
+                let line = possibleMoves[i].line
+                let column = possibleMoves[i].column
+                let possibleBlock:any = document.querySelector(`#i${line}j${column}`)
+                // console.log(possibleBlock, possibleMoves[i])
+                if(possibleBlock != undefined) {
+                    /*if(pieceType == "Queen") {
+                        console.log(possibleBlock)
+                        possibleBlock.setAttribute(`class`, `possibleBlock`)
+    
+                    }*/
+
+                    this.paintPossibleBlock(possibleBlock)
+                    
+                    possibleBlock.onclick = () => {
+
+
+
+
+                        this.callMove(line, column, pieceObj, pieceType)
+                    }
+
+                        
+                    
+                    
+                }
+    
+            }
+        }
+
     }
 
     async callMove(line:number, column:number, pieceObj: Piece, pieceType: string, castling_K?:boolean, castling_Q?:boolean) {
