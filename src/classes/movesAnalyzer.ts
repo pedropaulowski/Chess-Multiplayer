@@ -155,6 +155,7 @@ export class MovesAnalyzer {
         let pieceName = piece.unicode
         let board = game.board
 
+
         if(verifyingCheck == true) {
             // Verificar as 8 linhas tanto acima quanto a abaixo na mesma coluna
             for(let j = position.line+1; j < 8; j++) {
@@ -263,7 +264,6 @@ export class MovesAnalyzer {
     diagonalMoves(position: Position, piece: Piece, game: Game, verifyingCheck?: boolean) {
         let pieceName = piece.unicode
         let board = game.board
-
 
         if(verifyingCheck == true) {
             
@@ -542,9 +542,11 @@ export class MovesAnalyzer {
          * 
          *  
          */
+        this.possibleMoves = []
         let board = game.board
-
+       
         let aux = -1
+    
         for(let i = 0; i < 8; i++) {
             let analyzedLine = position.line+(-2*aux)
             let analyzedColumn = position.column+aux
@@ -571,21 +573,7 @@ export class MovesAnalyzer {
             }
 
             aux *=-1
-            
 
-
-            if(verifyingCheck == true) {
-                if(analyzedLine >= 0 && analyzedLine < 8 && analyzedColumn >= 0 && analyzedColumn < 8) {
-                    if(board[analyzedLine][analyzedColumn] != undefined) {
-                        if(board[analyzedLine][analyzedColumn].unicode == `♞` && board[analyzedLine][analyzedColumn].color != piece.color
-                        ){
-                            return true
-                        } 
-                    }
-                }
-
-                return false
-            }
 
             if(analyzedLine >= 0 && analyzedLine < 8 && analyzedColumn >= 0 && analyzedColumn < 8) {
                 if(board[analyzedLine][analyzedColumn] != undefined) {
@@ -603,10 +591,37 @@ export class MovesAnalyzer {
             }
 
 
+
+
             // this.possibleMoves.push(new Position(analyzedLine, analyzedColumn))
         }
 
+        // console.log(this.possibleMoves.length, this.possibleMoves)
+
+        if(verifyingCheck == true) {
+            let aux = 0
+            this.possibleMoves.forEach((position) => {
+
+                // console.log(board[position.line][position.column].unicode,
+                // board[position.line][position.column].color)
+
+                if(board[position.line][position.column].unicode == `♞` &&
+                 board[position.line][position.column].color != piece.color) {
+                    
+                        aux++
+                 }
+            })
+
+            if(aux == 0) {
+                return false
+            } else {
+                return true
+            }
+        }
+        
         return this.possibleMoves
+        
+
 
 
     }
@@ -803,7 +818,9 @@ export class MovesAnalyzer {
                 }
             })
         })
-            
+
+        // console.log(this.twoOneMoves(king.position, king, virtualGame, true))
+        // console.log(king, virtualGame)
 
         if( this.diagonalMoves(king.position, king, virtualGame, true) == true||
             this.verticalMoves(king.position, king, virtualGame, true) == true ||

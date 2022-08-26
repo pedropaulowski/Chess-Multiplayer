@@ -51,7 +51,7 @@ export class Game {
         this.isBlackInCheck = false
         this.winner = ``
 
-        this.timers = [new Clock(5, 0, this.id), new Clock(5, 0, this.id)]
+        this.timers = [new Clock(5, 0, this.id), new Clock(100, 0, this.id)]
     }
 
     drawBoard(divBoard: HTMLDivElement, clientPlayer : string) {
